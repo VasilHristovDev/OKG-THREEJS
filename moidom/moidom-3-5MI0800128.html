@@ -8,6 +8,7 @@
   <script src="three.min.js"></script>
   <script src="OrbitControls.js"></script>
   <script src="window.js"></script>
+  <script src="bed.js"></script>
 </head>
 
 <body>
@@ -378,29 +379,54 @@
   const window1 = new WindowPanel(3,0.7,4);
   const window1Obj = window1.getObject();
   window1Obj.position.set(0.5,1,5.9)
+  window1Obj.receiveShadow = true;
+  window1Obj.castShadow = true;
 
   const window2 = new WindowPanel(1,0.54,1);
   const window2Obj = window2.getObject();
   window2Obj.position.set(-2.9,1.53,1.7)
   window2Obj.rotateY(Math.PI/2);
+  window2Obj.receiveShadow = true;
+  window2Obj.castShadow = true;
 
   const window3 = new WindowPanel(1.1,0.75,2);
   const window3Obj = window3.getObject();
   window3Obj.position.set(2.39,1,-4.9);
+  window3Obj.receiveShadow = true;
+  window3Obj.castShadow = true;
 
   const window4 = new WindowPanel(1.3,0.75,2);
   const window4Obj = window4.getObject();
   window4Obj.position.set(-1.2,1,-4.9);
+  window4Obj.receiveShadow = true;
+  window4Obj.castShadow = true;
 
   const window5 = new WindowPanel(2,0.75,3);
   const window5Obj = window5.getObject();
   window5Obj.position.set(-6.9,1,-2);
   window5Obj.rotateY(Math.PI/2);
+  window5Obj.receiveShadow = true;
+  window5Obj.castShadow = true;
 
   const window6 = new WindowPanel(2,0.75,3);
   const window6Obj = window6.getObject();
   window6Obj.position.set(3.9,1,2);
   window6Obj.rotateY(Math.PI/2);
+  window6Obj.receiveShadow = true;
+  window6Obj.castShadow = true;
+
+  const bed1 = new Bed(1.8,1, 1, 'red', 0x01234ff);
+  const bed1Obj = bed1.getObject();
+  bed1Obj.position.set(1.1,0.3,-3.9);
+  bed1Obj.rotateY(Math.PI/2);
+
+  const bed2 = new Bed(1.8,1, 1, 'cyan', 0x1f24ac);
+  const bed2Obj = bed2.getObject();
+  bed2Obj.position.set(3.3,0.3,-3.9);
+  bed2Obj.rotateY(Math.PI/2);
+
+  scene.add(bed1Obj);
+  scene.add(bed2Obj);
 
   scene.add(window1Obj);
   scene.add(window2Obj);
