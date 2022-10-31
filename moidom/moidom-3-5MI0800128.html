@@ -42,34 +42,61 @@
   const bedFoundationMaterial = new THREE.MeshPhongMaterial({color: 'white', opacity: 0});
 
   //Outside walls
-  const westWall = new THREE.BoxGeometry(0.2, 2, 11);
+  const westWall1 = new THREE.BoxGeometry(0.2, 2, 6);
+  const westWall2 = new THREE.BoxGeometry(0.2, 0.2, 1);
+  const westWall3 = new THREE.BoxGeometry(0.2, 2, 4);
+
   const eastWall1 = new THREE.BoxGeometry(0.2, 2, 6);
   const eastWall2 = new THREE.BoxGeometry(0.2, 2, 5);
+
   const southWall1 = new THREE.BoxGeometry(0.2, 2, 4.2);
   const southWall2 = new THREE.BoxGeometry(0.2, 2, 6.9);
+
   const northWall = new THREE.BoxGeometry(0.2, 2, 11);
 
   //Inside walls
-
+  const officeWall1 = new THREE.BoxBufferGeometry(0.2,2,0.2);
+  const officeWall2 = new THREE.BoxBufferGeometry(0.2,0.2,1);
+  const officeWall3 = new THREE.BoxBufferGeometry(0.2,2,4.6);
   //Corridor
-  const corridorWall1 = new THREE.BoxBufferGeometry(0.2, 2, 7);
-  const corridorWall2 = new THREE.BoxBufferGeometry(0.2, 2, 7);
+  const corridorWall11 = new THREE.BoxBufferGeometry(0.2, 2, 5);
+  const corridorWall12 = new THREE.BoxBufferGeometry(0.2, 2, 1);
+  const corridorWall13 = new THREE.BoxBufferGeometry(0.2, 0.2, 1);
+
+  const corridorWall21 = new THREE.BoxBufferGeometry(0.2, 2, 1);
+  const corridorWall22 = new THREE.BoxBufferGeometry(0.2, 0.2, 1);
+  const corridorWall23 = new THREE.BoxBufferGeometry(0.2, 2, 3);
+  const corridorWall24 = new THREE.BoxBufferGeometry(0.2, 0.2, 1);
+  const corridorWall25 = new THREE.BoxBufferGeometry(0.2, 2, 1);
+
   //Kitchen
   const kitchenWall1 = new THREE.BoxBufferGeometry(0.2, 2, 4);
   //living room
   const livingRoomWall1 = new THREE.BoxBufferGeometry(0.2,2,4.25);
   const livingRoomWall2 = new THREE.BoxBufferGeometry(0.2,2,1);
-  const livingRoomWall3 = new THREE.BoxBufferGeometry(0.2,2,2.1);
+  const livingRoomWall31 = new THREE.BoxBufferGeometry(0.2,2,0.55);
+  const livingRoomWall32 = new THREE.BoxBufferGeometry(0.2,0.2,1);
+  const livingRoomWall33 = new THREE.BoxBufferGeometry(0.2,2,0.65);
   //Door
-  const door = new THREE.BoxBufferGeometry(0.2,1.8,1);
+  // const door = new THREE.BoxBufferGeometry(0.2,1.8,1);
 
   //Bed
   const bedFoundation = new THREE.BoxBufferGeometry(2,0.4,1.8);
 
-  const westWallObj = new THREE.Mesh(westWall, wallMaterial);
-  westWallObj.position.set(3.9, 1, 0.5);
-  westWallObj.receiveShadow = true;
-  westWallObj.castShadow = true;
+  const westWall1Obj = new THREE.Mesh(westWall1, wallMaterial);
+  westWall1Obj.position.set(3.9, 1, 3);
+  westWall1Obj.receiveShadow = true;
+  westWall1Obj.castShadow = true;
+
+  const westWall2Obj = new THREE.Mesh(westWall2, wallMaterial);
+  westWall2Obj.position.set(3.9, 1.9, -0.5);
+  westWall2Obj.receiveShadow = true;
+  westWall2Obj.castShadow = true;
+
+  const westWall3Obj = new THREE.Mesh(westWall3, wallMaterial);
+  westWall3Obj.position.set(3.9, 1, -3);
+  westWall3Obj.receiveShadow = true;
+  westWall3Obj.castShadow = true;
 
   const eastWall1Obj = new THREE.Mesh(eastWall1, wallMaterial);
   eastWall1Obj.position.set(-6.9, 1, -2);
@@ -100,28 +127,73 @@
   northWallObj.castShadow = true;
   northWallObj.rotateY(Math.PI / 2);
 
-  const corridorWall1Obj = new THREE.Mesh(corridorWall1, wallMaterial);
-  corridorWall1Obj.position.set(0.5, 1, 0.9);
-  corridorWall1Obj.receiveShadow = true;
-  corridorWall1Obj.castShadow = true;
-  corridorWall1Obj.rotateY(Math.PI / 2);
+  const corridorWall11Obj = new THREE.Mesh(corridorWall11, wallMaterial);
+  corridorWall11Obj.position.set(-0.5, 1, 0.9);
+  corridorWall11Obj.receiveShadow = true;
+  corridorWall11Obj.castShadow = true;
+  corridorWall11Obj.rotateY(Math.PI / 2);
 
-  const corridorWall2Obj = new THREE.Mesh(corridorWall2, wallMaterial);
-  corridorWall2Obj.position.set(0.5, 1, -1);
-  corridorWall2Obj.receiveShadow = true;
-  corridorWall2Obj.castShadow = true;
-  corridorWall2Obj.rotateY(Math.PI / 2);
+  const corridorWall12Obj = new THREE.Mesh(corridorWall12, wallMaterial);
+  corridorWall12Obj.position.set(3.5, 1, 0.9);
+  corridorWall12Obj.receiveShadow = true;
+  corridorWall12Obj.castShadow = true;
+  corridorWall12Obj.rotateY(Math.PI / 2);
 
+  const corridorWall13Obj = new THREE.Mesh(corridorWall13, wallMaterial);
+  corridorWall13Obj.position.set(2.5, 1.9, 0.9);
+  corridorWall13Obj.receiveShadow = true;
+  corridorWall13Obj.castShadow = true;
+  corridorWall13Obj.rotateY(Math.PI / 2);
+
+  const corridorWall21Obj = new THREE.Mesh(corridorWall21, wallMaterial);
+  corridorWall21Obj.position.set(-2.5, 1, -1);
+  corridorWall21Obj.receiveShadow = true;
+  corridorWall21Obj.castShadow = true;
+  corridorWall21Obj.rotateY(Math.PI / 2);
+
+  const corridorWall22Obj = new THREE.Mesh(corridorWall22, wallMaterial);
+  corridorWall22Obj.position.set(-1.5, 1.9, -1);
+  corridorWall22Obj.receiveShadow = true;
+  corridorWall22Obj.castShadow = true;
+  corridorWall22Obj.rotateY(Math.PI / 2);
+
+  const corridorWall23Obj = new THREE.Mesh(corridorWall23, wallMaterial);
+  corridorWall23Obj.position.set(0.5, 1, -1);
+  corridorWall23Obj.receiveShadow = true;
+  corridorWall23Obj.castShadow = true;
+  corridorWall23Obj.rotateY(Math.PI / 2);
+
+  const corridorWall24Obj = new THREE.Mesh(corridorWall24, wallMaterial);
+  corridorWall24Obj.position.set(2.5, 1.9, -1);
+  corridorWall24Obj.receiveShadow = true;
+  corridorWall24Obj.castShadow = true;
+  corridorWall24Obj.rotateY(Math.PI / 2);
+
+  const corridorWall25Obj = new THREE.Mesh(corridorWall25, wallMaterial);
+  corridorWall25Obj.position.set(3.5, 1, -1);
+  corridorWall25Obj.receiveShadow = true;
+  corridorWall25Obj.castShadow = true;
+  corridorWall25Obj.rotateY(Math.PI / 2);
 
   const kitchenWallObj = new THREE.Mesh(kitchenWall1, wallMaterial);
   kitchenWallObj.position.set(0.5, 1, -3);
   kitchenWallObj.receiveShadow = true;
   kitchenWallObj.castShadow = true;
 
-  const officeWallObj = new THREE.Mesh(eastWall1, wallMaterial);
-  officeWallObj.position.set(-3, 1, -2);
-  officeWallObj.receiveShadow = true;
-  officeWallObj.castShadow = true;
+  const officeWallObj1 = new THREE.Mesh(officeWall1, wallMaterial);
+  officeWallObj1.position.set(-3, 1, 0.7);
+  officeWallObj1.receiveShadow = true;
+  officeWallObj1.castShadow = true;
+
+  const officeWallObj2 = new THREE.Mesh(officeWall2, wallMaterial);
+  officeWallObj2.position.set(-3, 1.9,0.2);
+  officeWallObj2.receiveShadow = true;
+  officeWallObj2.castShadow = true;
+
+  const officeWallObj3 = new THREE.Mesh(officeWall3, wallMaterial);
+  officeWallObj3.position.set(-3, 1,-2.6);
+  officeWallObj3.receiveShadow = true;
+  officeWallObj3.castShadow = true;
 
   const livingRoomWall1Obj = new THREE.Mesh(livingRoomWall1, wallMaterial);
   livingRoomWall1Obj.position.set(-0.85, 1, 3);
@@ -135,33 +207,58 @@
   livingRoomWall2Obj.castShadow = true;
   livingRoomWall2Obj.rotateY(Math.PI / 4);
 
-  const livingRoomWall3Obj = new THREE.Mesh(livingRoomWall3, wallMaterial);
-  livingRoomWall3Obj.position.set(2.9, 1, 3.71);
-  livingRoomWall3Obj.receiveShadow = true;
-  livingRoomWall3Obj.castShadow = true;
-  livingRoomWall3Obj.rotateY(Math.PI / 2);
+  const livingRoomWall31Obj = new THREE.Mesh(livingRoomWall31, wallMaterial);
+  livingRoomWall31Obj.position.set(2.1, 1, 3.71);
+  livingRoomWall31Obj.receiveShadow = true;
+  livingRoomWall31Obj.castShadow = true;
+  livingRoomWall31Obj.rotateY(Math.PI / 2);
 
-  const outsideDoorObj = new THREE.Mesh(door, negativeMaterial);
-  outsideDoorObj.position.set(3.9, 0.8, 0);
-  outsideDoorObj.receiveShadow = true;
-  outsideDoorObj.castShadow = true;
+  const livingRoomWall32Obj = new THREE.Mesh(livingRoomWall32, wallMaterial);
+  livingRoomWall32Obj.position.set(2.65, 1.9, 3.71);
+  livingRoomWall32Obj.receiveShadow = true;
+  livingRoomWall32Obj.castShadow = true;
+  livingRoomWall32Obj.rotateY(Math.PI / 2);
+
+  const livingRoomWall33Obj = new THREE.Mesh(livingRoomWall33, wallMaterial);
+  livingRoomWall33Obj.position.set(3.45, 1, 3.71);
+  livingRoomWall33Obj.receiveShadow = true;
+  livingRoomWall33Obj.castShadow = true;
+  livingRoomWall33Obj.rotateY(Math.PI / 2);
 
 
+  scene.add(westWall1Obj);
+  scene.add(westWall2Obj);
+  scene.add(westWall3Obj);
 
-  scene.add(westWallObj);
   scene.add(eastWall1Obj);
   scene.add(eastWall2Obj);
+
   scene.add(southWall1Obj);
   scene.add(southWall2Obj);
+  scene.add(southWall2Obj);
+
   scene.add(northWallObj);
-  scene.add(corridorWall1Obj);
-  scene.add(corridorWall2Obj);
+  scene.add(corridorWall11Obj);
+  scene.add(corridorWall12Obj);
+  scene.add(corridorWall13Obj);
+
+  scene.add(corridorWall21Obj);
+  scene.add(corridorWall22Obj);
+  scene.add(corridorWall23Obj);
+  scene.add(corridorWall24Obj);
+  scene.add(corridorWall25Obj);
+
   scene.add(kitchenWallObj);
-  scene.add(officeWallObj);
+
+  scene.add(officeWallObj1);
+  scene.add(officeWallObj2);
+  scene.add(officeWallObj3);
   scene.add(livingRoomWall1Obj);
   scene.add(livingRoomWall2Obj);
-  scene.add(livingRoomWall3Obj);
-  scene.add(outsideDoorObj);
+
+  scene.add(livingRoomWall31Obj);
+  scene.add(livingRoomWall32Obj);
+  scene.add(livingRoomWall33Obj);
 
 
 
