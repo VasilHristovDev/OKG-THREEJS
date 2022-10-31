@@ -35,24 +35,42 @@
   //    да се слагат обекти, които правят сянка
 
   //wall material
-  const wallMaterial = new THREE.MeshPhongMaterial({color: 'white', shininess: 100});
-  //door material
-  const negativeMaterial = new THREE.MeshPhongMaterial({color: 'white', opacity: 0});
+  const wallMaterial = new THREE.MeshPhongMaterial({color: 0xd2dfb4, shininess: 100});
   //Bed materials
   const bedFoundationMaterial = new THREE.MeshPhongMaterial({color: 'white', opacity: 0});
 
   //Outside walls
-  const westWall1 = new THREE.BoxGeometry(0.2, 2, 6);
+  const westWall11 = new THREE.BoxGeometry(0.2, 2, 3);
+  const westWall1Bottom = new THREE.BoxGeometry(0.2, 0.6, 2);
+  const westWall1Top = new THREE.BoxGeometry(0.2, 0.6, 2);
+  const westWall12 = new THREE.BoxGeometry(0.2, 2, 1);
   const westWall2 = new THREE.BoxGeometry(0.2, 0.2, 1);
   const westWall3 = new THREE.BoxGeometry(0.2, 2, 4);
 
-  const eastWall1 = new THREE.BoxGeometry(0.2, 2, 6);
-  const eastWall2 = new THREE.BoxGeometry(0.2, 2, 5);
+  const eastWall11 = new THREE.BoxGeometry(0.2, 2, 2);
+  const eastWall1Bottom = new THREE.BoxGeometry(0.2, 0.6, 2);
+  const eastWall1Top = new THREE.BoxGeometry(0.2, 0.6, 2);
+  const eastWall12 = new THREE.BoxGeometry(0.2, 2, 2);
+
+  const eastWall21 = new THREE.BoxGeometry(0.2, 2, 0.2);
+  const eastWall2Bottom = new THREE.BoxGeometry(0.2, 1.3, 1.1);
+  const eastWall2Top = new THREE.BoxGeometry(0.2, 0.2, 1.1);
+  const eastWall22 = new THREE.BoxGeometry(0.2, 2, 3.6);
 
   const southWall1 = new THREE.BoxGeometry(0.2, 2, 4.2);
-  const southWall2 = new THREE.BoxGeometry(0.2, 2, 6.9);
 
-  const northWall = new THREE.BoxGeometry(0.2, 2, 11);
+  const southWall21 = new THREE.BoxGeometry(0.2, 2, 2);
+  const southWall2Bottom = new THREE.BoxGeometry(0.2, 0.6, 3);
+  const southWall2Top = new THREE.BoxGeometry(0.2, 0.6, 3);
+  const southWall22 = new THREE.BoxGeometry(0.2, 2, 2);
+
+  const northWall11 = new THREE.BoxGeometry(0.2, 2, 1.);
+  const northWall1Bottom = new THREE.BoxGeometry(0.2, 0.6, 1.5);
+  const northWall1Top = new THREE.BoxGeometry(0.2, 0.6, 1.5);
+  const northWall12 = new THREE.BoxGeometry(0.2, 2, 1.2);
+
+
+  const northWall3 = new THREE.BoxGeometry(0.2, 2, 4);
 
   //Inside walls
   const officeWall1 = new THREE.BoxBufferGeometry(0.2,2,0.2);
@@ -85,10 +103,25 @@
   //Bed
   const bedFoundation = new THREE.BoxBufferGeometry(2,0.4,1.8);
 
-  const westWall1Obj = new THREE.Mesh(westWall1, wallMaterial);
-  westWall1Obj.position.set(3.9, 1, 3);
-  westWall1Obj.receiveShadow = true;
-  westWall1Obj.castShadow = true;
+  const westWall11Obj = new THREE.Mesh(westWall11, wallMaterial);
+  westWall11Obj.position.set(3.9, 1, 4.5);
+  westWall11Obj.receiveShadow = true;
+  westWall11Obj.castShadow = true;
+
+  const westWall1BottomObj = new THREE.Mesh(westWall1Bottom, wallMaterial);
+  westWall1BottomObj.position.set(3.9, 0.3, 2);
+  westWall1BottomObj.receiveShadow = true;
+  westWall1BottomObj.castShadow = true;
+
+  const westWall1TopObj = new THREE.Mesh(westWall1Top, wallMaterial);
+  westWall1TopObj.position.set(3.9, 1.7, 2);
+  westWall1TopObj.receiveShadow = true;
+  westWall1TopObj.castShadow = true;
+
+  const westWall12Obj = new THREE.Mesh(westWall12, wallMaterial);
+  westWall12Obj.position.set(3.9, 1, 0.5);
+  westWall12Obj.receiveShadow = true;
+  westWall12Obj.castShadow = true;
 
   const westWall2Obj = new THREE.Mesh(westWall2, wallMaterial);
   westWall2Obj.position.set(3.9, 1.9, -0.5);
@@ -100,16 +133,49 @@
   westWall3Obj.receiveShadow = true;
   westWall3Obj.castShadow = true;
 
-  const eastWall1Obj = new THREE.Mesh(eastWall1, wallMaterial);
-  eastWall1Obj.position.set(-6.9, 1, -2);
-  eastWall1Obj.receiveShadow = true;
-  eastWall1Obj.castShadow = true;
+  const eastWall11Obj = new THREE.Mesh(eastWall11, wallMaterial);
+  eastWall11Obj.position.set(-6.9, 1, -4);
+  eastWall11Obj.receiveShadow = true;
+  eastWall11Obj.castShadow = true;
 
-  const eastWall2Obj = new THREE.Mesh(eastWall2, wallMaterial);
-  eastWall2Obj.position.set(-2.9, 1, 3.5);
-  eastWall2Obj.receiveShadow = true;
-  eastWall2Obj.castShadow = true;
-  eastWall2Obj.transparent = true;
+  const eastWall1BottomObj = new THREE.Mesh(eastWall1Bottom, wallMaterial);
+  eastWall1BottomObj.position.set(-6.9, 0.3, -2);
+  eastWall1BottomObj.receiveShadow = true;
+  eastWall1BottomObj.castShadow = true;
+
+  const eastWall1TopObj = new THREE.Mesh(eastWall1Top, wallMaterial);
+  eastWall1TopObj.position.set(-6.9, 1.7, -2);
+  eastWall1TopObj.receiveShadow = true;
+  eastWall1TopObj.castShadow = true;
+
+  const eastWall12Obj = new THREE.Mesh(eastWall12, wallMaterial);
+  eastWall12Obj.position.set(-6.9, 1, 0);
+  eastWall12Obj.receiveShadow = true;
+  eastWall12Obj.castShadow = true;
+
+  const eastWall21Obj = new THREE.Mesh(eastWall21, wallMaterial);
+  eastWall21Obj.position.set(-2.9, 1, 1.1);
+  eastWall21Obj.receiveShadow = true;
+  eastWall21Obj.castShadow = true;
+  eastWall21Obj.transparent = true;
+
+  const eastWall2BottomObj = new THREE.Mesh(eastWall2Bottom, wallMaterial);
+  eastWall2BottomObj.position.set(-2.9, 0.65, 1.7);
+  eastWall2BottomObj.receiveShadow = true;
+  eastWall2BottomObj.castShadow = true;
+  eastWall2BottomObj.transparent = true;
+
+  const eastWall2TopObj = new THREE.Mesh(eastWall2Top, wallMaterial);
+  eastWall2TopObj.position.set(-2.9, 1.9, 1.7);
+  eastWall2TopObj.receiveShadow = true;
+  eastWall2TopObj.castShadow = true;
+  eastWall2TopObj.transparent = true;
+
+  const eastWall22Obj = new THREE.Mesh(eastWall22, wallMaterial);
+  eastWall22Obj.position.set(-2.9, 1, 4);
+  eastWall22Obj.receiveShadow = true;
+  eastWall22Obj.castShadow = true;
+  eastWall22Obj.transparent = true;
 
   const southWall1Obj = new THREE.Mesh(southWall1, wallMaterial);
   southWall1Obj.position.set(-4.9, 1, 0.9);
@@ -117,17 +183,83 @@
   southWall1Obj.castShadow = true;
   southWall1Obj.rotateY(Math.PI / 2);
 
-  const southWall2Obj = new THREE.Mesh(southWall2, wallMaterial);
-  southWall2Obj.position.set(0.5, 1, 5.9);
+  const southWall2Obj = new THREE.Mesh(southWall21, wallMaterial);
+  southWall2Obj.position.set(-2, 1, 5.9);
   southWall2Obj.receiveShadow = true;
   southWall2Obj.castShadow = true;
   southWall2Obj.rotateY(Math.PI / 2);
 
-  const northWallObj = new THREE.Mesh(northWall, wallMaterial);
-  northWallObj.position.set(-1.5, 1, -4.9);
-  northWallObj.receiveShadow = true;
-  northWallObj.castShadow = true;
-  northWallObj.rotateY(Math.PI / 2);
+  const southWall2BottomObj = new THREE.Mesh(southWall2Bottom, wallMaterial);
+  southWall2BottomObj.position.set(0.5, 0.3, 5.9);
+  southWall2BottomObj.receiveShadow = true;
+  southWall2BottomObj.castShadow = true;
+  southWall2BottomObj.rotateY(Math.PI / 2);
+
+  const southWall2TopObj = new THREE.Mesh(southWall2Top, wallMaterial);
+  southWall2TopObj.position.set(0.5, 1.7, 5.9);
+  southWall2TopObj.receiveShadow = true;
+  southWall2TopObj.castShadow = true;
+  southWall2TopObj.rotateY(Math.PI / 2);
+
+  const southWall22Obj = new THREE.Mesh(southWall22, wallMaterial);
+  southWall22Obj.position.set(3, 1, 5.9);
+  southWall22Obj.receiveShadow = true;
+  southWall22Obj.castShadow = true;
+  southWall22Obj.rotateY(Math.PI / 2);
+
+  const northWall11Obj = new THREE.Mesh(northWall11, wallMaterial);
+  northWall11Obj.position.set(3.4, 1, -4.9);
+  northWall11Obj.receiveShadow = true;
+  northWall11Obj.castShadow = true;
+  northWall11Obj.rotateY(Math.PI / 2);
+
+  const northWall1BottomObj = new THREE.Mesh(northWall1Bottom, wallMaterial);
+  northWall1BottomObj.position.set(2.2, 0.3, -4.9);
+  northWall1BottomObj.receiveShadow = true;
+  northWall1BottomObj.castShadow = true;
+  northWall1BottomObj.rotateY(Math.PI / 2);
+
+  const northWall1TopObj = new THREE.Mesh(northWall1Top, wallMaterial);
+  northWall1TopObj.position.set(2.2, 1.7, -4.9);
+  northWall1TopObj.receiveShadow = true;
+  northWall1TopObj.castShadow = true;
+  northWall1TopObj.rotateY(Math.PI / 2);
+
+  const northWall12Obj = new THREE.Mesh(northWall12, wallMaterial);
+  northWall12Obj.position.set(1.2, 1, -4.9);
+  northWall12Obj.receiveShadow = true;
+  northWall12Obj.castShadow = true;
+  northWall12Obj.rotateY(Math.PI / 2);
+
+  const northWall21Obj = new THREE.Mesh(northWall11, wallMaterial);
+  northWall21Obj.position.set(0, 1, -4.9);
+  northWall21Obj.receiveShadow = true;
+  northWall21Obj.castShadow = true;
+  northWall21Obj.rotateY(Math.PI / 2);
+
+  const northWall2BottomObj = new THREE.Mesh(northWall1Bottom, wallMaterial);
+  northWall2BottomObj.position.set(-1.2, 0.3, -4.9);
+  northWall2BottomObj.receiveShadow = true;
+  northWall2BottomObj.castShadow = true;
+  northWall2BottomObj.rotateY(Math.PI / 2);
+
+  const northWall2TopObj = new THREE.Mesh(northWall1Top, wallMaterial);
+  northWall2TopObj.position.set(-1.2, 1.7, -4.9);
+  northWall2TopObj.receiveShadow = true;
+  northWall2TopObj.castShadow = true;
+  northWall2TopObj.rotateY(Math.PI / 2);
+
+  const northWall22Obj = new THREE.Mesh(northWall12, wallMaterial);
+  northWall22Obj.position.set(-2.5, 1, -4.9);
+  northWall22Obj.receiveShadow = true;
+  northWall22Obj.castShadow = true;
+  northWall22Obj.rotateY(Math.PI / 2);
+
+  const northWall3Obj = new THREE.Mesh(northWall3, wallMaterial);
+  northWall3Obj.position.set(-5, 1, -4.9);
+  northWall3Obj.receiveShadow = true;
+  northWall3Obj.castShadow = true;
+  northWall3Obj.rotateY(Math.PI / 2);
 
   const corridorWall11Obj = new THREE.Mesh(corridorWall11, wallMaterial);
   corridorWall11Obj.position.set(-0.5, 1, 0.9);
@@ -242,18 +374,42 @@
   toiletWall3Obj.receiveShadow = true;
   toiletWall3Obj.castShadow = true;
 
-  scene.add(westWall1Obj);
+  scene.add(westWall11Obj);
+  scene.add(westWall1BottomObj);
+  scene.add(westWall1TopObj);
+  scene.add(westWall12Obj);
+
   scene.add(westWall2Obj);
   scene.add(westWall3Obj);
 
-  scene.add(eastWall1Obj);
-  scene.add(eastWall2Obj);
+  scene.add(eastWall11Obj);
+  scene.add(eastWall1BottomObj);
+  scene.add(eastWall1TopObj);
+  scene.add(eastWall12Obj);
+
+  scene.add(eastWall21Obj);
+  scene.add(eastWall2BottomObj);
+  scene.add(eastWall2TopObj);
+  scene.add(eastWall22Obj);
 
   scene.add(southWall1Obj);
   scene.add(southWall2Obj);
-  scene.add(southWall2Obj);
+  scene.add(southWall2BottomObj);
+  scene.add(southWall2TopObj);
+  scene.add(southWall22Obj);
 
-  scene.add(northWallObj);
+  scene.add(northWall11Obj);
+  scene.add(northWall1BottomObj);
+  scene.add(northWall1TopObj);
+  scene.add(northWall12Obj);
+
+  scene.add(northWall21Obj);
+  scene.add(northWall2BottomObj);
+  scene.add(northWall2TopObj);
+  scene.add(northWall22Obj);
+
+  scene.add(northWall3Obj);
+
   scene.add(corridorWall11Obj);
   scene.add(corridorWall12Obj);
   scene.add(corridorWall13Obj);
@@ -269,6 +425,7 @@
   scene.add(officeWallObj1);
   scene.add(officeWallObj2);
   scene.add(officeWallObj3);
+
   scene.add(livingRoomWall1Obj);
   scene.add(livingRoomWall2Obj);
 
