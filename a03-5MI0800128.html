@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Window Frame (THREE.JS)</title>
+  <style>
+    body {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+<script src="js/three.js"></script>
+<script>
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const light = new THREE.AmbientLight(0x444444); // soft white light
+
+  const directionalLight = new THREE.HemisphereLight(0xffffff, 0x080820, 1);
+  scene.add(directionalLight);
+
+  const light1 = new THREE.PointLight();
+  light1.position.set(-6, 10, -6)
+  light1.castShadow = true
+  light1.shadow.mapSize.height = 1024
+  light1.shadow.mapSize.width = 1024
+  scene.add(light1)
+  scene.add(light);
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  // Box
+  const lowerPart = new THREE.BoxBufferGeometry(1, 0.5, 1);
+  const lowerClothBox = new THREE.BoxBufferGeometry(0.9, 0.4, 0.9)
+  const upperClothBox = new THREE.BoxBufferGeometry(0.4, 0.9, 0.9)
+  const upperPart = new THREE.BoxBufferGeometry(0.5, 1, 1);
+
+  //box texture
+  const boxTexture = new THREE.TextureLoader().load("materials/redcloth.jpg");
+
+  //box materials
+  const boxMaterial = new THREE.MeshPhongMaterial({
+    color: 0xaa0011,
+    map: boxTexture,
+  });
+  const innerBoxMaterial = new THREE.MeshPhongMaterial({
+    color: 0x580000,
+    map: boxTexture,
+  })
+
+  //box objects
+  const lowerBoxPartObj = new THREE.Mesh(lowerPart, boxMaterial);
+  const upperBoxPartObj = new THREE.Mesh(upperPart, boxMaterial);
+
+  const lowerBoxClothObj = new THREE.Mesh(lowerClothBox, innerBoxMaterial);
+  const upperBoxClothObj = new THREE.Mesh(upperClothBox, innerBoxMaterial);
+
+  //Box group
+  const boxGroup = new THREE.Group();
+  boxGroup.add(upperBoxClothObj);
+  boxGroup.add(lowerBoxClothObj);
+  boxGroup.add(upperBoxPartObj);
+  boxGroup.add(lowerBoxPartObj);
+
+  upperBoxPartObj.position.set(1, 0.5, 0);
+  upperBoxClothObj.position.set(1, 0.5, 0);
+  upperBoxClothObj.rotateZ(2.5);
+  upperBoxClothObj.position.x = 0.9;
+  upperBoxClothObj.position.y = 0.53;
+  lowerBoxClothObj.position.y = 0.07;
+  upperBoxPartObj.rotateZ(2.5);
+  scene.add(boxGroup);
+
+  // Ring
+  const ring = new THREE.TorusBufferGeometry(0.3, 0.03, 360, 360, 6);
+  const diamondBaseElement = new THREE.SphereBufferGeometry(0.075, 64, 64);
+  const diamondElement1 = new THREE.SphereBufferGeometry(0.0375, 64, 64);
+  const diamondElement2 = new THREE.SphereBufferGeometry(0.0375, 64, 64);
+  const diamondElement3 = new THREE.SphereBufferGeometry(0.0375, 64, 64);
+
+  //gold texture
+  const goldTexture = new THREE.TextureLoader().load("materials/gold.jpg");
+  goldTexture.wrapS = THREE.RepeatWrapping;
+  goldTexture.wrapT = THREE.RepeatWrapping;
+  // Ring Material
+  const ringMaterial = new THREE.MeshPhongMaterial({
+    color: 0xFFD700,
+    shininess: 100,
+    specular: 0xFFE373,
+    metalnessMap: goldTexture,
+    metalness: 1
+  });
+  const diamondTexture = new THREE.TextureLoader().load("materials/diamond.jpg");
+  const diamondMaterial = new THREE.MeshPhongMaterial({
+    color: 0x3F1F63,
+    shininess: 100,
+    specular: 0xD678FF,
+    transparent: true,
+    opacity: 0.99,
+    map: diamondTexture
+  });
+
+  //Ring Objects
+  const ringObj = new THREE.Mesh(ring, ringMaterial);
+
+  const diamondBaseObj = new THREE.Mesh(diamondBaseElement, diamondMaterial);
+  const diamondElement1Obj = new THREE.Mesh(diamondElement1, diamondMaterial);
+  const diamondElement2Obj = new THREE.Mesh(diamondElement2, diamondMaterial);
+  const diamondElement3Obj = new THREE.Mesh(diamondElement3, diamondMaterial);
+
+  const diamondGroup = new THREE.Group();
+  diamondGroup.add(diamondBaseObj);
+  diamondGroup.add(diamondElement1Obj);
+  diamondGroup.add(diamondElement2Obj);
+  diamondGroup.add(diamondElement3Obj);
+
+  diamondElement1Obj.position.x = 0.11;
+  diamondElement2Obj.position.x = -0.1;
+  diamondElement2Obj.position.z = -0.05;
+  diamondElement3Obj.position.x = -0.1;
+  diamondElement3Obj.position.z = 0.05;
+  diamondGroup.position.y = 0.58;
+  ringObj.position.y = 0.2;
+  ringObj.rotateY(Math.PI / 2)
+  scene.add(ringObj);
+  scene.add(diamondGroup);
+
+  //Table
+  const texture = new THREE.TextureLoader().load("materials/wood.jpg");
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(1, 1);
+  const table = new THREE.BoxBufferGeometry(4, 0.3, 4);
+  const tableLeg = new THREE.BoxBufferGeometry(4 / 9, 8, 4 / 9);
+  const tableMaterial = new THREE.MeshPhongMaterial({
+    color: 0x855E42,
+    map: texture,
+  });
+  const tableObj = new THREE.Mesh(table, tableMaterial);
+  const tableLegObj = new THREE.Mesh(tableLeg, tableMaterial);
+  scene.add(tableObj);
+  scene.add(tableLegObj);
+  tableObj.position.set(0, -0.35, 0)
+  tableLegObj.position.set(0, -4, 0)
+  camera.position.z = 4.5;
+  camera.position.y = 1;
+  // camera.position.x = 1;
+  // camera.rotateX(Math.PI/2)
+  // camera.position.x = 2;
+  scene.rotateY(Math.PI / 2);
+  // scene.rotateZ(Math.PI/2);
+  // scene.rotateX(Math.PI/2);
+  //Animation
+  function animate() {
+    requestAnimationFrame(animate);
+    scene.rotation.y += 0.01;
+    // rightLegObj.rotation.x += 0.001;
+    renderer.render(scene, camera);
+  }
+
+  animate();
+</script>
+</body>
+</html>

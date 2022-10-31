@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Window Frame (THREE.JS)</title>
+  <style>
+    body {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+<script src="js/three.js"></script>
+<script>
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  // Outer frames of the window
+  const frameTop = new THREE.BoxBufferGeometry(6.5, 0.5, 0.2);
+  const frameBottom = new THREE.BoxBufferGeometry(6.5, 0.5, 0.2);
+  const frameLeft = new THREE.BoxBufferGeometry(0.5, 3.5, 0.2);
+  const frameRight = new THREE.BoxBufferGeometry(0.5, 3.5, 0.2);
+
+  // Inner frames of the window
+  const innerFrame1 = new THREE.BoxBufferGeometry(0.3, 3.5, 0.1);
+  const innerFrame2 = new THREE.BoxBufferGeometry(6.5, 0.3, 0.1);
+
+  //material
+  const woodMaterial = new THREE.MeshMatcapMaterial({color: 0xffffee});
+
+  // Outer frame objects
+  const frameObjTop = new THREE.Mesh(frameTop, woodMaterial);
+  const frameObjBottom = new THREE.Mesh(frameBottom, woodMaterial);
+  const frameObjLeft = new THREE.Mesh(frameLeft, woodMaterial);
+  const frameObjRight = new THREE.Mesh(frameRight, woodMaterial);
+
+  //Inner frame objects
+  const innerFrame1Obj = new THREE.Mesh(innerFrame1, woodMaterial);
+  const innerFrame2Obj = new THREE.Mesh(innerFrame2, woodMaterial);
+
+  //Position handling
+  frameObjTop.position.y = 2;
+  frameObjLeft.position.x = 3;
+  frameObjRight.position.x = -3;
+  frameObjBottom.position.y = -2;
+  innerFrame1Obj.position.x = 0;
+  innerFrame2Obj.position.y = 1;
+
+  //Adding the objects to the scene
+  scene.add(frameObjTop);
+  scene.add(frameObjLeft);
+  scene.add(frameObjBottom);
+  scene.add(frameObjRight);
+  scene.add(innerFrame1Obj);
+  scene.add(innerFrame2Obj);
+
+  camera.position.z = 5;
+
+  //Animation
+  function animate() {
+    requestAnimationFrame(animate);
+    scene.rotation.y += 0.001;
+    renderer.render(scene, camera);
+  }
+
+  animate();
+</script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Window Frame (THREE.JS)</title>
+  <style>
+    body {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+<script src="js/three.js"></script>
+<script>
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  // Body parts
+  const torso = new THREE.BoxBufferGeometry(1.5, 2, 0.5);
+  const head = new THREE.BoxBufferGeometry((1.5 / 4) * 3, 1, 1);
+  const leftArm = new THREE.BoxBufferGeometry(1.5 / 3, 2, 0.5);
+  const rightArm = new THREE.BoxBufferGeometry(1.5 / 3, 2, 0.5);
+  const leftLeg = new THREE.BoxBufferGeometry(1.5 / 2, 2, 0.5);
+  const rightLeg = new THREE.BoxBufferGeometry(1.5 / 2, 2, 0.5);
+
+  // Head parts
+  const leftEye = new THREE.BoxBufferGeometry((1.5 / 4) * 3 / 4, 0.125, 1.01);
+  const pupil = new THREE.BoxBufferGeometry((1.5 / 4) * 3 / 8, 0.125, 1.01);
+  const rightEye = new THREE.BoxBufferGeometry((1.5 / 4) * 3 / 4, 0.125, 1.01);
+  const nose = new THREE.BoxBufferGeometry((1.5 / 4) * 3 / 4, 0.125, 1.01);
+  const mouth = new THREE.BoxBufferGeometry((1.5 / 4) * 3 / 2, 0.125, 1.01);
+
+  // clothes (Shirt)
+  const shirtTorso = new THREE.BoxBufferGeometry(1.5 + 0.02, 2 + 0.01, 0.52);
+  const shirtLeftShoulder = new THREE.BoxBufferGeometry(1.5 / 3 + 0.02, 2 / 3 + 0.01, 0.52);
+  const shirtRightShoulder = new THREE.BoxBufferGeometry(1.5 / 3 + 0.02, 2 / 3 + 0.01, 0.52);
+
+  // clothes (Pants)
+  const pantsLeft = new THREE.BoxBufferGeometry(1.5 / 2 + 0.012, 1.5, 0.512);
+  const pantsRight = new THREE.BoxBufferGeometry(1.5 / 2 + 0.012, 1.5, 0.512);
+
+  // clothes (Shoes)
+  const shoeLeft = new THREE.BoxBufferGeometry(1.5 / 2 + 0.014, 0.33, 0.513);
+  const shoeRight = new THREE.BoxBufferGeometry(1.5 / 2 + 0.014, 0.33, 0.513);
+
+  //material
+  const bodyMaterial = new THREE.MeshBasicMaterial({color: 0xDF0000});
+  const shirtMaterial = new THREE.MeshBasicMaterial({color: 0xDB7093});
+  const pantsMaterial = new THREE.MeshBasicMaterial({color: 0x123001});
+  const shoesMaterial = new THREE.MeshBasicMaterial({color: 0xFFFAFA});
+  const pupilMaterial = new THREE.MeshBasicMaterial({color: 0x000000});
+  const noseMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff});
+  const mouthMaterial = new THREE.MeshBasicMaterial({color: 0x00ffff});
+
+
+  // Body parts objects
+  const torsoObj = new THREE.Mesh(torso, bodyMaterial);
+  const headObj = new THREE.Mesh(head, bodyMaterial);
+  const leftArmObj = new THREE.Mesh(leftArm, bodyMaterial);
+  const rightArmObj = new THREE.Mesh(rightArm, bodyMaterial);
+  const leftLegObj = new THREE.Mesh(leftLeg, bodyMaterial);
+  const rightLegObj = new THREE.Mesh(rightLeg, bodyMaterial);
+
+  // Head parts objects
+  const leftEyeObj = new THREE.Mesh(leftEye, shoesMaterial);
+  const rightEyeObj = new THREE.Mesh(rightEye, shoesMaterial);
+  const noseObj = new THREE.Mesh(nose, noseMaterial);
+  const mouthObj = new THREE.Mesh(mouth, mouthMaterial);
+  const leftPupilObj = new THREE.Mesh(pupil, pupilMaterial);
+  const rightPupilObj = new THREE.Mesh(pupil, pupilMaterial);
+
+  //Shirt Object
+  const shirtTorsoObj = new THREE.Mesh(shirtTorso, shirtMaterial);
+  const shirtRightShoulderObj = new THREE.Mesh(shirtRightShoulder, shirtMaterial);
+  const shirtLeftShoulderObj = new THREE.Mesh(shirtLeftShoulder, shirtMaterial);
+  const shirtGroup = new THREE.Group();
+  shirtGroup.add(shirtTorsoObj);
+  shirtGroup.add(shirtLeftShoulderObj);
+  shirtGroup.add(shirtRightShoulderObj);
+
+  //Pants Object
+  const pantsLeftObj = new THREE.Mesh(pantsLeft, pantsMaterial);
+  const pantsRightObj = new THREE.Mesh(pantsRight, pantsMaterial);
+  const pantsGroup = new THREE.Group();
+  pantsGroup.add(pantsLeftObj);
+  pantsGroup.add(pantsRightObj);
+
+  // Shoes Object
+  const shoeLeftObj = new THREE.Mesh(shoeLeft, shoesMaterial);
+  const shoeRightObj = new THREE.Mesh(shoeRight, shoesMaterial);
+  const shoesGroup = new THREE.Group();
+  shoesGroup.add(shoeLeftObj);
+  shoesGroup.add(shoeRightObj);
+
+  //Position Shoulders
+  shirtRightShoulderObj.position.x = -1;
+  shirtRightShoulderObj.position.y = 2 / 3;
+  shirtLeftShoulderObj.position.x = 1;
+  shirtLeftShoulderObj.position.y = 2 / 3;
+
+  //Position Pants
+  pantsLeftObj.position.y = -1.5;
+  pantsLeftObj.position.x = -(1.5 / 4);
+  pantsRightObj.position.y = -1.5;
+  pantsRightObj.position.x = 1.5 / 4;
+
+  //Position Shoes
+  shoeLeftObj.position.x = -(1.5 / 4);
+  shoeRightObj.position.x = (1.5 / 4);
+  shoeRightObj.position.y = -2.35;
+  shoeLeftObj.position.y = -2.35;
+
+  //Body position handling
+  headObj.position.y = 1.5;
+  leftArmObj.position.x = 1;
+  rightArmObj.position.x = -1;
+  leftLegObj.position.y = -1.5;
+  leftLegObj.position.x = -(1.5 / 4);
+  rightLegObj.position.y = -1.5;
+  rightLegObj.position.x = 1.5 / 4;
+
+  //Head parts position
+  leftEyeObj.position.y = 1.45;
+  leftPupilObj.position.y = 1.45;
+  leftPupilObj.position.z = 0.011;
+  leftPupilObj.position.x = 0.22;
+  leftEyeObj.position.x = 0.3;
+  rightEyeObj.position.y = 1.45;
+  rightPupilObj.position.y = 1.45;
+  rightPupilObj.position.x = -0.44;
+  rightPupilObj.position.z = 0.011;
+  rightEyeObj.position.x = -0.3;
+  leftEyeObj.position.z = 0.01;
+  rightEyeObj.position.z = 0.01;
+  noseObj.position.y = 1.3;
+  noseObj.position.z = 0.013;
+  mouthObj.position.y = 1.2;
+  mouthObj.position.z = 0.01;
+
+  //Adding the objects to the scene
+  scene.add(torsoObj);
+  scene.add(headObj);
+  scene.add(leftArmObj);
+  scene.add(rightArmObj);
+  scene.add(leftLegObj);
+  scene.add(rightLegObj);
+  scene.add(shirtGroup);
+  scene.add(pantsGroup);
+  scene.add(shoesGroup);
+  scene.add(leftEyeObj);
+  scene.add(rightEyeObj);
+  scene.add(noseObj);
+  scene.add(mouthObj);
+  scene.add(leftPupilObj);
+  scene.add(rightPupilObj);
+
+
+  camera.position.z = 5;
+
+  //Animation
+  function animate() {
+    requestAnimationFrame(animate);
+    scene.rotation.y += 0.01;
+    scene.rotation.x += 0.001;
+    // rightLegObj.rotation.x += 0.001;
+    renderer.render(scene, camera);
+  }
+
+  animate();
+</script>
+</body>
+</html>
