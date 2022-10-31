@@ -41,7 +41,7 @@ class WindowPanel {
     for (let i = 0; i < this.numberOfPanels - 1; i++) {
       const helperHorizontal = new THREE.BoxBufferGeometry(0.1, this.heightPanel, 0.22);
       const helperHorizontalObj = new THREE.Mesh(helperHorizontal, frameMaterial);
-      helperHorizontalObj.position.set(-this.widthPanel/2 + this.widthPanel/this.numberOfPanels * (Math.pow(2,i)), 0, 0);
+      helperHorizontalObj.position.set(-this.widthPanel/2 + this.widthPanel/this.numberOfPanels * (i + 1), 0, 0);
       Group.add(helperHorizontalObj);
     }
 
