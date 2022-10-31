@@ -77,8 +77,10 @@
   const livingRoomWall31 = new THREE.BoxBufferGeometry(0.2,2,0.55);
   const livingRoomWall32 = new THREE.BoxBufferGeometry(0.2,0.2,1);
   const livingRoomWall33 = new THREE.BoxBufferGeometry(0.2,2,0.65);
-  //Door
-  // const door = new THREE.BoxBufferGeometry(0.2,1.8,1);
+  //Toilet
+  const toiletWall1 = new THREE.BoxBufferGeometry(0.2, 2, 0.6);
+  const toiletWall2 = new THREE.BoxBufferGeometry(0.2, 0.2, 1);
+  const toiletWall3 = new THREE.BoxBufferGeometry(0.2, 2, 0.5);
 
   //Bed
   const bedFoundation = new THREE.BoxBufferGeometry(2,0.4,1.8);
@@ -225,6 +227,20 @@
   livingRoomWall33Obj.castShadow = true;
   livingRoomWall33Obj.rotateY(Math.PI / 2);
 
+  const toiletWall1Obj = new THREE.Mesh(toiletWall1, wallMaterial);
+  toiletWall1Obj.position.set(0, 1, 2.6);
+  toiletWall1Obj.receiveShadow = true;
+  toiletWall1Obj.castShadow = true;
+
+  const toiletWall2Obj = new THREE.Mesh(toiletWall2, wallMaterial);
+  toiletWall2Obj.position.set(0, 1.9, 1.9);
+  toiletWall2Obj.receiveShadow = true;
+  toiletWall2Obj.castShadow = true;
+
+  const toiletWall3Obj = new THREE.Mesh(toiletWall3, wallMaterial);
+  toiletWall3Obj.position.set(0, 1, 1.2);
+  toiletWall3Obj.receiveShadow = true;
+  toiletWall3Obj.castShadow = true;
 
   scene.add(westWall1Obj);
   scene.add(westWall2Obj);
@@ -260,10 +276,9 @@
   scene.add(livingRoomWall32Obj);
   scene.add(livingRoomWall33Obj);
 
-
-
-
-
+  scene.add(toiletWall1Obj);
+  scene.add(toiletWall2Obj);
+  scene.add(toiletWall3Obj);
 </script>
 
 </body>
