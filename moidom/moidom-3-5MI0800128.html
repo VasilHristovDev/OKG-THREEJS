@@ -13,6 +13,9 @@
   <script src="chair.js"></script>
   <script src="table.js"></script>
   <script src="painting.js"></script>
+  <script src="desk.js"></script>
+  <script src="drawer.js"></script>
+  <title>Vasil Hristov 5MI0800128 MOIDOM</title>
 </head>
 
 <body>
@@ -531,6 +534,32 @@
   painting12Obj.position.set(3.8,1.3,-4);
   painting12Obj.rotateY(-Math.PI/2);
 
+  const painting13 = new Painting(0.5, 0.6, 0.02, "https://iiif.micr.io/TZCqF/full/1280,/0/default.jpg");
+  const painting13Obj = painting13.getObject();
+  painting13Obj.position.set(0.6,1.3,-2);
+  painting13Obj.rotateY(Math.PI/2);
+
+  const painting14 = new Painting(0.7, 0.4, 0.02, "../materials/van-gogh1.jpg");
+  const painting14Obj = painting14.getObject();
+  painting14Obj.position.set(0.6,1.3,-3);
+  painting14Obj.rotateY(Math.PI/2);
+
+  const desk1 = new Desk(2, 0.8, 3);
+  const desk1Obj = desk1.getObject();
+  desk1Obj.position.set(-4.2,0.6,-3.5);
+  // desk1Obj.position.set(5,5,0);
+
+  const desk2 = new Desk(1.2, 0.4, 4);
+  const desk2Obj = desk2.getObject();
+  desk2Obj.position.set(1.25, 0.6, -1.3);
+  // desk2Obj.position.set(3,5, 0);
+  const desk3Obj = desk2Obj.clone();
+  desk3Obj.position.set(3.7, 0.6, -1.7);
+  desk3Obj.rotateY(Math.PI/2);
+
+  scene.add(desk2Obj);
+  scene.add(desk3Obj);
+  scene.add(desk1Obj);
   scene.add(painting1Obj)
   scene.add(painting2Obj)
   scene.add(painting3Obj)
@@ -543,6 +572,8 @@
   scene.add(painting10Obj)
   scene.add(painting11Obj)
   scene.add(painting12Obj)
+  scene.add(painting13Obj)
+  scene.add(painting14Obj)
 
   scene.add(table1Obj);
 

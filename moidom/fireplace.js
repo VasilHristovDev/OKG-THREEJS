@@ -7,6 +7,7 @@ class Fireplace {
     this.height = height;
   }
 
+  //TODO: Fix materials and make more details
   getObject() {
     const foundation = new THREE.BoxBufferGeometry(this.width, this.height/3, this.width);
     let connector = new THREE.ConeGeometry(this.width * Math.sqrt(2)/2, this.height/3, 4);
