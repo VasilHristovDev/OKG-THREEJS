@@ -15,6 +15,7 @@
   <script src="painting.js"></script>
   <script src="desk.js"></script>
   <script src="drawer.js"></script>
+  <script src="flooring.js"></script>
   <title>Vasil Hristov 5MI0800128 MOIDOM</title>
 </head>
 
@@ -26,6 +27,7 @@
 <script src="init.js"></script>
 
 <script>
+  //TODO: Make all objects cast shadows!!!!
 
   // 1. преименувайте файла на moidom-g-fn.html
   //    g=номер на група, а fn=факултетен номер
@@ -569,6 +571,55 @@
   const chair7Obj = chair7.getObject();
   chair7Obj.position.set(3.5, 0.3, -1.5);
   chair7Obj.rotateY(Math.PI / 2);
+
+  const kitchenFloor1 = new Flooring(4, 0.01, 3, "https://t4.ftcdn.net/jpg/01/97/71/71/360_F_197717166_UowHyPmYH2g6b2bH3kgXD1Mcbh1UDtLY.jpg").getObject();
+  kitchenFloor1.position.set(-1,0.01,4.5);
+
+  const kitchenFloor2 = new Flooring(3, 0.01, 2.5, "https://t4.ftcdn.net/jpg/01/97/71/71/360_F_197717166_UowHyPmYH2g6b2bH3kgXD1Mcbh1UDtLY.jpg").getObject();
+  kitchenFloor2.position.set(2.5, 0.01, 4.6);
+
+  const frontFloor = new Flooring(4, 0.01, 8, "https://t4.ftcdn.net/jpg/01/97/71/71/360_F_197717166_UowHyPmYH2g6b2bH3kgXD1Mcbh1UDtLY.jpg").getObject();
+  frontFloor.position.set(2,0.01,-0.6);
+
+  const backFloor = new Flooring(7, 0.01, 6, "https://t4.ftcdn.net/jpg/01/97/71/71/360_F_197717166_UowHyPmYH2g6b2bH3kgXD1Mcbh1UDtLY.jpg").getObject();
+  backFloor.position.set(-3.4,0.01,-2);
+
+  const bathRoomFloor = new Flooring(3, 0.01, 2, "https://img.cgaxis.com/2019/02/black_tiles_3_diffuse.jpg").getObject();
+  bathRoomFloor.position.set(-1.5,0.01,2);
+  const leftWallToilet = new Flooring(0.01, 2, 2.7, "https://img.cgaxis.com/2019/02/black_tiles_3_diffuse.jpg").getObject();
+  leftWallToilet.position.set(-1.5,1,2.9);
+  leftWallToilet.rotateY(Math.PI/2);
+
+  const rightWallToilet = leftWallToilet.clone();
+  rightWallToilet.position.set(-1.5,1,1);
+
+  const backWallToilet1 = new Flooring(2, 1.4, 0.01, "https://img.cgaxis.com/2019/02/black_tiles_3_diffuse.jpg").getObject();
+  backWallToilet1.position.set(-2.8,0.51,1.9);
+  backWallToilet1.rotateY(Math.PI/2);
+
+  const backWallToilet2 = new Flooring(0.67, 0.8, 0.01, "https://img.cgaxis.com/2019/02/black_tiles_3_diffuse.jpg").getObject();
+  backWallToilet2.position.set(-2.8,1.6,2.57);
+  backWallToilet2.rotateY(Math.PI/2);
+
+  const backWallToilet3 = new Flooring(1.33, 0.2, 0.01, "https://img.cgaxis.com/2019/02/black_tiles_3_diffuse.jpg").getObject();
+  backWallToilet3.position.set(-2.8,1.9,1.65);
+  backWallToilet3.rotateY(Math.PI/2);
+
+  const backWallToilet4 = new Flooring(0.2, 0.6, 0.01, "https://img.cgaxis.com/2019/02/black_tiles_3_diffuse.jpg").getObject();
+  backWallToilet4.position.set(-2.8,1.5,1.1);
+  backWallToilet4.rotateY(Math.PI/2);
+
+  scene.add(kitchenFloor1);
+  scene.add(kitchenFloor2);
+  scene.add(frontFloor);
+  scene.add(backFloor);
+  scene.add(bathRoomFloor);
+  scene.add(leftWallToilet);
+  scene.add(rightWallToilet);
+  scene.add(backWallToilet1);
+  scene.add(backWallToilet2);
+  scene.add(backWallToilet3);
+  scene.add(backWallToilet4);
 
   scene.add(chair5Obj);
   scene.add(chair6Obj);
