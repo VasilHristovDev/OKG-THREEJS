@@ -20,6 +20,13 @@ class Fireplace {
     const connectorObj = new THREE.Mesh(connector, material);
     const chimneyObj = new THREE.Mesh(chimney, material);
 
+    foundationObj.castShadow = true;
+    foundationObj.receiveShadow = true;
+    connectorObj.castShadow = true;
+    connectorObj.receiveShadow = true;
+    chimneyObj.castShadow = true;
+    chimneyObj.receiveShadow = true;
+
     foundationObj.position.set(0,-this.height/3,0);
     chimneyObj.position.set(0,this.height/3- 0.3,0);
     connectorObj.rotateY(Math.PI/4);

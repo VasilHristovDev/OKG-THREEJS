@@ -31,6 +31,22 @@ class Chair {
     leg1Bridge.position.set(0, 0.3, -0.15);
     leg2Bridge.position.set(0, 0.5, -0.15);
     cushionObj.position.set(0, 0.05, 0);
+
+    frontLeftLeg.castShadow = true;
+    frontLeftLeg.receiveShadow = true;
+    frontRightLeg.castShadow = true;
+    frontRightLeg.receiveShadow = true;
+    backLeftLeg.castShadow = true;
+    backLeftLeg.receiveShadow = true;
+    backRightLeg.castShadow = true;
+    backRightLeg.receiveShadow = true;
+    leg1Bridge.castShadow = true;
+    leg1Bridge.receiveShadow = true;
+    leg2Bridge.castShadow = true;
+    leg2Bridge.receiveShadow = true;
+    cushionObj.castShadow = true;
+    cushionObj.receiveShadow = true;
+
     return  new THREE.Group().add(seatObj).add(frontLeftLeg).add(frontRightLeg).add(backRightLeg).add(backLeftLeg).add(cushionObj).add(leg1Bridge).add(leg2Bridge);
   }
 }

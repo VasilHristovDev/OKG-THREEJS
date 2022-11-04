@@ -29,12 +29,24 @@ class Drawer {
     const front = new THREE.Mesh(frontElement, whiteWoodMaterial);
     const back = new THREE.Mesh(backElement, whiteWoodMaterial);
     const handleObj = new THREE.Mesh(handle, handleMaterial);
+
     sideLeft.position.set(-this.width/2 + 0.05, 0, 0);
     sideRight.position.set(this.width/2 - 0.05, 0, 0);
     back.position.set(0, 0, this.depth/2 );
     front.position.set(0, 0, -this.depth/2 );
     handleObj.position.set(0, 0, -this.depth/2 );
 
+    sideLeft.castShadow = true;
+    sideLeft.receiveShadow = true;
+    sideRight.castShadow = true;
+    sideRight.receiveShadow = true;
+    back.castShadow = true;
+    back.receiveShadow = true;
+    front.castShadow = true;
+    front.receiveShadow = true;
+    handleObj.castShadow = true;
+    handleObj.receiveShadow = true;
+    
     return new THREE.Group()
       .add(foundationObj)
       .add(sideRight)

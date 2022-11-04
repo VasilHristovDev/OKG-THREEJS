@@ -31,6 +31,17 @@ class Painting {
     leftFrameHeight.position.set(-this.width/2,0, 0.001);
     rightFrameHeight.position.set(this.width/2,0, 0.001);
 
+    topFrameWidth.castShadow = true;
+    topFrameWidth.receiveShadow = true;
+    bottomFrameWidth.castShadow = true;
+    bottomFrameWidth.receiveShadow = true;
+    leftFrameHeight.castShadow = true;
+    leftFrameHeight.receiveShadow = true;
+    rightFrameHeight.castShadow = true;
+    rightFrameHeight.receiveShadow = true;
+    painting.castShadow = true;
+    painting.receiveShadow = true;
+
     return new THREE.Group()
       .add(topFrameWidth)
       .add(bottomFrameWidth)

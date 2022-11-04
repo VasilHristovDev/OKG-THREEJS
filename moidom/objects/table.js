@@ -39,11 +39,23 @@ class Table {
       const tableClothLeftSideLong = new THREE.Mesh(tableClothSideLong, clothMaterial);
       const tableClothTopShort = new THREE.Mesh(tableClothSideShort, clothMaterial);
       const tableClothBottomShort = new THREE.Mesh(tableClothSideShort, clothMaterial);
+
       tableClothObj.position.set(0, 0.0251, 0);
       tableClothRightSideLong.position.set(0, -0.075, -this.depth / 2);
       tableClothLeftSideLong.position.set(0, -0.075, this.depth / 2);
       tableClothTopShort.position.set(this.width / 2, -0.075, 0);
       tableClothBottomShort.position.set(-this.width / 2, -0.075, 0);
+
+      tableClothObj.castShadow = true;
+      tableClothObj.receiveShadow = true;
+      tableClothRightSideLong.castShadow = true;
+      tableClothRightSideLong.receiveShadow = true;
+      tableClothLeftSideLong.castShadow = true;
+      tableClothLeftSideLong.receiveShadow = true;
+      tableClothTopShort.castShadow = true;
+      tableClothTopShort.receiveShadow = true;
+      tableClothBottomShort.castShadow = true;
+      tableClothBottomShort.receiveShadow = true;
 
       tableGroup
         .add(tableClothObj)
@@ -57,6 +69,15 @@ class Table {
     bottomRightLeg.position.set(this.width / 2 - 0.05, -0.35, -this.depth / 2 + 0.05);
     topLeftLeg.position.set(-this.width / 2 + 0.05, -0.35, this.depth / 2 - 0.05);
     topRightLeg.position.set(-this.width / 2 + 0.05, -0.35, -this.depth / 2 + 0.05);
+
+    bottomLeftLeg.castShadow = true;
+    bottomLeftLeg.receiveShadow = true;
+    bottomRightLeg.castShadow = true;
+    bottomRightLeg.receiveShadow = true;
+    topLeftLeg.castShadow = true;
+    topLeftLeg.receiveShadow = true;
+    topRightLeg.castShadow = true;
+    topRightLeg.receiveShadow = true;
 
     return tableGroup
       .add(foundationObj)

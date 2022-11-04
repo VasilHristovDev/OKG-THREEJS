@@ -19,6 +19,13 @@ class Monitor {
     leftButton.position.set(-0.015, 0.01, -0.03);
     rightButton.position.set(0.015, 0.01, -0.03);
 
+    leftButton.castShadow = true;
+    leftButton.receiveShadow = true;
+    rightButton.castShadow = true;
+    rightButton.receiveShadow = true;
+    mouseObj.castShadow = true;
+    mouseObj.receiveShadow = true;
+
     return  new THREE.Group().add(mouseObj).add(leftButton).add(rightButton);
   }
 
@@ -34,14 +41,18 @@ class Monitor {
 
     const keyboardFoundation = new THREE.BoxBufferGeometry(widthKeyboard, heightKeyboard, depthKeyboard);
     const keyboardObj = new THREE.Mesh(keyboardFoundation, frameMaterial);
+    keyboardObj.castShadow = true;
+    keyboardObj.receiveShadow = true;
     const keyboardGroup = new THREE.Group().add(keyboardObj);
 
     for (let i = 0; i < 5; i++) {
       for (let j = 0; j < 20; j++) {
         const color = Math.floor(Math.random()*16777215).toString(16);
-        const key = new THREE.BoxBufferGeometry(widthKey, 0.01, depthKey);
+        const key = new THREE.BoxBufferGeometry(widthKey, 0.02, depthKey);
         const keyObj = new THREE.Mesh(key, new THREE.MeshPhongMaterial({color: "#"+color}));
         keyObj.position.set(-widthKeyboard/2 + (widthKey * (j + 1)), 0.01, -depthKeyboard/2 + (depthKey * (i + 1)));
+        keyObj.castShadow = true;
+        keyObj.receiveShadow = true;
         keyboardGroup.add(keyObj);
       }
     }
@@ -84,6 +95,19 @@ class Monitor {
     backObj.position.set(0, 0, -0.001);
     screenObj.position.set(0, 0, 0.005);
 
+    topFrame.castShadow = true;
+    topFrame.receiveShadow = true;
+    bottomFrame.castShadow = true;
+    bottomFrame.receiveShadow = true;
+    leftFrame.castShadow = true;
+    leftFrame.receiveShadow = true;
+    rightFrame.castShadow = true;
+    rightFrame.receiveShadow = true;
+    backObj.castShadow = true;
+    backObj.receiveShadow = true;
+    screenObj.castShadow = true;
+    screenObj.receiveShadow = true;
+
     const monitorGroup = new THREE.Group()
       .add(screenObj)
       .add(topFrame)
@@ -99,6 +123,11 @@ class Monitor {
       const connectorObj = new THREE.Mesh(connector, frameMaterial);
       foundationObj.position.set(0, -height / 2 - height / 3, 0);
       connectorObj.position.set(0, -height / 2 - (height / 6), 0);
+
+      foundationObj.castShadow = true;
+      foundationObj.receiveShadow = true;
+      connectorObj.castShadow = true;
+      connectorObj.receiveShadow = true;
 
       const mouseGroup = this.getMouse(frameMaterial);
       mouseGroup.position.set( width/2 + width/3,-height/2 - height/3, width/2);
@@ -118,6 +147,11 @@ class Monitor {
 
       leftLeg.position.set(-width / 2 + width / 4, -height / 2 - 0.025, 0);
       rightLeg.position.set(width / 2 - width / 4, -height / 2 - 0.025, 0);
+
+      leftLeg.castShadow = true;
+      leftLeg.receiveShadow = true;
+      rightLeg.castShadow = true;
+      rightLeg.receiveShadow = true;
 
       monitorGroup
         .add(leftLeg)

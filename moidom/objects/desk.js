@@ -28,6 +28,15 @@ class Desk {
     sideLongObj.position.set(0, -0.35,this.depth/2 - 0.03);
     insideShort.position.set((-this.width/2)+(this.width/3 * 2) - 0.1, -0.35,0);
 
+    sideShortLeft.castShadow = true;
+    sideShortLeft.receiveShadow = true;
+    sideShortRight.castShadow = true;
+    sideShortRight.receiveShadow = true;
+    sideLongObj.castShadow = true;
+    sideLongObj.receiveShadow = true;
+    insideShort.castShadow = true;
+    insideShort.receiveShadow = true;
+
     const deskGroup = new THREE.Group()
       .add(foundationObj)
       .add(sideShortRight)

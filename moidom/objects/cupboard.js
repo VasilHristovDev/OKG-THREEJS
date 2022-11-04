@@ -63,18 +63,32 @@ class Cupboard {
     for (let i = 0; i < this.heightLevels - 1; i++) {
       const middleWidthPlate = new THREE.Mesh(widthPlate, frameMaterial);
       middleWidthPlate.position.set(0, (this.height / 2) - (this.height / this.heightLevels) * (i + 1), 0);
+      middleWidthPlate.castShadow = true;
+      middleWidthPlate.receiveShadow = true;
       cupboardGroup.add(middleWidthPlate);
     }
 
     for (let i = 0; i < this.widthLevels - 1; i++) {
       const middleHeightPlate = new THREE.Mesh(heightPlate, frameMaterial);
       middleHeightPlate.position.set((this.width / 2) - (this.width / this.widthLevels) * (i + 1), 0);
+      middleHeightPlate.castShadow = true;
+      middleHeightPlate.receiveShadow = true;
       cupboardGroup.add(middleHeightPlate);
     }
     topPlate.position.set(0, this.height / 2, 0);
     bottomPlate.position.set(0, -this.height / 2, 0);
     leftPlate.position.set(-this.width / 2, 0, 0);
     rightPlate.position.set(this.width / 2, 0, 0);
+
+    topPlate.castShadow = true;
+    topPlate.receiveShadow = true;
+    bottomPlate.castShadow = true;
+    bottomPlate.receiveShadow = true;
+    leftPlate.castShadow = true;
+    leftPlate.receiveShadow = true;
+    rightPlate.castShadow = true;
+    rightPlate.receiveShadow = true;
+
     if(this.hasDrawers) {
       cupboardGroup.add(this.getDrawers());
     }
