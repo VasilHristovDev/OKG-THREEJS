@@ -18,6 +18,8 @@
   <script src="flooring.js"></script>
   <script src="cupboard.js"></script>
   <script src="monitor.js"></script>
+  <script src="furnace.js"></script>
+  <script src="furnaceSheet.js"></script>
   <title>Vasil Hristov 5MI0800128 MOIDOM</title>
 </head>
 
@@ -628,8 +630,8 @@
   const TV = new Monitor(1.2, true, "https://iatkv.tmgrup.com.tr/d9387f/0/0/0/0/625/417?u=https%3A%2F%2Fitkv.tmgrup.com.tr%2F2021%2F01%2F07%2Fyaprak-dokumu-ali-riza-bey-kim-yaprak-dokumu-ali-riza-bey-kac-yasinda-nereli-1610021741176.jpg&mw=616").getObject();
   TV.position.set(0,0.85,3.2);
 
-  const kitchenCupboard = new Cupboard(1, 0.6 , 0.5, 2, 2, true).getObject();
-  kitchenCupboard.position.set(-2.5,0.32,5.3);
+  const kitchenCupboard = new Cupboard(1, 0.8 , 0.5, 2, 2, true).getObject();
+  kitchenCupboard.position.set(-2.5,0.42,5.3);
   kitchenCupboard.rotateY(-Math.PI/2);
 
   const kitchenCupboardWall = new Cupboard(2.6, 0.4 , 0.3, 1, 4, true).getObject();
@@ -647,10 +649,15 @@
   bedsideTable3.position.set(2.2,0.26,-4.5);
   bedsideTable3.rotateY(2*Math.PI/2);
 
-  //TODO: Make furnace, washing machine, toilet, sink
+  const furnace = new Furnace(0.8, 0.8, 0.5).getObject();
+  furnace.position.set(-2.5,0.42,4.35);
+  furnace.rotateY(Math.PI/2);
+
+  //TODO: Make washing machine, toilet, sink
   //TODO: Fix floorings
 
   scene.add(bedsideTable2);
+  scene.add(furnace);
   scene.add(bedsideTable1);
   scene.add(bedsideTable3);
   scene.add(kitchenCupboard);

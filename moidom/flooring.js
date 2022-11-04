@@ -20,6 +20,10 @@ class Flooring {
     flooringTexture.repeat.set(3,4);
     const flooringMaterial = new THREE.MeshPhongMaterial({map: flooringTexture});
 
-    return new THREE.Mesh(flooring, flooringMaterial);
+    const flooringObj = new THREE.Mesh(flooring, flooringMaterial);
+    flooringObj.castShadow = true;
+    flooringObj.receiveShadow = true;
+
+    return flooringObj;
   }
 }
