@@ -16,6 +16,8 @@
   <script src="desk.js"></script>
   <script src="drawer.js"></script>
   <script src="flooring.js"></script>
+  <script src="cupboard.js"></script>
+  <script src="monitor.js"></script>
   <title>Vasil Hristov 5MI0800128 MOIDOM</title>
 </head>
 
@@ -475,7 +477,7 @@
   chair4Obj.receiveShadow = true;
   chair4Obj.castShadow = true;
 
-  const table1 = new Table(1, 0.8, 'crimson');
+  const table1 = new Table(1, 0.8, true, 'crimson');
   const table1Obj = table1.getObject();
   table1Obj.position.set(0, 0.6, 5);
   table1Obj.receiveShadow = true;
@@ -609,6 +611,55 @@
   backWallToilet4.position.set(-2.8,1.5,1.1);
   backWallToilet4.rotateY(Math.PI/2);
 
+  const cupboard1 = new Cupboard(1.6,1.2,0.3,3,2, 0).getObject();
+  cupboard1.position.set(-3.3,0.62,-1.5);
+  cupboard1.rotateY(Math.PI/2);
+
+  const cupboard2 = new Cupboard(1.6,0.5,0.3,1,3, 0).getObject();
+  cupboard2.position.set(0,0.26,3.25);
+
+  const shoeCupboard = new Cupboard(0.75,0.6,0.25,4,3, 0).getObject();
+  shoeCupboard.position.set(3.4,0.32,0.65);
+
+  const monitor1 = new Monitor(0.8,false, "../materials/windows-desktop.jpg").getObject();
+  monitor1.position.set(-4,0.95,-3.3);
+  monitor1.rotateY(2*Math.PI/2);
+
+  const TV = new Monitor(1.2, true, "https://iatkv.tmgrup.com.tr/d9387f/0/0/0/0/625/417?u=https%3A%2F%2Fitkv.tmgrup.com.tr%2F2021%2F01%2F07%2Fyaprak-dokumu-ali-riza-bey-kim-yaprak-dokumu-ali-riza-bey-kac-yasinda-nereli-1610021741176.jpg&mw=616").getObject();
+  TV.position.set(0,0.85,3.2);
+
+  const kitchenCupboard = new Cupboard(1, 0.6 , 0.5, 2, 2, true).getObject();
+  kitchenCupboard.position.set(-2.5,0.32,5.3);
+  kitchenCupboard.rotateY(-Math.PI/2);
+
+  const kitchenCupboardWall = new Cupboard(2.6, 0.4 , 0.3, 1, 4, true).getObject();
+  kitchenCupboardWall.position.set(-2.6,1.6,4.45);
+  kitchenCupboardWall.rotateY(-Math.PI/2);
+
+  const bedsideTable1 = new Cupboard(0.5, 0.5,0.5, 2, 1, true).getObject();
+  bedsideTable1.position.set(-2.55,0.26,-4.5);
+  bedsideTable1.rotateY(2*Math.PI/2);
+
+  const bedsideTable2 = bedsideTable1.clone();
+  bedsideTable2.position.set(0.05,0.26,-4.5);
+
+  const bedsideTable3 = new Cupboard(1, 0.5, 0.3, 2, 3, true).getObject();
+  bedsideTable3.position.set(2.2,0.26,-4.5);
+  bedsideTable3.rotateY(2*Math.PI/2);
+
+  //TODO: Make furnace, washing machine, toilet, sink
+  //TODO: Fix floorings
+
+  scene.add(bedsideTable2);
+  scene.add(bedsideTable1);
+  scene.add(bedsideTable3);
+  scene.add(kitchenCupboard);
+  scene.add(kitchenCupboardWall);
+  scene.add(monitor1);
+  scene.add(TV);
+  scene.add(cupboard1);
+  scene.add(cupboard2);
+  scene.add(shoeCupboard);
   scene.add(kitchenFloor1);
   scene.add(kitchenFloor2);
   scene.add(frontFloor);
