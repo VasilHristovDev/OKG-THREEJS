@@ -10,6 +10,7 @@ class Furnace {
     this.levels = levels;
   }
 
+  //TODO: add buttons, kotloni, and a handle
   getObject() {
     const heightLongSide = this.height - 2*this.height/5;
     const widthLongSide = this.width/8;
