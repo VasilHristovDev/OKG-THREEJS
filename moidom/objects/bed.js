@@ -56,14 +56,14 @@ class Bed {
     const texture = new THREE.TextureLoader();
     const foundationMaterial = new THREE.MeshPhongMaterial({
       color: this.color,
-      map: texture.load("../materials/bed.jpg")
+      map: texture.load("/materials/bed.jpg")
     });
-    const legMaterial = new THREE.MeshPhongMaterial({map: texture.load("../materials/wood.jpg")});
+    const legMaterial = new THREE.MeshPhongMaterial({map: texture.load("/materials/wood.jpg")});
     const pillowGeometry = new THREE.ExtrudeBufferGeometry(pillow, extrudeSettings);
-    const pillowMaterial = new THREE.MeshPhongMaterial({color: this.pillowColor, map: texture.load("../materials/pillow.jpg")});
+    const pillowMaterial = new THREE.MeshPhongMaterial({color: this.pillowColor, map: texture.load("/materials/pillow.jpg")});
 
     const blanketGeometry = new THREE.BoxBufferGeometry(0.5, 0.05, 0.7);
-    const blanketMaterial = new THREE.MeshPhongMaterial({color: this.blanketColor, map: texture.load("../materials/blanket.jpg")})
+    const blanketMaterial = new THREE.MeshPhongMaterial({color: this.blanketColor, map: texture.load("/materials/blanket.jpg")})
 
     const foundationMattressObj = new THREE.Mesh(foundation, foundationMaterial);
     const foundationWood = new THREE.Mesh(new THREE.BoxBufferGeometry(this.width, this.height, 0.05), legMaterial);

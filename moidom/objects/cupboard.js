@@ -50,7 +50,7 @@ class Cupboard {
     const heightPlate = new THREE.BoxBufferGeometry(0.03, this.height, this.depth);
 
     const textureLoader = new THREE.TextureLoader();
-    const woodTexture = textureLoader.load("../materials/dark-wood.jpg");
+    const woodTexture = textureLoader.load("/materials/dark-wood.jpg");
     const frameMaterial = new THREE.MeshPhongMaterial({color: this.colorFoundation, map: woodTexture});
 
     const topPlate = new THREE.Mesh(widthPlate, frameMaterial);

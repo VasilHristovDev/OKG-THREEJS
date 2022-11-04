@@ -22,7 +22,7 @@ class WindowPanel {
     const frameMaterial = new THREE.MeshPhongMaterial({
       color: 0xBA7c45,
       transparent: true,
-      map: woodTexture.load("../materials/wood.jpg")
+      map: woodTexture.load("/materials/wood.jpg")
     });
 
     const frameTopObj = new THREE.Mesh(outerFrameTop, frameMaterial);

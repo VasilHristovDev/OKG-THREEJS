@@ -19,7 +19,7 @@ class Table {
     const tableClothSideShort = new THREE.BoxBufferGeometry(0.001, 0.2, this.depth);
 
     const textureLoader = new THREE.TextureLoader();
-    const woodMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("../materials/wood.jpg")});
+    const woodMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("/materials/wood.jpg")});
 
     const foundationObj = new THREE.Mesh(foundation, woodMaterial);
     const bottomLeftLeg = new THREE.Mesh(leg, woodMaterial);
@@ -32,7 +32,7 @@ class Table {
     if (this.hasCloth) {
       const clothMaterial = new THREE.MeshStandardMaterial({
         color: 0xff12412,
-        map: textureLoader.load("../materials/blanket.jpg")
+        map: textureLoader.load("/materials/blanket.jpg")
       });
       const tableClothObj = new THREE.Mesh(tableCloth, clothMaterial);
       const tableClothRightSideLong = new THREE.Mesh(tableClothSideLong, clothMaterial);

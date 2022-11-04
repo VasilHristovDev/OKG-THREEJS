@@ -14,7 +14,7 @@ class Fireplace {
     const chimney = new THREE.BoxBufferGeometry(this.width/2, this.height/3 + 0.3, 0.4);
 
     const textureLoader = new THREE.TextureLoader();
-    const material = new THREE.MeshPhongMaterial({map:textureLoader.load("../materials/fireplace.jpg")});;
+    const material = new THREE.MeshPhongMaterial({map:textureLoader.load("/materials/fireplace.jpg")});;
 
     const foundationObj = new THREE.Mesh(foundation, material);
     const connectorObj = new THREE.Mesh(connector, material);

@@ -7,19 +7,19 @@
   <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
   <script src="three.min.js"></script>
   <script src="OrbitControls.js"></script>
-  <script src="window.js"></script>
-  <script src="bed.js"></script>
-  <script src="fireplace.js"></script>
-  <script src="chair.js"></script>
+  <script src="objects/window.js"></script>
+  <script src="objects/bed.js"></script>
+  <script src="objects/fireplace.js"></script>
+  <script src="objects/chair.js"></script>
   <script src="table.js"></script>
-  <script src="painting.js"></script>
-  <script src="desk.js"></script>
-  <script src="drawer.js"></script>
-  <script src="flooring.js"></script>
-  <script src="cupboard.js"></script>
-  <script src="monitor.js"></script>
-  <script src="furnace.js"></script>
-  <script src="furnaceSheet.js"></script>
+  <script src="objects/painting.js"></script>
+  <script src="objects/desk.js"></script>
+  <script src="objects/drawer.js"></script>
+  <script src="objects/flooring.js"></script>
+  <script src="objects/cupboard.js"></script>
+  <script src="objects/monitor.js"></script>
+  <script src="objects/furnace.js"></script>
+  <script src="objects/furnaceSheet.js"></script>
   <title>Vasil Hristov 5MI0800128 MOIDOM</title>
 </head>
 
@@ -493,15 +493,15 @@
   const painting2Obj = painting2.getObject();
   painting2Obj.position.set(-1.3, 1.4, 3.1);
 
-  const painting3 = new Painting(0.5, 0.5, 0.01, "../materials/gochev1.jpg");
+  const painting3 = new Painting(0.5, 0.5, 0.01, "/materials/gochev1.jpg");
   const painting3Obj = painting3.getObject();
   painting3Obj.position.set(-0.5, 1.4, 3.1);
 
-  const painting4 = new Painting(0.6, 0.4, 0.01, "../materials/kandinsky.jpg");
+  const painting4 = new Painting(0.6, 0.4, 0.01, "/materials/kandinsky.jpg");
   const painting4Obj = painting4.getObject();
   painting4Obj.position.set(0.3, 1.4, 3.1);
 
-  const painting5 = new Painting(0.8, 1, 0.05, "../materials/saturn.jpg");
+  const painting5 = new Painting(0.8, 1, 0.05, "/materials/saturn.jpg");
   const painting5Obj = painting5.getObject();
   painting5Obj.position.set(-5, 1.3, -4.8);
 
@@ -530,7 +530,7 @@
   painting10Obj.position.set(3.8, 1.3, -3);
   painting10Obj.rotateY(-Math.PI / 2);
 
-  const painting11 = new Painting(0.4, 0.4, 0.02, "../materials/mondrian.jpg");
+  const painting11 = new Painting(0.4, 0.4, 0.02, "/materials/mondrian.jpg");
   const painting11Obj = painting11.getObject();
   painting11Obj.position.set(3.8, 1.3, -2.2);
   painting11Obj.rotateY(-Math.PI / 2);
@@ -545,7 +545,7 @@
   painting13Obj.position.set(0.6, 1.3, -2);
   painting13Obj.rotateY(Math.PI / 2);
 
-  const painting14 = new Painting(0.7, 0.4, 0.02, "../materials/van-gogh1.jpg");
+  const painting14 = new Painting(0.7, 0.4, 0.02, "/materials/van-gogh1.jpg");
   const painting14Obj = painting14.getObject();
   painting14Obj.position.set(0.6, 1.3, -3);
   painting14Obj.rotateY(Math.PI / 2);
@@ -623,7 +623,7 @@
   const shoeCupboard = new Cupboard(0.75,0.6,0.25,4,3, 0).getObject();
   shoeCupboard.position.set(3.4,0.32,0.65);
 
-  const monitor1 = new Monitor(0.8,false, "../materials/windows-desktop.jpg").getObject();
+  const monitor1 = new Monitor(0.8,false, "/materials/windows-desktop.jpg").getObject();
   monitor1.position.set(-4,0.95,-3.3);
   monitor1.rotateY(2*Math.PI/2);
 

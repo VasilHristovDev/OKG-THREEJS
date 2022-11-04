@@ -15,7 +15,7 @@ class Desk {
     const sideLong = new THREE.BoxBufferGeometry(this.width, 0.7, 0.03);
 
     const textureLoader = new THREE.TextureLoader();
-    const deskMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("../materials/dark-wood.jpg")});
+    const deskMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("/materials/dark-wood.jpg")});
 
     const foundationObj = new THREE.Mesh(foundation, deskMaterial);
     const sideShortLeft = new THREE.Mesh(sideShort, deskMaterial);

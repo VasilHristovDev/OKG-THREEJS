@@ -3,7 +3,7 @@ class Monitor {
   image;
   isTV;
 
-  constructor(inches, isTV = false, image = "../materials/default-monitor.jpg") {
+  constructor(inches, isTV = false, image = "/materials/default-monitor.jpg") {
     this.inches = inches;
     this.isTV = isTV;
     this.image = image;

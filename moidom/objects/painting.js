@@ -17,7 +17,7 @@ class Painting {
     const plate = new THREE.BoxBufferGeometry(this.width, this.height, 0.002);
 
     const textureLoader = new THREE.TextureLoader();
-    const woodMaterial = new THREE.MeshPhongMaterial({color: 0x855E42, map: textureLoader.load("../materials/wood.jpg") });
+    const woodMaterial = new THREE.MeshPhongMaterial({color: 0x855E42, map: textureLoader.load("/materials/wood.jpg") });
     const paintingMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load(this.image)});
 
     const topFrameWidth = new THREE.Mesh(frameWidth, woodMaterial);

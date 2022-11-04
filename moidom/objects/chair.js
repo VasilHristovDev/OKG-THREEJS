@@ -12,8 +12,8 @@ class Chair {
     const bridgeLegs = new THREE.BoxBufferGeometry(0.25, 0.05, 0.05);
 
     const textureLoader = new THREE.TextureLoader();
-    const chairMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("../materials/wood.jpg")});
-    const cushionMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("../materials/blanket.jpg"), color: this.colorCushion});
+    const chairMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("/materials/wood.jpg")});
+    const cushionMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("/materials/blanket.jpg"), color: this.colorCushion});
 
     const seatObj = new THREE.Mesh(seat, chairMaterial);
     const frontLeftLeg = new THREE.Mesh(leg, chairMaterial);

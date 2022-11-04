@@ -17,10 +17,10 @@ class Drawer {
     const handle = new THREE.TorusBufferGeometry(0.01, 0.03, 6, 6, 6);
 
     const textureLoader = new THREE.TextureLoader();
-    const whiteWoodMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("../materials/white-wood.jpg")});
+    const whiteWoodMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("/materials/white-wood.jpg")});
     const handleMaterial = new THREE.MeshPhongMaterial({
       color: 0x000000,
-      map: textureLoader.load("../materials/dark-wood.jpg")
+      map: textureLoader.load("/materials/dark-wood.jpg")
     });
 
     const foundationObj = new THREE.Mesh(foundation, whiteWoodMaterial);
