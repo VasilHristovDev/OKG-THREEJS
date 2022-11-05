@@ -1,4 +1,5 @@
 class Toilet {
+  //TODO: Change color of seat
   static getObject() {
     const foundation = new THREE.BoxBufferGeometry(0.3, 0.5, 0.5);
     const seatFoundation = new THREE.BoxBufferGeometry(0.5, 0.2, 0.5);

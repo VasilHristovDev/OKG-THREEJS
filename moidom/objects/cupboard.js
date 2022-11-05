@@ -41,7 +41,6 @@ class Cupboard {
         drawerGroup.add(drawer);
       }
     }
-    console.log(drawerGroup);
     return drawerGroup;
   }
 

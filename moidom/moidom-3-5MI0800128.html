@@ -22,6 +22,7 @@
   <script src="objects/furnaceSheet.js"></script>
   <script src="objects/sink.js"></script>
   <script src="objects/toilet.js"></script>
+  <script src="objects/luggage.js"></script>
   <title>Vasil Hristov 5MI0800128 MOIDOM</title>
 </head>
 
@@ -671,7 +672,10 @@
   bedroomChair.rotateY(2*Math.PI/2);
   bedroomChair.rotateX(-Math.PI / 8);
 
-  //TODO: Make luggage, roaches, forks, night lamps, books
+  const luggage1 = new LuggageWithWheels(0.4, 0.5, 0.2, 'red', 2).getObject();
+  luggage1.position.set(5,5,5);
+
+  //TODO: Make luggage, roaches
   //TODO: Fix floorings
 
   const toilet = Toilet.getObject();
@@ -680,6 +684,7 @@
   scene.add(toilet);
 
   scene.add(bedsideTable2);
+  scene.add(luggage1);
   scene.add(wardrobe);
   scene.add(bedroomChair);
   scene.add(sinkKitchen);
