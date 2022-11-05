@@ -10,7 +10,7 @@ class Furnace {
     this.levels = levels;
   }
 
-  //TODO: add buttons, kotloni, and a handle
+  //TODO: kotloni, and a handle
   getObject() {
     const heightLongSide = this.height - 2*this.height/5;
     const widthLongSide = this.width/8;
@@ -22,6 +22,7 @@ class Furnace {
     const heightGeometry = new THREE.BoxBufferGeometry(widthLongSide, heightLongSide, this.depth);
     const visibleGeometry = new THREE.BoxBufferGeometry(this.width - 2 * widthLongSide, heightLongSide, 0.01);
     const back = new THREE.BoxBufferGeometry(this.width, this.height + 0.1, 0.05);
+    const buttonGeometry = new THREE.TorusBufferGeometry(0.01, 0.03, 6, 6, 6);
 
     const textureLoader = new THREE.TextureLoader();
     const furnaceMaterial = new THREE.MeshPhongMaterial({color: 0x333333});
@@ -34,6 +35,16 @@ class Furnace {
     const rightObj = leftObj.clone();
     const glassObj = new THREE.Mesh(visibleGeometry, glassMaterial);
     const backObj = new THREE.Mesh(back, furnaceMaterial);
+    const button1Obj = new THREE.Mesh(buttonGeometry,sidesMaterial);
+    const button2Obj = button1Obj.clone();
+    const button3Obj = button1Obj.clone();
+    const button4Obj = button1Obj.clone();
+
+    button1Obj.position.set(-this.width/2 + 0.1, this.height/2 - 0.1, this.depth/2);
+    button2Obj.position.set(-this.width/2 + 0.2, this.height/2 - 0.1, this.depth/2);
+    button3Obj.position.set(-this.width/2 + 0.3, this.height/2 - 0.1, this.depth/2);
+    button4Obj.position.set(-this.width/2 + 0.4, this.height/2 - 0.1, this.depth/2);
+
 
     topObj.position.set(0, this.height/2 - heightShortSide/2, 0);
     bottomObj.position.set(0, -this.height/2 + heightShortSide/2, 0);
@@ -62,7 +73,11 @@ class Furnace {
       .add(leftObj)
       .add(rightObj)
       .add(backObj)
-      .add(glassObj);
+      .add(glassObj)
+      .add(button1Obj)
+      .add(button2Obj)
+      .add(button3Obj)
+      .add(button4Obj);
 
     for (let i = 0; i < 2; i++) {
       const sheet = new FurnaceSheet(this.width - 2*widthLongSide, this.depth, 6,6).getObject();
