@@ -44,7 +44,6 @@ class LuggageWithWheels extends Luggage {
     const zipTexture = this.textureLoader.load("materials/zip.jpg");
     zipTexture.wrapS = THREE.RepeatWrapping;
     zipTexture.wrapT = THREE.RepeatWrapping;
-    zipTexture.repeat.set(10,1);
 
     const zipMaterial = new THREE.MeshPhongMaterial({map: zipTexture});
     const handleMaterial = new THREE.MeshPhongMaterial({color: 0x000000});

@@ -7,22 +7,6 @@
   <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
   <script src="three.min.js"></script>
   <script src="OrbitControls.js"></script>
-  <script src="objects/window.js"></script>
-  <script src="objects/bed.js"></script>
-  <script src="objects/fireplace.js"></script>
-  <script src="objects/chair.js"></script>
-  <script src="objects/table.js"></script>
-  <script src="objects/painting.js"></script>
-  <script src="objects/desk.js"></script>
-  <script src="objects/drawer.js"></script>
-  <script src="objects/flooring.js"></script>
-  <script src="objects/cupboard.js"></script>
-  <script src="objects/monitor.js"></script>
-  <script src="objects/furnace.js"></script>
-  <script src="objects/furnaceSheet.js"></script>
-  <script src="objects/sink.js"></script>
-  <script src="objects/toilet.js"></script>
-  <script src="objects/luggage.js"></script>
   <title>Vasil Hristov 5MI0800128 MOIDOM</title>
 </head>
 
@@ -35,6 +19,7 @@
 
 <script>
   //TODO: Make all objects cast shadows!!!!
+  //TODO: Make all textures load from online and logic if loading fails!!
 
   // 1. преименувайте файла на moidom-g-fn.html
   //    g=номер на група, а fn=факултетен номер
@@ -51,6 +36,1223 @@
   //
   // 5. кубът по-долу е само за пример как може
   //    да се слагат обекти, които правят сянка
+
+  //Drawer class
+  class Drawer {
+    width;
+    height;
+    depth;
+
+    constructor(width, height, depth) {
+      this.width = width;
+      this.height = height;
+      this.depth = depth;
+    }
+
+    getObject() {
+      const foundation = new THREE.BoxBufferGeometry(this.width -0.05 , 0.01, this.depth - 0.05);
+      const frontElement = new THREE.BoxBufferGeometry(this.width - 0.05 , this.height , 0.01);
+      const backElement = new THREE.BoxBufferGeometry(this.width - 0.02, this.height - 0.02, 0.01);
+      const sideElement = new THREE.BoxBufferGeometry(0.01, this.height - 0.02, this.depth);
+      const handle = new THREE.TorusBufferGeometry(0.01, 0.03, 6, 6, 6);
+
+      const textureLoader = new THREE.TextureLoader();
+      const whiteWoodMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("/materials/white-wood.jpg")});
+      const handleMaterial = new THREE.MeshPhongMaterial({
+        color: 0x000000,
+        map: textureLoader.load("/materials/dark-wood.jpg")
+      });
+
+      const foundationObj = new THREE.Mesh(foundation, whiteWoodMaterial);
+      const sideLeft = new THREE.Mesh(sideElement, whiteWoodMaterial);
+      const sideRight = sideLeft.clone();
+      const front = new THREE.Mesh(frontElement, whiteWoodMaterial);
+      const back = new THREE.Mesh(backElement, whiteWoodMaterial);
+      const handleObj = new THREE.Mesh(handle, handleMaterial);
+
+      foundationObj.position.set(0,-this.height/2 + 0.05,0);
+      sideLeft.position.set(-this.width/2 + 0.05, 0, 0);
+      sideRight.position.set(this.width/2 - 0.05, 0, 0);
+      back.position.set(0, 0, this.depth/2 );
+      front.position.set(0, 0, -this.depth/2 );
+      handleObj.position.set(0, 0, -this.depth/2 );
+
+      sideLeft.castShadow = true;
+      sideLeft.receiveShadow = true;
+      sideRight.castShadow = true;
+      sideRight.receiveShadow = true;
+      back.castShadow = true;
+      back.receiveShadow = true;
+      front.castShadow = true;
+      front.receiveShadow = true;
+      handleObj.castShadow = true;
+      handleObj.receiveShadow = true;
+      foundationObj.castShadow = true;
+      foundationObj.receiveShadow = true;
+
+      return new THREE.Group()
+        .add(foundationObj)
+        .add(sideRight)
+        .add(sideLeft)
+        .add(front)
+        .add(back)
+        .add(handleObj);
+    }
+  }
+  //Fireplace class
+  class Fireplace {
+    width;
+    height;
+
+    constructor(width, height) {
+      this.width = width;
+      this.height = height;
+    }
+
+    //TODO: Add bars
+    getObject() {
+      const foundationHeight = this.height/3;
+      const foundationSide = new THREE.BoxBufferGeometry(this.width/6, foundationHeight, this.width);
+      const foundationBack = new THREE.BoxBufferGeometry(this.width, foundationHeight, this.width/6);
+      const foundationBottom = new THREE.BoxBufferGeometry(this.width - 2* this.width/6, foundationHeight/6, this.width - this.width/6);
+
+      let connector = new THREE.ConeGeometry(this.width * Math.sqrt(2)/2, this.height/3, 4);
+      const chimney = new THREE.BoxBufferGeometry(this.width/2, this.height/3 + 0.3, 0.4);
+
+      const textureLoader = new THREE.TextureLoader();
+      const brickTexture = textureLoader.load("/materials/fireplace.jpg");
+      brickTexture.wrapS = THREE.RepeatWrapping;
+      brickTexture.wrapT = THREE.RepeatWrapping;
+      brickTexture.repeat.set(1,2);
+      const material = new THREE.MeshPhongMaterial({ map: brickTexture});
+
+      const foundationLeft = new THREE.Mesh(foundationSide, material);
+      const foundationRight = new THREE.Mesh(foundationSide, material);
+      const foundationBackObj = new THREE.Mesh(foundationBack, material);
+      const foundationBottomObj = new THREE.Mesh(foundationBottom, material);
+
+      const connectorObj = new THREE.Mesh(connector, material);
+      const chimneyObj = new THREE.Mesh(chimney, material);
+
+      foundationLeft.castShadow = true;
+      foundationLeft.receiveShadow = true;
+      foundationRight.castShadow = true;
+      foundationRight.receiveShadow = true;
+      foundationBackObj.castShadow = true;
+      foundationBackObj.receiveShadow = true;
+      foundationBottomObj.castShadow = true;
+      foundationBottomObj.receiveShadow = true;
+
+      connectorObj.castShadow = true;
+      connectorObj.receiveShadow = true;
+      chimneyObj.castShadow = true;
+      chimneyObj.receiveShadow = true;
+
+      foundationLeft.position.set(-this.width/2 + this.width/12,-this.height/3,0);
+      foundationRight.position.set(this.width/2 - this.width/12,-this.height/3,0);
+      foundationBackObj.position.set(0,-this.height/3, this.width/2 - this.width/6);
+      foundationBottomObj.position.set(0,-this.height/2 + foundationHeight/12,0);
+      chimneyObj.position.set(0,this.height/3- 0.3,0);
+      connectorObj.rotateY(Math.PI/4);
+      return new THREE.Group()
+        .add(foundationLeft)
+        .add(foundationRight)
+        .add(foundationBackObj)
+        .add(foundationBottomObj)
+        .add(connectorObj)
+        .add(chimneyObj);
+    }
+  }
+
+  //Floor related class
+  class Flooring {
+    width;
+    height;
+    depth;
+    image;
+
+    constructor(width, height, depth, image) {
+      this.width = width;
+      this.height = height;
+      this.depth = depth;
+      this.image = image;
+    }
+    getObject() {
+      const flooring = new THREE.BoxBufferGeometry(this.width, this.height, this.depth);
+
+      const textureLoader = new THREE.TextureLoader();
+      const flooringTexture = textureLoader.load(this.image);
+      flooringTexture.wrapS = THREE.RepeatWrapping;
+      flooringTexture.wrapT = THREE.RepeatWrapping;
+      flooringTexture.repeat.set(3,4);
+      const flooringMaterial = new THREE.MeshPhongMaterial({map: flooringTexture});
+
+      const flooringObj = new THREE.Mesh(flooring, flooringMaterial);
+      flooringObj.castShadow = true;
+      flooringObj.receiveShadow = true;
+
+      return flooringObj;
+    }
+  }
+
+  //Furnace class
+  class Furnace {
+    width;
+    height;
+    depth;
+    levels;
+    constructor(width, height, depth, levels) {
+      this.width = width;
+      this.height = height;
+      this.depth = depth;
+      this.levels = levels;
+    }
+
+    //TODO: kotloni, and a handle
+    getObject() {
+      const heightLongSide = this.height - 2*this.height/5;
+      const widthLongSide = this.width/8;
+      const heightShortSide = this.height/5;
+      const widthShortSide = this.width;
+      const heightInside = this.height - heightShortSide*2;
+
+      const widthGeometry = new THREE.BoxBufferGeometry(widthShortSide, heightShortSide, this.depth);
+      const heightGeometry = new THREE.BoxBufferGeometry(widthLongSide, heightLongSide, this.depth);
+      const visibleGeometry = new THREE.BoxBufferGeometry(this.width - 2 * widthLongSide, heightLongSide, 0.01);
+      const back = new THREE.BoxBufferGeometry(this.width, this.height + 0.1, 0.05);
+      const buttonGeometry = new THREE.TorusBufferGeometry(0.01, 0.03, 6, 6, 6);
+
+      const textureLoader = new THREE.TextureLoader();
+      const furnaceMaterial = new THREE.MeshPhongMaterial({color: 0x333333});
+      const sidesMaterial = new THREE.MeshPhongMaterial({color: 0xC0C0C0, shininess: 100, specular: 0xffffff});
+      const glassMaterial = new THREE.MeshPhongMaterial({color: 0xC7E3E1, shininess: 100, specular: 'cyan', transparent: true, opacity: 0.2})
+
+      const topObj = new THREE.Mesh(widthGeometry, furnaceMaterial);
+      const bottomObj = topObj.clone();
+      const leftObj = new THREE.Mesh(heightGeometry, sidesMaterial);
+      const rightObj = leftObj.clone();
+      const glassObj = new THREE.Mesh(visibleGeometry, glassMaterial);
+      const backObj = new THREE.Mesh(back, furnaceMaterial);
+      const button1Obj = new THREE.Mesh(buttonGeometry,sidesMaterial);
+      const button2Obj = button1Obj.clone();
+      const button3Obj = button1Obj.clone();
+      const button4Obj = button1Obj.clone();
+
+      button1Obj.position.set(-this.width/2 + 0.1, this.height/2 - 0.1, this.depth/2);
+      button2Obj.position.set(-this.width/2 + 0.2, this.height/2 - 0.1, this.depth/2);
+      button3Obj.position.set(-this.width/2 + 0.3, this.height/2 - 0.1, this.depth/2);
+      button4Obj.position.set(-this.width/2 + 0.4, this.height/2 - 0.1, this.depth/2);
+
+
+      topObj.position.set(0, this.height/2 - heightShortSide/2, 0);
+      bottomObj.position.set(0, -this.height/2 + heightShortSide/2, 0);
+      leftObj.position.set(-this.width/2 + widthLongSide/2,0,0);
+      rightObj.position.set(this.width/2 - widthLongSide/2,0,0);
+      backObj.position.set(0,0.1,-this.depth/2 + 0.05);
+      glassObj.position.set(0,0, this.depth/2);
+
+      topObj.castShadow = true;
+      topObj.receiveShadow = true;
+      bottomObj.receiveShadow = true;
+      bottomObj.castShadow = true;
+      leftObj.receiveShadow = true;
+      leftObj.castShadow = true;
+      rightObj.castShadow = true;
+      rightObj.receiveShadow = true;
+      backObj.castShadow = true;
+      backObj.receiveShadow = true;
+      glassObj.receiveShadow = true;
+      glassObj.castShadow = true;
+
+
+      const furnaceGroup = new THREE.Group()
+        .add(topObj)
+        .add(bottomObj)
+        .add(leftObj)
+        .add(rightObj)
+        .add(backObj)
+        .add(glassObj)
+        .add(button1Obj)
+        .add(button2Obj)
+        .add(button3Obj)
+        .add(button4Obj);
+
+      for (let i = 0; i < 2; i++) {
+        const sheet = new FurnaceSheet(this.width - 2*widthLongSide, this.depth, 6,6).getObject();
+        sheet.position.set(0, this.height/2 - (heightInside/2) * (i + 1), 0);
+        furnaceGroup.add(sheet);
+      }
+
+      return furnaceGroup;
+    }
+  }
+
+  //Toilet class
+  class Toilet {
+
+    static getObject() {
+      const foundation = new THREE.BoxBufferGeometry(0.3, 0.5, 0.5);
+      const seatFoundation = new THREE.BoxBufferGeometry(0.5, 0.1, 0.5);
+      const seat = new THREE.BoxBufferGeometry(0.5, 0.05, 0.3);
+      const upper = new THREE.BoxBufferGeometry(0.5, 0.5, 0.15);
+
+      const height = 0.95;
+      const depth = 0.6;
+      const textureLoader = new THREE.TextureLoader();
+      const toiletTexture = textureLoader.load("https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/ec3a471e-2a39-4bc4-bea1-6b005c49b7af/sccw3m/std/409x0/AtlasConcorde_BoostNatural_Kaolin_50x120_Matte_A64V_3DTexture.jpg?format=WEBP&");
+      const fayansMaterial = new THREE.MeshPhongMaterial({
+        color: 0xffffff,
+        map: toiletTexture
+      });
+
+      const foundationObj = new THREE.Mesh(foundation, fayansMaterial);
+      const seatFoundationObj = new THREE.Mesh(seatFoundation, fayansMaterial);
+      const seatObj = new THREE.Mesh(seat, new THREE.MeshPhongMaterial({color: 0x666666, map: toiletTexture}));
+      const upperObj = new THREE.Mesh(upper, fayansMaterial);
+
+      foundationObj.position.set(0, -height/2,0);
+      seatFoundationObj.position.set(0, -height/2 + 0.3, 0);
+      seatObj.position.set(0,-height/2 + 0.375, -0.1);
+      upperObj.position.set(0, height/2 - 0.4, depth/2 - 0.1);
+
+      foundationObj.receiveShadow = true;
+      foundationObj.castShadow = true;
+      seatFoundationObj.receiveShadow = true;
+      seatFoundationObj.castShadow = true;
+      seatObj.receiveShadow = true;
+      seatObj.castShadow = true;
+      upperObj.receiveShadow = true;
+      upperObj.castShadow = true;
+
+      return new THREE.Group()
+        .add(foundationObj)
+        .add(seatFoundationObj)
+        .add(seatObj)
+        .add(upperObj);
+
+    }
+  }
+
+  //Window class
+  class WindowPanel {
+    numberOfPanels;
+    widthPanel;
+    heightPanel;
+
+    constructor(widthPanel, heightPanel, numberOfPanels) {
+      this.widthPanel = widthPanel;
+      this.heightPanel = heightPanel;
+      this.numberOfPanels = numberOfPanels;
+    }
+
+    getObject() {
+      const outerFrameTop = new THREE.BoxBufferGeometry(this.widthPanel + 0.1, 0.1, 0.22);
+      const outerFrameBottom = new THREE.BoxBufferGeometry(this.widthPanel + 0.1, 0.1, 0.22);
+      const outerFrameLeft = new THREE.BoxBufferGeometry(0.1, this.heightPanel, 0.22);
+      const outerFrameRight = new THREE.BoxBufferGeometry(0.1, this.heightPanel, 0.22);
+
+      const glass = new THREE.BoxBufferGeometry(this.widthPanel, this.heightPanel, 0.1);
+
+      const glassMaterial = new THREE.MeshPhongMaterial({color: 'cyan', transparent: true, opacity: 0.3});
+      const woodTexture = new THREE.TextureLoader();
+      const frameMaterial = new THREE.MeshPhongMaterial({
+        color: 0xBA7c45,
+        transparent: true,
+        map: woodTexture.load("/materials/wood.jpg")
+      });
+
+      const frameTopObj = new THREE.Mesh(outerFrameTop, frameMaterial);
+      const frameBottomObj = new THREE.Mesh(outerFrameBottom, frameMaterial);
+      const frameLeftObj = new THREE.Mesh(outerFrameLeft, frameMaterial);
+      const frameRightObj = new THREE.Mesh(outerFrameRight, frameMaterial);
+
+      frameTopObj.position.set(0, this.heightPanel / 2, 0);
+      frameBottomObj.position.set(0, -this.heightPanel / 2, 0);
+      frameLeftObj.position.set(-this.widthPanel / 2, 0, 0);
+      frameRightObj.position.set(this.widthPanel / 2, 0, 0);
+
+      const glassObj = new THREE.Mesh(glass, glassMaterial);
+      const Group = new THREE.Group().add(frameTopObj).add(frameBottomObj).add(frameLeftObj).add(frameRightObj).add(glassObj);
+
+      for (let i = 0; i < this.numberOfPanels - 1; i++) {
+        const helperHorizontal = new THREE.BoxBufferGeometry(0.1, this.heightPanel, 0.22);
+        const helperHorizontalObj = new THREE.Mesh(helperHorizontal, frameMaterial);
+        helperHorizontalObj.position.set(-this.widthPanel/2 + this.widthPanel/this.numberOfPanels * (i + 1), 0, 0);
+        helperHorizontalObj.castShadow = true;
+        helperHorizontalObj.receiveShadow = true;
+        Group.add(helperHorizontalObj);
+      }
+
+      return Group;
+    }
+  }
+
+  //Table class
+  class Table {
+    width;
+    color;
+    depth;
+    hasCloth;
+
+    constructor(width, depth, hasCloth = true, color = 0xffffff) {
+      this.width = width;
+      this.depth = depth;
+      this.color = color;
+      this.hasCloth = hasCloth;
+    }
+
+    getObject() {
+      const foundation = new THREE.BoxBufferGeometry(this.width, 0.05, this.depth);
+      const leg = new THREE.BoxBufferGeometry(0.05, 0.7, 0.05);
+      const tableCloth = new THREE.BoxBufferGeometry(this.width, 0.001, this.depth);
+      const tableClothSideLong = new THREE.BoxBufferGeometry(this.width, 0.2, 0.001);
+      const tableClothSideShort = new THREE.BoxBufferGeometry(0.001, 0.2, this.depth);
+
+      const textureLoader = new THREE.TextureLoader();
+      const woodMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("/materials/wood.jpg")});
+
+      const foundationObj = new THREE.Mesh(foundation, woodMaterial);
+      const bottomLeftLeg = new THREE.Mesh(leg, woodMaterial);
+      const bottomRightLeg = new THREE.Mesh(leg, woodMaterial);
+      const topLeftLeg = new THREE.Mesh(leg, woodMaterial);
+      const topRightLeg = new THREE.Mesh(leg, woodMaterial);
+
+      const tableGroup = new THREE.Group();
+
+      if (this.hasCloth) {
+        const clothMaterial = new THREE.MeshStandardMaterial({
+          color: 0xff12412,
+          map: textureLoader.load("/materials/blanket.jpg")
+        });
+        const tableClothObj = new THREE.Mesh(tableCloth, clothMaterial);
+        const tableClothRightSideLong = new THREE.Mesh(tableClothSideLong, clothMaterial);
+        const tableClothLeftSideLong = new THREE.Mesh(tableClothSideLong, clothMaterial);
+        const tableClothTopShort = new THREE.Mesh(tableClothSideShort, clothMaterial);
+        const tableClothBottomShort = new THREE.Mesh(tableClothSideShort, clothMaterial);
+
+        tableClothObj.position.set(0, 0.0251, 0);
+        tableClothRightSideLong.position.set(0, -0.075, -this.depth / 2);
+        tableClothLeftSideLong.position.set(0, -0.075, this.depth / 2);
+        tableClothTopShort.position.set(this.width / 2, -0.075, 0);
+        tableClothBottomShort.position.set(-this.width / 2, -0.075, 0);
+
+        tableClothObj.castShadow = true;
+        tableClothObj.receiveShadow = true;
+        tableClothRightSideLong.castShadow = true;
+        tableClothRightSideLong.receiveShadow = true;
+        tableClothLeftSideLong.castShadow = true;
+        tableClothLeftSideLong.receiveShadow = true;
+        tableClothTopShort.castShadow = true;
+        tableClothTopShort.receiveShadow = true;
+        tableClothBottomShort.castShadow = true;
+        tableClothBottomShort.receiveShadow = true;
+
+        tableGroup
+          .add(tableClothObj)
+          .add(tableClothRightSideLong)
+          .add(tableClothLeftSideLong)
+          .add(tableClothTopShort)
+          .add(tableClothBottomShort);
+      }
+
+      bottomLeftLeg.position.set(this.width / 2 - 0.05, -0.35, this.depth / 2 - 0.05);
+      bottomRightLeg.position.set(this.width / 2 - 0.05, -0.35, -this.depth / 2 + 0.05);
+      topLeftLeg.position.set(-this.width / 2 + 0.05, -0.35, this.depth / 2 - 0.05);
+      topRightLeg.position.set(-this.width / 2 + 0.05, -0.35, -this.depth / 2 + 0.05);
+
+      bottomLeftLeg.castShadow = true;
+      bottomLeftLeg.receiveShadow = true;
+      bottomRightLeg.castShadow = true;
+      bottomRightLeg.receiveShadow = true;
+      topLeftLeg.castShadow = true;
+      topLeftLeg.receiveShadow = true;
+      topRightLeg.castShadow = true;
+      topRightLeg.receiveShadow = true;
+
+      return tableGroup
+        .add(foundationObj)
+        .add(bottomLeftLeg)
+        .add(bottomRightLeg)
+        .add(topLeftLeg)
+        .add(topRightLeg);
+    }
+  }
+
+  //Sink class
+  class Sink {
+    width;
+    height;
+    depth;
+
+    constructor(width, height, depth) {
+      this.width = width;
+      this.height = height;
+      this.depth = depth;
+    }
+
+    getObject() {
+      const pathTube = new THREE.CurvePath();
+      pathTube.curves.push(new THREE.Curve());
+      const sinkFoundation = new THREE.SphereBufferGeometry(0.2, 64, 32, 0, 6.28, 1.64619455048105, 1.80327418316054);
+
+      const textureLoader = new THREE.TextureLoader();
+      const kaolin = new THREE.MeshPhongMaterial({
+        color: 0xffffff,
+        map: textureLoader.load("https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/ec3a471e-2a39-4bc4-bea1-6b005c49b7af/sccw3m/std/409x0/AtlasConcorde_BoostNatural_Kaolin_50x120_Matte_A64V_3DTexture.jpg?format=WEBP&")
+      })
+      kaolin.side = THREE.DoubleSide;
+      const sinkObj = new THREE.Mesh(sinkFoundation, kaolin);
+      sinkObj.position.set(0, this.height / 2 + 0.2, 0);
+      const tubeMaterial = new THREE.MeshPhongMaterial({color: 0x333333})
+      const cylinderFoundation = new THREE.CylinderBufferGeometry(0.03, 0.03, 0.25);
+      const smallerCylinder = new THREE.CylinderBufferGeometry(0.01, 0.01, 0.1);
+
+      const smallerCylinderObj  = new THREE.Mesh(smallerCylinder, tubeMaterial);
+      const foundationObj = new THREE.Mesh(cylinderFoundation, tubeMaterial);
+
+      foundationObj.position.set(-0.2,this.height/2 + 0.125, 0.15);
+      smallerCylinderObj.position.set(-0.15,this.height/2 + 0.2, 0.1);
+      smallerCylinderObj.rotateX(Math.PI /2);
+      smallerCylinderObj.rotateZ(Math.PI /4);
+
+
+      return new THREE.Group()
+        .add(sinkObj)
+        .add(new Cupboard(this.width, this.height, this.depth, 1, 2, true).getObject())
+        .add(foundationObj)
+        .add(smallerCylinderObj);
+    }
+  }
+
+  //Painting class
+  class Painting {
+    width;
+    height;
+    image;
+    frameWidth;
+    //image accepts path as string to the image to be displayed
+    constructor(width, height, frameWidth, image) {
+      this.width = width;
+      this.height = height;
+      this.image = image;
+      this.frameWidth = frameWidth;
+    }
+
+    getObject() {
+      const frameWidth = new THREE.BoxBufferGeometry(this.width, this.frameWidth, this.frameWidth);
+      const frameHeight = new THREE.BoxBufferGeometry(this.frameWidth, this.height, this.frameWidth);
+      const plate = new THREE.BoxBufferGeometry(this.width, this.height, 0.002);
+
+      const textureLoader = new THREE.TextureLoader();
+      const woodMaterial = new THREE.MeshPhongMaterial({color: 0x855E42, map: textureLoader.load("/materials/wood.jpg") });
+      const paintingMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load(this.image)});
+
+      const topFrameWidth = new THREE.Mesh(frameWidth, woodMaterial);
+      const bottomFrameWidth = new THREE.Mesh(frameWidth, woodMaterial);
+      const leftFrameHeight = new THREE.Mesh(frameHeight, woodMaterial);
+      const rightFrameHeight = new THREE.Mesh(frameHeight, woodMaterial);
+      const painting = new THREE.Mesh(plate, paintingMaterial);
+
+      topFrameWidth.position.set(0, this.height/2, 0.001);
+      bottomFrameWidth.position.set(0, -this.height/2, 0.001);
+      leftFrameHeight.position.set(-this.width/2,0, 0.001);
+      rightFrameHeight.position.set(this.width/2,0, 0.001);
+
+      topFrameWidth.castShadow = true;
+      topFrameWidth.receiveShadow = true;
+      bottomFrameWidth.castShadow = true;
+      bottomFrameWidth.receiveShadow = true;
+      leftFrameHeight.castShadow = true;
+      leftFrameHeight.receiveShadow = true;
+      rightFrameHeight.castShadow = true;
+      rightFrameHeight.receiveShadow = true;
+      painting.castShadow = true;
+      painting.receiveShadow = true;
+
+      return new THREE.Group()
+        .add(topFrameWidth)
+        .add(bottomFrameWidth)
+        .add(leftFrameHeight)
+        .add(rightFrameHeight)
+        .add(painting);
+    }
+  }
+
+  //Monitor/TV class with Mouse and Keyboard
+  class Monitor {
+    inches;
+    image;
+    isTV;
+
+    constructor(inches, isTV = false, image = "/materials/default-monitor.jpg") {
+      this.inches = inches;
+      this.isTV = isTV;
+      this.image = image;
+    }
+
+    getMouse(frameMaterial) {
+      const mouse = new THREE.BoxBufferGeometry(0.05, 0.02, 0.1);
+      const button = new THREE.BoxBufferGeometry(0.02, 0.01, 0.02);
+
+      const mouseObj = new THREE.Mesh(mouse, frameMaterial);
+      const leftButton = new THREE.Mesh(button, new THREE.MeshPhongMaterial({color: 0x777777}));
+      const rightButton = leftButton.clone();
+      leftButton.position.set(-0.015, 0.01, -0.03);
+      rightButton.position.set(0.015, 0.01, -0.03);
+
+      leftButton.castShadow = true;
+      leftButton.receiveShadow = true;
+      rightButton.castShadow = true;
+      rightButton.receiveShadow = true;
+      mouseObj.castShadow = true;
+      mouseObj.receiveShadow = true;
+
+      return  new THREE.Group().add(mouseObj).add(leftButton).add(rightButton);
+    }
+
+    getKeyboard(frameMaterial) {
+      const widthKeyboard = 0.3;
+      const heightKeyboard = 0.02;
+      const depthKeyboard = 0.1;
+
+      const keysPerRow = 20;
+      const keysPerColumn = 5;
+      const widthKey = widthKeyboard / keysPerRow - 0.0005;
+      const depthKey = depthKeyboard / keysPerColumn - 0.0005;
+
+      const keyboardFoundation = new THREE.BoxBufferGeometry(widthKeyboard, heightKeyboard, depthKeyboard);
+      const keyboardObj = new THREE.Mesh(keyboardFoundation, frameMaterial);
+      keyboardObj.castShadow = true;
+      keyboardObj.receiveShadow = true;
+      const keyboardGroup = new THREE.Group().add(keyboardObj);
+
+      for (let i = 0; i < 5; i++) {
+        for (let j = 0; j < 20; j++) {
+          const color = Math.floor(Math.random()*16777215).toString(16);
+          const key = new THREE.BoxBufferGeometry(widthKey, 0.02, depthKey);
+          const keyObj = new THREE.Mesh(key, new THREE.MeshPhongMaterial({color: "#"+color}));
+          keyObj.position.set(-widthKeyboard/2 + (widthKey * (j + 1)), 0.01, -depthKeyboard/2 + (depthKey * (i + 1)));
+          keyObj.castShadow = true;
+          keyObj.receiveShadow = true;
+          keyboardGroup.add(keyObj);
+        }
+      }
+
+      return keyboardGroup;
+    }
+
+    getObject() {
+      const widthGetter = 0.872;
+      const heightGetter = 0.49;
+      var width = this.inches * widthGetter;
+      var height = this.inches * heightGetter;
+
+      const monitorScreen = new THREE.BoxBufferGeometry(width, height, 0.001);
+      const monitorBack = new THREE.BoxBufferGeometry(width, height, 0.01);
+      const widthFrame = new THREE.BoxBufferGeometry(width, 0.01, 0.01);
+      const heightFrame = new THREE.BoxBufferGeometry(0.01, height, 0.01);
+
+
+      const textureLoader = new THREE.TextureLoader();
+      const texture = textureLoader.load(this.image);
+      const screenMaterial = new THREE.MeshPhongMaterial({map: texture});
+      const frameMaterial = new THREE.MeshPhongMaterial({
+        color: 0xffffff,
+        map: textureLoader.load("https://img.freepik.com/premium-photo/texture-black-carbon-fiber_28943-725.jpg")
+      });
+
+      const screenObj = new THREE.Mesh(monitorScreen, screenMaterial);
+      const backObj = new THREE.Mesh(monitorBack, frameMaterial);
+      const topFrame = new THREE.Mesh(widthFrame, frameMaterial);
+      const bottomFrame = topFrame.clone();
+      const leftFrame = new THREE.Mesh(heightFrame, frameMaterial);
+      const rightFrame = leftFrame.clone();
+
+      topFrame.position.set(0, height / 2, 0.01);
+      bottomFrame.position.set(0, -height / 2, 0.01);
+      leftFrame.position.set(-width / 2, 0, 0.01);
+      rightFrame.position.set(width / 2, 0, 0.01);
+
+      backObj.position.set(0, 0, -0.001);
+      screenObj.position.set(0, 0, 0.005);
+
+      topFrame.castShadow = true;
+      topFrame.receiveShadow = true;
+      bottomFrame.castShadow = true;
+      bottomFrame.receiveShadow = true;
+      leftFrame.castShadow = true;
+      leftFrame.receiveShadow = true;
+      rightFrame.castShadow = true;
+      rightFrame.receiveShadow = true;
+      backObj.castShadow = true;
+      backObj.receiveShadow = true;
+      screenObj.castShadow = true;
+      screenObj.receiveShadow = true;
+
+      const monitorGroup = new THREE.Group()
+        .add(screenObj)
+        .add(topFrame)
+        .add(bottomFrame)
+        .add(leftFrame)
+        .add(rightFrame)
+        .add(backObj);
+
+      if (!this.isTV) {
+        const foundation = new THREE.BoxBufferGeometry(width / 3, 0.03, width / 3);
+        const connector = new THREE.BoxBufferGeometry(width / 5, height / 3, 0.01);
+        const foundationObj = new THREE.Mesh(foundation, frameMaterial);
+        const connectorObj = new THREE.Mesh(connector, frameMaterial);
+        foundationObj.position.set(0, -height / 2 - height / 3, 0);
+        connectorObj.position.set(0, -height / 2 - (height / 6), 0);
+
+        foundationObj.castShadow = true;
+        foundationObj.receiveShadow = true;
+        connectorObj.castShadow = true;
+        connectorObj.receiveShadow = true;
+
+        const mouseGroup = this.getMouse(frameMaterial);
+        mouseGroup.position.set( width/2 + width/3,-height/2 - height/3, width/2);
+
+        const keyboardGroup = this.getKeyboard(frameMaterial);
+        keyboardGroup.position.set(-width/2 + width/3, -height/2 - height/3, width/2);
+
+        monitorGroup
+          .add(foundationObj)
+          .add(connectorObj)
+          .add(mouseGroup)
+          .add(keyboardGroup);
+      } else {
+        const leg = new THREE.BoxBufferGeometry(0.1, 0.05, 0.1);
+        const leftLeg = new THREE.Mesh(leg, frameMaterial);
+        const rightLeg = leftLeg.clone();
+
+        leftLeg.position.set(-width / 2 + width / 4, -height / 2 - 0.025, 0);
+        rightLeg.position.set(width / 2 - width / 4, -height / 2 - 0.025, 0);
+
+        leftLeg.castShadow = true;
+        leftLeg.receiveShadow = true;
+        rightLeg.castShadow = true;
+        rightLeg.receiveShadow = true;
+
+        monitorGroup
+          .add(leftLeg)
+          .add(rightLeg);
+      }
+      return monitorGroup;
+    }
+  }
+
+  //Furnace sheet class
+  class FurnaceSheet {
+    width;
+    depth;
+    numWidth;
+    numDepth;
+
+    constructor(width, depth, numWidth, numDepth) {
+      this.width = width;
+      this.depth = depth;
+      this.numWidth = numWidth;
+      this.numDepth = numDepth;
+    }
+
+    getObject() {
+      const widthSide = new THREE.BoxBufferGeometry(this.width, 0.005, 0.005);
+      const depthSide = new THREE.BoxBufferGeometry(0.005, 0.005, this.depth);
+
+      const sheetMaterial = new THREE.MeshPhongMaterial({color: 0x111111});
+      const sheetsGroup = new THREE.Group();
+
+      const frameLeft = new THREE.Mesh(depthSide, sheetMaterial);
+      const frameRight = frameLeft.clone();
+      const frameBack = new THREE.Mesh(widthSide, sheetMaterial);
+      const frameFront = frameBack.clone();
+
+      for (let i = 0; i < this.numWidth; i++) {
+        const obj = frameFront.clone();
+        obj.position.set(0, 0, this.depth/2 - (this.depth/this.numDepth) * (i + 1) - (this.depth/this.numDepth)/2 + 0.05);
+        obj.castShadow = true;
+        obj.receiveShadow = true;
+        sheetsGroup.add(obj);
+      }
+
+      for (let i = 0; i < this.numDepth; i++) {
+        const obj = frameLeft.clone();
+        obj.position.set(-this.width/2 + (this.width/this.numWidth) * (i + 1) + (this.width/this.numWidth)/2 - 0.05, 0,0 );
+        obj.castShadow = true;
+        obj.receiveShadow = true;
+        sheetsGroup.add(obj);
+      }
+      frameBack.position.set(0,0,-this.depth/2);
+      frameFront.position.set(0,0, this.depth/2);
+      frameLeft.position.set(-this.width/2,0,0);
+      frameRight.position.set(this.width/2,0,0);
+
+      frameLeft.castShadow = true;
+      frameLeft.receiveShadow = true;
+      frameBack.receiveShadow = true;
+      frameBack.castShadow = true;
+      frameFront.receiveShadow = true;
+      frameFront.castShadow = true;
+      frameRight.castShadow = true;
+      frameRight.receiveShadow = true;
+
+      return sheetsGroup
+        .add(frameLeft)
+        .add(frameRight)
+        .add(frameFront)
+        .add(frameBack);
+    }
+  }
+
+  //Desk class
+  class Desk {
+    width;
+    depth;
+    numberDrawers;
+
+    constructor(width, depth, numberDrawers) {
+      this.width = width;
+      this.depth = depth;
+      this.numberDrawers = numberDrawers;
+    }
+
+    getObject() {
+      const foundation = new THREE.BoxBufferGeometry(this.width, 0.03, this.depth);
+      const sideShort = new THREE.BoxBufferGeometry(0.03, 0.7, this.depth);
+      const sideLong = new THREE.BoxBufferGeometry(this.width, 0.7, 0.03);
+
+      const textureLoader = new THREE.TextureLoader();
+      const deskMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("/materials/dark-wood.jpg")});
+
+      const foundationObj = new THREE.Mesh(foundation, deskMaterial);
+      const sideShortLeft = new THREE.Mesh(sideShort, deskMaterial);
+      const sideShortRight = sideShortLeft.clone();
+      const insideShort = sideShortLeft.clone();
+      const sideLongObj = new THREE.Mesh(sideLong, deskMaterial);
+
+      sideShortLeft.position.set(-this.width/2 + 0.03, -0.35,0);
+      sideShortRight.position.set(this.width/2 - 0.03, -0.35,0);
+      sideLongObj.position.set(0, -0.35,this.depth/2 - 0.03);
+      insideShort.position.set((-this.width/2)+(this.width/3 * 2) - 0.1, -0.35,0);
+
+      sideShortLeft.castShadow = true;
+      sideShortLeft.receiveShadow = true;
+      sideShortRight.castShadow = true;
+      sideShortRight.receiveShadow = true;
+      sideLongObj.castShadow = true;
+      sideLongObj.receiveShadow = true;
+      insideShort.castShadow = true;
+      insideShort.receiveShadow = true;
+
+      const deskGroup = new THREE.Group()
+        .add(foundationObj)
+        .add(sideShortRight)
+        .add(sideShortLeft)
+        .add(insideShort)
+        .add(sideLongObj);
+
+      for (let i = 0; i < this.numberDrawers; i++) {
+        const drawer = new Drawer(this.width/3, 0.8/this.numberDrawers, this.depth);
+        const drawerObj = drawer.getObject();
+        drawerObj.position.set((this.width/3) - 0.05, (-0.5/this.numberDrawers) * (i + 1), -0.05);
+        deskGroup.add(drawerObj);
+      }
+      return deskGroup;
+    }
+  }
+
+  //Cupboard class
+  class Cupboard {
+    width;
+    height;
+    depth;
+    heightLevels;
+    widthLevels;
+    hasDrawers;
+    numberOfDrawersPerLevel;
+    colorFoundation;
+    colorDrawers;
+
+    constructor(width, height, depth, heightLevels, widthLevels,
+                hasDrawers = false,
+                numberOfDrawersPerLevel = 0,
+                colorFoundation = 0xffffff,
+                colorDrawers = 0xffffff) {
+      this.width = width;
+      this.height = height;
+      this.depth = depth;
+      this.heightLevels = heightLevels;
+      this.widthLevels = widthLevels;
+      this.hasDrawers = hasDrawers;
+      this.numberOfDrawersPerLevel = numberOfDrawersPerLevel;
+      this.colorFoundation = colorFoundation;
+      this.colorDrawers = colorDrawers;
+    }
+    getDrawers() {
+      const drawerGroup = new THREE.Group();
+      for (let i = 0; i < this.heightLevels; i++) {
+        for (let j = 0; j < this.widthLevels; j++) {
+          const drawer = new Drawer(
+            this.width/this.widthLevels,
+            this.height/ this.heightLevels,
+            this.depth - 0.1)
+            .getObject();
+
+          drawer.position.set(
+            this.width/2 - (this.width/this.widthLevels) * (j + 1) + (this.width/this.widthLevels) / 2,
+            this.height/2 - (this.height/ this.heightLevels) * (i + 1) + (this.height/ this.heightLevels) /2,
+            0);
+          drawerGroup.add(drawer);
+        }
+      }
+      return drawerGroup;
+    }
+
+    getObject() {
+      const widthPlate = new THREE.BoxBufferGeometry(this.width, 0.03, this.depth);
+      const heightPlate = new THREE.BoxBufferGeometry(0.03, this.height, this.depth);
+
+      const textureLoader = new THREE.TextureLoader();
+      const woodTexture = textureLoader.load("/materials/dark-wood.jpg");
+      const frameMaterial = new THREE.MeshPhongMaterial({color: this.colorFoundation, map: woodTexture});
+
+      const topPlate = new THREE.Mesh(widthPlate, frameMaterial);
+      const bottomPlate = topPlate.clone();
+      const leftPlate = new THREE.Mesh(heightPlate, frameMaterial);
+      const rightPlate = leftPlate.clone();
+
+      const cupboardGroup = new THREE.Group();
+
+      for (let i = 0; i < this.heightLevels - 1; i++) {
+        const middleWidthPlate = new THREE.Mesh(widthPlate, frameMaterial);
+        middleWidthPlate.position.set(0, (this.height / 2) - (this.height / this.heightLevels) * (i + 1), 0);
+        middleWidthPlate.castShadow = true;
+        middleWidthPlate.receiveShadow = true;
+        cupboardGroup.add(middleWidthPlate);
+      }
+
+      for (let i = 0; i < this.widthLevels - 1; i++) {
+        const middleHeightPlate = new THREE.Mesh(heightPlate, frameMaterial);
+        middleHeightPlate.position.set((this.width / 2) - (this.width / this.widthLevels) * (i + 1), 0);
+        middleHeightPlate.castShadow = true;
+        middleHeightPlate.receiveShadow = true;
+        cupboardGroup.add(middleHeightPlate);
+      }
+      topPlate.position.set(0, this.height / 2, 0);
+      bottomPlate.position.set(0, -this.height / 2, 0);
+      leftPlate.position.set(-this.width / 2, 0, 0);
+      rightPlate.position.set(this.width / 2, 0, 0);
+
+      topPlate.castShadow = true;
+      topPlate.receiveShadow = true;
+      bottomPlate.castShadow = true;
+      bottomPlate.receiveShadow = true;
+      leftPlate.castShadow = true;
+      leftPlate.receiveShadow = true;
+      rightPlate.castShadow = true;
+      rightPlate.receiveShadow = true;
+
+      if(this.hasDrawers) {
+        cupboardGroup.add(this.getDrawers());
+      }
+      return cupboardGroup
+        .add(topPlate)
+        .add(bottomPlate)
+        .add(leftPlate)
+        .add(rightPlate);
+    }
+  }
+
+  //Chair class
+  class Chair {
+    colorCushion;
+    constructor(colorCushion) {
+      this.colorCushion = colorCushion;
+    }
+
+    getObject() {
+      const seat = new THREE.BoxBufferGeometry(0.4, 0.1, 0.4);
+      const leg = new THREE.BoxBufferGeometry(0.05, 0.5,0.05);
+      const backLeg = new THREE.BoxBufferGeometry(0.05, 1, 0.05);
+      const cushion = new THREE.BoxBufferGeometry(0.36, 0.05, 0.36);
+      const bridgeLegs = new THREE.BoxBufferGeometry(0.25, 0.05, 0.05);
+
+      const textureLoader = new THREE.TextureLoader();
+      const chairMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("/materials/wood.jpg")});
+      const cushionMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("/materials/blanket.jpg"), color: this.colorCushion});
+
+      const seatObj = new THREE.Mesh(seat, chairMaterial);
+      const frontLeftLeg = new THREE.Mesh(leg, chairMaterial);
+      const frontRightLeg = new THREE.Mesh(leg, chairMaterial);
+      const backLeftLeg = new THREE.Mesh(backLeg, chairMaterial);
+      const backRightLeg = new THREE.Mesh(backLeg, chairMaterial);
+      const leg1Bridge = new THREE.Mesh(bridgeLegs, chairMaterial);
+      const leg2Bridge = new THREE.Mesh(bridgeLegs, chairMaterial);
+      const cushionObj = new THREE.Mesh(cushion, cushionMaterial);
+
+      frontLeftLeg.position.set(-0.15, -0.2, 0.15);
+      frontRightLeg.position.set(0.15, -0.2, 0.15);
+      backLeftLeg.position.set(0.15, 0.05, -0.15);
+      backRightLeg.position.set(-0.15, 0.05, -0.15);
+      leg1Bridge.position.set(0, 0.3, -0.15);
+      leg2Bridge.position.set(0, 0.5, -0.15);
+      cushionObj.position.set(0, 0.05, 0);
+
+      frontLeftLeg.castShadow = true;
+      frontLeftLeg.receiveShadow = true;
+      frontRightLeg.castShadow = true;
+      frontRightLeg.receiveShadow = true;
+      backLeftLeg.castShadow = true;
+      backLeftLeg.receiveShadow = true;
+      backRightLeg.castShadow = true;
+      backRightLeg.receiveShadow = true;
+      leg1Bridge.castShadow = true;
+      leg1Bridge.receiveShadow = true;
+      leg2Bridge.castShadow = true;
+      leg2Bridge.receiveShadow = true;
+      cushionObj.castShadow = true;
+      cushionObj.receiveShadow = true;
+
+      return  new THREE.Group().add(seatObj).add(frontLeftLeg).add(frontRightLeg).add(backRightLeg).add(backLeftLeg).add(cushionObj).add(leg1Bridge).add(leg2Bridge);
+    }
+  }
+
+  //Bed class
+  class Bed {
+    width;
+    height;
+    panels;
+    color;
+    pillowColor;
+    blanketColor;
+
+    constructor(width, height, panels, color, pillowColor, blanketColor) {
+      this.width = width;
+      this.height = height;
+      this.panels = panels;
+      this.color = color;
+      this.pillowColor = pillowColor;
+      this.blanketColor = blanketColor;
+    }
+
+    getPillow(geometry, material, index) {
+      const pillowObj = new THREE.Mesh(geometry, material);
+      pillowObj.rotateX(Math.PI / 2);
+      pillowObj.rotateZ(Math.PI / 2);
+      pillowObj.position.y = 0.21;
+      pillowObj.position.x = this.width / 2 - 0.1;
+      pillowObj.position.z = (-this.height / 2 + (this.height / this.panels * (index + 1))) - 0.6;
+
+      return pillowObj;
+    }
+
+    getBlanket(geometry, material, index) {
+      const blanketObj = new THREE.Mesh(geometry, material);
+      blanketObj.position.set(-this.width/2 + 0.3, 0.1, -this.height / 2 + (this.height / this.panels * (index + 1)) - 0.5)
+      return blanketObj;
+    }
+
+
+    getObject() {
+      const foundation = new THREE.BoxBufferGeometry(this.width, this.height, 0.1);
+      const leg = new THREE.BoxBufferGeometry(0.1, 0.2, 0.1);
+      const pillow = new THREE.Shape();
+
+      const extrudeSettings = {
+        steps: 3,
+        depth: 0.1,
+        bevelEnabled: true,
+        bevelThickness: 0.05,
+        bevelSize: 0.1,
+        bevelOffset: 0,
+        bevelSegments: 1
+      };
+      pillow.moveTo(0, 0);
+      pillow.lineTo(0, 0.2);
+      pillow.lineTo(0.3, 0.2);
+      pillow.lineTo(0.3, 0);
+      pillow.lineTo(0, 0);
+
+      const texture = new THREE.TextureLoader();
+      const foundationMaterial = new THREE.MeshPhongMaterial({
+        color: this.color,
+        map: texture.load("/materials/bed.jpg")
+      });
+      const legMaterial = new THREE.MeshPhongMaterial({map: texture.load("/materials/wood.jpg")});
+      const pillowGeometry = new THREE.ExtrudeBufferGeometry(pillow, extrudeSettings);
+      const pillowMaterial = new THREE.MeshPhongMaterial({color: this.pillowColor, map: texture.load("/materials/pillow.jpg")});
+
+      const blanketGeometry = new THREE.BoxBufferGeometry(0.5, 0.05, 0.7);
+      const blanketMaterial = new THREE.MeshPhongMaterial({color: this.blanketColor, map: texture.load("/materials/blanket.jpg")})
+
+      const foundationMattressObj = new THREE.Mesh(foundation, foundationMaterial);
+      const foundationWood = new THREE.Mesh(new THREE.BoxBufferGeometry(this.width, this.height, 0.05), legMaterial);
+
+      const legTopLeft = new THREE.Mesh(leg, legMaterial);
+      const legTopRight = new THREE.Mesh(leg, legMaterial);
+      const legBottomLeft = new THREE.Mesh(leg, legMaterial);
+      const legBottomRight = new THREE.Mesh(leg, legMaterial);
+
+      legBottomRight.position.set(this.width / 2 - 0.05, -0.2, this.height / 2 - 0.05);
+      legBottomLeft.position.set(-this.width / 2 + 0.05, -0.2, this.height / 2 - 0.05);
+      legTopLeft.position.set(-this.width / 2 + 0.05, -0.2, -this.height / 2 + 0.05);
+      legTopRight.position.set(this.width / 2 - 0.05, -0.2, -this.height / 2 + 0.05);
+      foundationWood.position.y = -0.075;
+      foundationMattressObj.rotateX(Math.PI / 2);
+      foundationWood.rotateX(Math.PI / 2);
+
+      const bedGroup = new THREE.Group();
+      bedGroup.add(foundationMattressObj).add(foundationWood).add(legTopRight).add(legTopLeft).add(legBottomLeft).add(legBottomRight);
+
+      for (let i = 0; i < this.panels; i++) {
+        const pillowObj = this.getPillow(pillowGeometry, pillowMaterial, i);
+        const blanketObj = this.getBlanket(blanketGeometry, blanketMaterial, i);
+        bedGroup.add(pillowObj);
+        bedGroup.add(blanketObj);
+      }
+      return bedGroup;
+    }
+  }
+
+  //Luggage classes
+  class Luggage {
+    width;
+    height;
+    depth;
+    color;
+    textureLoader = new THREE.TextureLoader();
+
+    constructor(width, height, depth, color) {
+      this.width = width;
+      this.height = height;
+      this.depth = depth;
+      this.color = color;
+
+      if(this.constructor === Luggage) {
+        throw new Error("Luggage is an abstract class and cannot be instantiated");
+      }
+    }
+    getObject() {
+      throw new Error("Method getObject() must be implemented!");
+    }
+
+  }
+
+  class LuggageWithWheels extends Luggage {
+    handleHeight;
+    wheelSets;
+    constructor(width, height, depth, color, wheelSets = 1, handleHeight = height/3) {
+      super(width, height, depth, color);
+      this.handleHeight = handleHeight;
+      this.wheelSets = wheelSets;
+    }
+    getObject() {
+      const widthWall = new THREE.BoxBufferGeometry(this.width, this.height, 0.01);
+      const heightWall = new THREE.BoxBufferGeometry(0.01, this.height, this.depth/2 - 0.025);
+      const depthWall = new THREE.BoxBufferGeometry(this.width, 0.01, this.depth/2 -0.025);
+
+      const zipWidth = new THREE.BoxBufferGeometry(this.width, 0.01, 0.025);
+      const zipHeight = new THREE.BoxBufferGeometry(0.01, this.height, 0.025);
+
+      const handleSide = new THREE.BoxBufferGeometry(0.02, this.handleHeight, 0.02);
+      const handleMiddle = new THREE.BoxBufferGeometry(this.width/3 + 0.02, 0.02, 0.02);
+
+      const wallMaterial = new THREE.MeshPhongMaterial({color: this.color});
+      const zipTexture = this.textureLoader.load("materials/zip.jpg");
+      zipTexture.wrapS = THREE.RepeatWrapping;
+      zipTexture.wrapT = THREE.RepeatWrapping;
+
+      const zipMaterial = new THREE.MeshPhongMaterial({map: zipTexture});
+      const handleMaterial = new THREE.MeshPhongMaterial({color: 0x000000});
+
+      const depthWallTopFront = new THREE.Mesh(depthWall, wallMaterial);
+      const depthWallTopBack = depthWallTopFront.clone();
+      const depthWallBottomFront = depthWallTopFront.clone();
+      const depthWallBottomBack = depthWallTopFront.clone();
+
+      depthWallTopFront.position.set(0, this.height/2, -this.depth/2 + 0.05);
+      depthWallTopBack.position.set(0, this.height/2, this.depth/2 - 0.05);
+      depthWallBottomFront.position.set(0, -this.height/2, -this.depth/2 + 0.05);
+      depthWallBottomBack.position.set(0, -this.height/2, this.depth/2 - 0.05);
+
+      const heightWallLeftFront = new THREE.Mesh(heightWall, wallMaterial);
+      const heightWallLeftBack = heightWallLeftFront.clone();
+      const heightWallRightFront = heightWallLeftFront.clone();
+      const heightWallRightBack = heightWallLeftFront.clone();
+
+      heightWallLeftFront.position.set(-this.width/2, 0, -this.depth/2 +0.05);
+      heightWallLeftBack.position.set(-this.width/2, 0, this.depth/2 - 0.05);
+      heightWallRightFront.position.set(this.width/2, 0, -this.depth/2 + 0.05);
+      heightWallRightBack.position.set(this.width/2, 0, this.depth/2 - 0.05);
+
+      const widthWallFront = new THREE.Mesh(widthWall, wallMaterial);
+      const widthWallBack = widthWallFront.clone();
+
+      widthWallBack.position.set(0,0, this.depth/2 - 0.0125);
+      widthWallFront.position.set(0,0, -this.depth/2 + 0.0125);
+
+      const zipLeft = new THREE.Mesh(zipHeight, zipMaterial);
+      const zipRight = zipLeft.clone();
+      const zipTop = new THREE.Mesh(zipWidth, zipMaterial);
+      const zipBottom = zipTop.clone();
+
+      zipLeft.position.set(-this.width/2, 0, 0);
+      zipRight.position.set(this.width/2, 0, 0);
+      zipTop.position.set(0, this.height/2, 0);
+      zipBottom.position.set(0, -this.height/2, 0);
+
+      const handleLeft = new THREE.Mesh(handleSide, handleMaterial);
+      const handleRight = handleLeft.clone();
+      const handleMiddleObj = new THREE.Mesh(handleMiddle, handleMaterial);
+
+      handleLeft.position.set(-this.width/5, this.height/2 + this.handleHeight/2, 0);
+      handleRight.position.set(this.width/5, this.height/2 + this.handleHeight/2, 0);
+      handleMiddleObj.position.set(0, this.height/2 + this.handleHeight, 0);
+
+      const LuggageGroup = new THREE.Group()
+        .add(depthWallTopFront).add(depthWallTopBack)
+        .add(depthWallBottomFront).add(depthWallBottomBack)
+        .add(heightWallLeftFront).add(heightWallLeftBack)
+        .add(heightWallRightFront).add(heightWallRightBack)
+        .add(widthWallFront).add(widthWallBack)
+        .add(zipLeft).add(zipRight)
+        .add(zipTop).add(zipBottom)
+        .add(handleLeft).add(handleRight)
+        .add(handleMiddleObj);
+
+      for (let i = 0; i < this.wheelSets; i++) {
+        const outsideGeometry = new THREE.CylinderBufferGeometry(0.03, 0.03, 0.02, 32, 16);
+        const insideGeometry = new THREE.CylinderBufferGeometry(0.01, 0.01, 0.022, 32, 16);
+
+        const singleWheelGroup1 = new THREE.Group()
+          .add(new THREE.Mesh(outsideGeometry, handleMaterial))
+          .add(new THREE.Mesh(insideGeometry, new THREE.MeshPhongMaterial({color: 0xdffffff})));
+
+        const singleWheelGroup2 = singleWheelGroup1.clone();
+        singleWheelGroup1.position.set(-this.width/2 + this.width/4, -this.height/2 - 0.015, Math.pow(-1, i) * this.depth/2);
+        singleWheelGroup2.position.set(this.width/2 - this.width/4, -this.height/2 - 0.015, Math.pow(-1, i) * this.depth/2);
+
+        singleWheelGroup2.rotateZ(Math.PI/2);
+        singleWheelGroup1.rotateZ(Math.PI/2);
+        LuggageGroup
+          .add(singleWheelGroup1)
+          .add(singleWheelGroup2);
+      }
+      return LuggageGroup;
+    }
+  }
+
+  class Briefcase extends Luggage {
+    isOpen;
+    constructor(width, height, depth, color, isOpen) {
+      super(width, height, depth, color);
+      this.isOpen = isOpen;
+    }
+    getObject() {
+
+    }
+  }
 
   //wall material
   const wallMaterial = new THREE.MeshPhongMaterial({color: 0xd2dfb4, shininess: 100});

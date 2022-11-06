@@ -1,0 +1,821 @@
+﻿<!DOCTYPE html>
+
+<!-- Васил Христов, група 3, ф.н. 5MI0800128 -->
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <script src="three.min.js"></script>
+  <script src="OrbitControls.js"></script>
+  <script src="objects/window.js"></script>
+  <script src="objects/bed.js"></script>
+  <script src="objects/fireplace.js"></script>
+  <script src="objects/chair.js"></script>
+  <script src="objects/table.js"></script>
+  <script src="objects/painting.js"></script>
+  <script src="objects/desk.js"></script>
+  <script src="objects/drawer.js"></script>
+  <script src="objects/flooring.js"></script>
+  <script src="objects/cupboard.js"></script>
+  <script src="objects/monitor.js"></script>
+  <script src="objects/furnace.js"></script>
+  <script src="objects/furnaceSheet.js"></script>
+  <script src="objects/sink.js"></script>
+  <script src="objects/toilet.js"></script>
+  <script src="objects/luggage.js"></script>
+  <title>Vasil Hristov 5MI0800128 MOIDOM</title>
+</head>
+
+<body>
+<script>
+  const FN = '5MI0800128'; // факултетен номер
+</script>
+
+<script src="init.js"></script>
+
+<script>
+  //TODO: Make all objects cast shadows!!!!
+
+  // 1. преименувайте файла на moidom-g-fn.html
+  //    g=номер на група, а fn=факултетен номер
+  //
+  // 2. сменете стойността на константата FN да
+  //    е факултетния номер, за да се генерират
+  //    сцената, земята и контурът на къщата ви
+  //
+  // 3. едва тогава почвайте да строите стените
+  //    и да добавяте исканите обекти по стаите
+  //
+  // 4. в init.js се прави глобален обект scene
+  //    и в него трябва да сложите обектите си!
+  //
+  // 5. кубът по-долу е само за пример как може
+  //    да се слагат обекти, които правят сянка
+
+  //wall material
+  const wallMaterial = new THREE.MeshPhongMaterial({color: 0xd2dfb4, shininess: 100});
+  //Bed materials
+  const bedFoundationMaterial = new THREE.MeshPhongMaterial({color: 'white', opacity: 0});
+
+  //Outside walls
+  const westWall11 = new THREE.BoxGeometry(0.2, 2, 3);
+  const westWall1Bottom = new THREE.BoxGeometry(0.2, 0.6, 2);
+  const westWall1Top = new THREE.BoxGeometry(0.2, 0.6, 2);
+  const westWall12 = new THREE.BoxGeometry(0.2, 2, 1);
+  const westWall2 = new THREE.BoxGeometry(0.2, 0.2, 1);
+  const westWall3 = new THREE.BoxGeometry(0.2, 2, 4);
+
+  const eastWall11 = new THREE.BoxGeometry(0.2, 2, 2);
+  const eastWall1Bottom = new THREE.BoxGeometry(0.2, 0.6, 2);
+  const eastWall1Top = new THREE.BoxGeometry(0.2, 0.6, 2);
+  const eastWall12 = new THREE.BoxGeometry(0.2, 2, 2);
+
+  const eastWall21 = new THREE.BoxGeometry(0.2, 2, 0.2);
+  const eastWall2Bottom = new THREE.BoxGeometry(0.2, 1.3, 1.1);
+  const eastWall2Top = new THREE.BoxGeometry(0.2, 0.2, 1.1);
+  const eastWall22 = new THREE.BoxGeometry(0.2, 2, 3.6);
+
+  const southWall1 = new THREE.BoxGeometry(0.2, 2, 4.2);
+
+  const southWall21 = new THREE.BoxGeometry(0.2, 2, 2);
+  const southWall2Bottom = new THREE.BoxGeometry(0.2, 0.6, 3);
+  const southWall2Top = new THREE.BoxGeometry(0.2, 0.6, 3);
+  const southWall22 = new THREE.BoxGeometry(0.2, 2, 2);
+
+  const northWall11 = new THREE.BoxGeometry(0.2, 2, 1.);
+  const northWall1Bottom = new THREE.BoxGeometry(0.2, 0.6, 1.5);
+  const northWall1Top = new THREE.BoxGeometry(0.2, 0.6, 1.5);
+  const northWall12 = new THREE.BoxGeometry(0.2, 2, 1.2);
+
+
+  const northWall3 = new THREE.BoxGeometry(0.2, 2, 4);
+
+  //Inside walls
+  const officeWall1 = new THREE.BoxBufferGeometry(0.2, 2, 0.2);
+  const officeWall2 = new THREE.BoxBufferGeometry(0.2, 0.2, 1);
+  const officeWall3 = new THREE.BoxBufferGeometry(0.2, 2, 4.6);
+  //Corridor
+  const corridorWall11 = new THREE.BoxBufferGeometry(0.2, 2, 5);
+  const corridorWall12 = new THREE.BoxBufferGeometry(0.2, 2, 1);
+  const corridorWall13 = new THREE.BoxBufferGeometry(0.2, 0.2, 1);
+
+  const corridorWall21 = new THREE.BoxBufferGeometry(0.2, 2, 1);
+  const corridorWall22 = new THREE.BoxBufferGeometry(0.2, 0.2, 1);
+  const corridorWall23 = new THREE.BoxBufferGeometry(0.2, 2, 3);
+  const corridorWall24 = new THREE.BoxBufferGeometry(0.2, 0.2, 1);
+  const corridorWall25 = new THREE.BoxBufferGeometry(0.2, 2, 1);
+
+  //Kitchen
+  const kitchenWall1 = new THREE.BoxBufferGeometry(0.2, 2, 4);
+  //living room
+  const livingRoomWall1 = new THREE.BoxBufferGeometry(0.2, 2, 4.25);
+  const livingRoomWall2 = new THREE.BoxBufferGeometry(0.2, 2, 1);
+  const livingRoomWall31 = new THREE.BoxBufferGeometry(0.2, 2, 0.55);
+  const livingRoomWall32 = new THREE.BoxBufferGeometry(0.2, 0.2, 1);
+  const livingRoomWall33 = new THREE.BoxBufferGeometry(0.2, 2, 0.75);
+  //Toilet
+  const toiletWall1 = new THREE.BoxBufferGeometry(0.2, 2, 0.6);
+  const toiletWall2 = new THREE.BoxBufferGeometry(0.2, 0.2, 1);
+  const toiletWall3 = new THREE.BoxBufferGeometry(0.2, 2, 0.5);
+
+  //Bed
+  const bedFoundation = new THREE.BoxBufferGeometry(2, 0.4, 1.8);
+
+  const westWall11Obj = new THREE.Mesh(westWall11, wallMaterial);
+  westWall11Obj.position.set(3.9, 1, 4.5);
+  westWall11Obj.receiveShadow = true;
+  westWall11Obj.castShadow = true;
+
+  const westWall1BottomObj = new THREE.Mesh(westWall1Bottom, wallMaterial);
+  westWall1BottomObj.position.set(3.9, 0.3, 2);
+  westWall1BottomObj.receiveShadow = true;
+  westWall1BottomObj.castShadow = true;
+
+  const westWall1TopObj = new THREE.Mesh(westWall1Top, wallMaterial);
+  westWall1TopObj.position.set(3.9, 1.7, 2);
+  westWall1TopObj.receiveShadow = true;
+  westWall1TopObj.castShadow = true;
+
+  const westWall12Obj = new THREE.Mesh(westWall12, wallMaterial);
+  westWall12Obj.position.set(3.9, 1, 0.5);
+  westWall12Obj.receiveShadow = true;
+  westWall12Obj.castShadow = true;
+
+  const westWall2Obj = new THREE.Mesh(westWall2, wallMaterial);
+  westWall2Obj.position.set(3.9, 1.9, -0.5);
+  westWall2Obj.receiveShadow = true;
+  westWall2Obj.castShadow = true;
+
+  const westWall3Obj = new THREE.Mesh(westWall3, wallMaterial);
+  westWall3Obj.position.set(3.9, 1, -3);
+  westWall3Obj.receiveShadow = true;
+  westWall3Obj.castShadow = true;
+
+  const eastWall11Obj = new THREE.Mesh(eastWall11, wallMaterial);
+  eastWall11Obj.position.set(-6.9, 1, -4);
+  eastWall11Obj.receiveShadow = true;
+  eastWall11Obj.castShadow = true;
+
+  const eastWall1BottomObj = new THREE.Mesh(eastWall1Bottom, wallMaterial);
+  eastWall1BottomObj.position.set(-6.9, 0.3, -2);
+  eastWall1BottomObj.receiveShadow = true;
+  eastWall1BottomObj.castShadow = true;
+
+  const eastWall1TopObj = new THREE.Mesh(eastWall1Top, wallMaterial);
+  eastWall1TopObj.position.set(-6.9, 1.7, -2);
+  eastWall1TopObj.receiveShadow = true;
+  eastWall1TopObj.castShadow = true;
+
+  const eastWall12Obj = new THREE.Mesh(eastWall12, wallMaterial);
+  eastWall12Obj.position.set(-6.9, 1, 0);
+  eastWall12Obj.receiveShadow = true;
+  eastWall12Obj.castShadow = true;
+
+  const eastWall21Obj = new THREE.Mesh(eastWall21, wallMaterial);
+  eastWall21Obj.position.set(-2.9, 1, 1.1);
+  eastWall21Obj.receiveShadow = true;
+  eastWall21Obj.castShadow = true;
+  eastWall21Obj.transparent = true;
+
+  const eastWall2BottomObj = new THREE.Mesh(eastWall2Bottom, wallMaterial);
+  eastWall2BottomObj.position.set(-2.9, 0.65, 1.7);
+  eastWall2BottomObj.receiveShadow = true;
+  eastWall2BottomObj.castShadow = true;
+  eastWall2BottomObj.transparent = true;
+
+  const eastWall2TopObj = new THREE.Mesh(eastWall2Top, wallMaterial);
+  eastWall2TopObj.position.set(-2.9, 1.9, 1.7);
+  eastWall2TopObj.receiveShadow = true;
+  eastWall2TopObj.castShadow = true;
+  eastWall2TopObj.transparent = true;
+
+  const eastWall22Obj = new THREE.Mesh(eastWall22, wallMaterial);
+  eastWall22Obj.position.set(-2.9, 1, 4);
+  eastWall22Obj.receiveShadow = true;
+  eastWall22Obj.castShadow = true;
+  eastWall22Obj.transparent = true;
+
+  const southWall1Obj = new THREE.Mesh(southWall1, wallMaterial);
+  southWall1Obj.position.set(-4.9, 1, 0.9);
+  southWall1Obj.receiveShadow = true;
+  southWall1Obj.castShadow = true;
+  southWall1Obj.rotateY(Math.PI / 2);
+
+  const southWall2Obj = new THREE.Mesh(southWall21, wallMaterial);
+  southWall2Obj.position.set(-2, 1, 5.9);
+  southWall2Obj.receiveShadow = true;
+  southWall2Obj.castShadow = true;
+  southWall2Obj.rotateY(Math.PI / 2);
+
+  const southWall2BottomObj = new THREE.Mesh(southWall2Bottom, wallMaterial);
+  southWall2BottomObj.position.set(0.5, 0.3, 5.9);
+  southWall2BottomObj.receiveShadow = true;
+  southWall2BottomObj.castShadow = true;
+  southWall2BottomObj.rotateY(Math.PI / 2);
+
+  const southWall2TopObj = new THREE.Mesh(southWall2Top, wallMaterial);
+  southWall2TopObj.position.set(0.5, 1.7, 5.9);
+  southWall2TopObj.receiveShadow = true;
+  southWall2TopObj.castShadow = true;
+  southWall2TopObj.rotateY(Math.PI / 2);
+
+  const southWall22Obj = new THREE.Mesh(southWall22, wallMaterial);
+  southWall22Obj.position.set(3, 1, 5.9);
+  southWall22Obj.receiveShadow = true;
+  southWall22Obj.castShadow = true;
+  southWall22Obj.rotateY(Math.PI / 2);
+
+  const northWall11Obj = new THREE.Mesh(northWall11, wallMaterial);
+  northWall11Obj.position.set(3.4, 1, -4.9);
+  northWall11Obj.receiveShadow = true;
+  northWall11Obj.castShadow = true;
+  northWall11Obj.rotateY(Math.PI / 2);
+
+  const northWall1BottomObj = new THREE.Mesh(northWall1Bottom, wallMaterial);
+  northWall1BottomObj.position.set(2.2, 0.3, -4.9);
+  northWall1BottomObj.receiveShadow = true;
+  northWall1BottomObj.castShadow = true;
+  northWall1BottomObj.rotateY(Math.PI / 2);
+
+  const northWall1TopObj = new THREE.Mesh(northWall1Top, wallMaterial);
+  northWall1TopObj.position.set(2.2, 1.7, -4.9);
+  northWall1TopObj.receiveShadow = true;
+  northWall1TopObj.castShadow = true;
+  northWall1TopObj.rotateY(Math.PI / 2);
+
+  const northWall12Obj = new THREE.Mesh(northWall12, wallMaterial);
+  northWall12Obj.position.set(1.2, 1, -4.9);
+  northWall12Obj.receiveShadow = true;
+  northWall12Obj.castShadow = true;
+  northWall12Obj.rotateY(Math.PI / 2);
+
+  const northWall21Obj = new THREE.Mesh(northWall11, wallMaterial);
+  northWall21Obj.position.set(0, 1, -4.9);
+  northWall21Obj.receiveShadow = true;
+  northWall21Obj.castShadow = true;
+  northWall21Obj.rotateY(Math.PI / 2);
+
+  const northWall2BottomObj = new THREE.Mesh(northWall1Bottom, wallMaterial);
+  northWall2BottomObj.position.set(-1.2, 0.3, -4.9);
+  northWall2BottomObj.receiveShadow = true;
+  northWall2BottomObj.castShadow = true;
+  northWall2BottomObj.rotateY(Math.PI / 2);
+
+  const northWall2TopObj = new THREE.Mesh(northWall1Top, wallMaterial);
+  northWall2TopObj.position.set(-1.2, 1.7, -4.9);
+  northWall2TopObj.receiveShadow = true;
+  northWall2TopObj.castShadow = true;
+  northWall2TopObj.rotateY(Math.PI / 2);
+
+  const northWall22Obj = new THREE.Mesh(northWall12, wallMaterial);
+  northWall22Obj.position.set(-2.5, 1, -4.9);
+  northWall22Obj.receiveShadow = true;
+  northWall22Obj.castShadow = true;
+  northWall22Obj.rotateY(Math.PI / 2);
+
+  const northWall3Obj = new THREE.Mesh(northWall3, wallMaterial);
+  northWall3Obj.position.set(-5, 1, -4.9);
+  northWall3Obj.receiveShadow = true;
+  northWall3Obj.castShadow = true;
+  northWall3Obj.rotateY(Math.PI / 2);
+
+  const corridorWall11Obj = new THREE.Mesh(corridorWall11, wallMaterial);
+  corridorWall11Obj.position.set(-0.5, 1, 0.9);
+  corridorWall11Obj.receiveShadow = true;
+  corridorWall11Obj.castShadow = true;
+  corridorWall11Obj.rotateY(Math.PI / 2);
+
+  const corridorWall12Obj = new THREE.Mesh(corridorWall12, wallMaterial);
+  corridorWall12Obj.position.set(3.5, 1, 0.9);
+  corridorWall12Obj.receiveShadow = true;
+  corridorWall12Obj.castShadow = true;
+  corridorWall12Obj.rotateY(Math.PI / 2);
+
+  const corridorWall13Obj = new THREE.Mesh(corridorWall13, wallMaterial);
+  corridorWall13Obj.position.set(2.5, 1.9, 0.9);
+  corridorWall13Obj.receiveShadow = true;
+  corridorWall13Obj.castShadow = true;
+  corridorWall13Obj.rotateY(Math.PI / 2);
+
+  const corridorWall21Obj = new THREE.Mesh(corridorWall21, wallMaterial);
+  corridorWall21Obj.position.set(-2.5, 1, -1);
+  corridorWall21Obj.receiveShadow = true;
+  corridorWall21Obj.castShadow = true;
+  corridorWall21Obj.rotateY(Math.PI / 2);
+
+  const corridorWall22Obj = new THREE.Mesh(corridorWall22, wallMaterial);
+  corridorWall22Obj.position.set(-1.5, 1.9, -1);
+  corridorWall22Obj.receiveShadow = true;
+  corridorWall22Obj.castShadow = true;
+  corridorWall22Obj.rotateY(Math.PI / 2);
+
+  const corridorWall23Obj = new THREE.Mesh(corridorWall23, wallMaterial);
+  corridorWall23Obj.position.set(0.5, 1, -1);
+  corridorWall23Obj.receiveShadow = true;
+  corridorWall23Obj.castShadow = true;
+  corridorWall23Obj.rotateY(Math.PI / 2);
+
+  const corridorWall24Obj = new THREE.Mesh(corridorWall24, wallMaterial);
+  corridorWall24Obj.position.set(2.5, 1.9, -1);
+  corridorWall24Obj.receiveShadow = true;
+  corridorWall24Obj.castShadow = true;
+  corridorWall24Obj.rotateY(Math.PI / 2);
+
+  const corridorWall25Obj = new THREE.Mesh(corridorWall25, wallMaterial);
+  corridorWall25Obj.position.set(3.5, 1, -1);
+  corridorWall25Obj.receiveShadow = true;
+  corridorWall25Obj.castShadow = true;
+  corridorWall25Obj.rotateY(Math.PI / 2);
+
+  const kitchenWallObj = new THREE.Mesh(kitchenWall1, wallMaterial);
+  kitchenWallObj.position.set(0.5, 1, -3);
+  kitchenWallObj.receiveShadow = true;
+  kitchenWallObj.castShadow = true;
+
+  const officeWallObj1 = new THREE.Mesh(officeWall1, wallMaterial);
+  officeWallObj1.position.set(-3, 1, 0.7);
+  officeWallObj1.receiveShadow = true;
+  officeWallObj1.castShadow = true;
+
+  const officeWallObj2 = new THREE.Mesh(officeWall2, wallMaterial);
+  officeWallObj2.position.set(-3, 1.9, 0.2);
+  officeWallObj2.receiveShadow = true;
+  officeWallObj2.castShadow = true;
+
+  const officeWallObj3 = new THREE.Mesh(officeWall3, wallMaterial);
+  officeWallObj3.position.set(-3, 1, -2.6);
+  officeWallObj3.receiveShadow = true;
+  officeWallObj3.castShadow = true;
+
+  const livingRoomWall1Obj = new THREE.Mesh(livingRoomWall1, wallMaterial);
+  livingRoomWall1Obj.position.set(-0.85, 1, 3);
+  livingRoomWall1Obj.receiveShadow = true;
+  livingRoomWall1Obj.castShadow = true;
+  livingRoomWall1Obj.rotateY(Math.PI / 2);
+
+  const livingRoomWall2Obj = new THREE.Mesh(livingRoomWall2, wallMaterial);
+  livingRoomWall2Obj.position.set(1.56, 1, 3.33);
+  livingRoomWall2Obj.receiveShadow = true;
+  livingRoomWall2Obj.castShadow = true;
+  livingRoomWall2Obj.rotateY(Math.PI / 4);
+
+  const livingRoomWall31Obj = new THREE.Mesh(livingRoomWall31, wallMaterial);
+  livingRoomWall31Obj.position.set(2.1, 1, 3.71);
+  livingRoomWall31Obj.receiveShadow = true;
+  livingRoomWall31Obj.castShadow = true;
+  livingRoomWall31Obj.rotateY(Math.PI / 2);
+
+  const livingRoomWall32Obj = new THREE.Mesh(livingRoomWall32, wallMaterial);
+  livingRoomWall32Obj.position.set(2.65, 1.9, 3.71);
+  livingRoomWall32Obj.receiveShadow = true;
+  livingRoomWall32Obj.castShadow = true;
+  livingRoomWall32Obj.rotateY(Math.PI / 2);
+
+  const livingRoomWall33Obj = new THREE.Mesh(livingRoomWall33, wallMaterial);
+  livingRoomWall33Obj.position.set(3.45, 1, 3.71);
+  livingRoomWall33Obj.receiveShadow = true;
+  livingRoomWall33Obj.castShadow = true;
+  livingRoomWall33Obj.rotateY(Math.PI / 2);
+
+  const toiletWall1Obj = new THREE.Mesh(toiletWall1, wallMaterial);
+  toiletWall1Obj.position.set(0, 1, 2.6);
+  toiletWall1Obj.receiveShadow = true;
+  toiletWall1Obj.castShadow = true;
+
+  const toiletWall2Obj = new THREE.Mesh(toiletWall2, wallMaterial);
+  toiletWall2Obj.position.set(0, 1.9, 1.9);
+  toiletWall2Obj.receiveShadow = true;
+  toiletWall2Obj.castShadow = true;
+
+  const toiletWall3Obj = new THREE.Mesh(toiletWall3, wallMaterial);
+  toiletWall3Obj.position.set(0, 1, 1.2);
+  toiletWall3Obj.receiveShadow = true;
+  toiletWall3Obj.castShadow = true;
+
+  const window1 = new WindowPanel(3, 0.7, 4);
+  const window1Obj = window1.getObject();
+  window1Obj.position.set(0.5, 1, 5.9)
+  window1Obj.receiveShadow = true;
+  window1Obj.castShadow = true;
+
+  const window2 = new WindowPanel(1, 0.54, 1);
+  const window2Obj = window2.getObject();
+  window2Obj.position.set(-2.9, 1.53, 1.7)
+  window2Obj.rotateY(Math.PI / 2);
+  window2Obj.receiveShadow = true;
+  window2Obj.castShadow = true;
+
+  const window3 = new WindowPanel(1.1, 0.75, 2);
+  const window3Obj = window3.getObject();
+  window3Obj.position.set(2.39, 1, -4.9);
+  window3Obj.receiveShadow = true;
+  window3Obj.castShadow = true;
+
+  const window4 = new WindowPanel(1.3, 0.75, 2);
+  const window4Obj = window4.getObject();
+  window4Obj.position.set(-1.2, 1, -4.9);
+  window4Obj.receiveShadow = true;
+  window4Obj.castShadow = true;
+
+  const window5 = new WindowPanel(2, 0.75, 3);
+  const window5Obj = window5.getObject();
+  window5Obj.position.set(-6.9, 1, -2);
+  window5Obj.rotateY(Math.PI / 2);
+  window5Obj.receiveShadow = true;
+  window5Obj.castShadow = true;
+
+  const window6 = new WindowPanel(2, 0.75, 3);
+  const window6Obj = window6.getObject();
+  window6Obj.position.set(3.9, 1, 2);
+  window6Obj.rotateY(Math.PI / 2);
+  window6Obj.receiveShadow = true;
+  window6Obj.castShadow = true;
+
+  const bed1 = new Bed(1.8, 1, 1, 0xc6ab7e, 0xd0cfca, 0xd0cfca);
+  const bed1Obj = bed1.getObject();
+  bed1Obj.position.set(1.1, 0.3, -3.9);
+  bed1Obj.rotateY(Math.PI / 2);
+  bed1Obj.receiveShadow = true;
+  bed1Obj.castShadow = true;
+
+  const bed2 = new Bed(1.8, 1, 1, 0x71647d, 0x4f4f4d, 0x4f4f4d);
+  const bed2Obj = bed2.getObject();
+  bed2Obj.position.set(3.3, 0.3, -3.9);
+  bed2Obj.rotateY(Math.PI / 2);
+  bed2Obj.receiveShadow = true;
+  bed2Obj.castShadow = true;
+
+  const bed3 = new Bed(1.8, 2, 2, 0xbbeedd, 0xffcff1, 0xffcff1);
+  const bed3Obj = bed3.getObject();
+  bed3Obj.position.set(-1.25, 0.3, -3.9);
+  bed3Obj.rotateY(Math.PI / 2);
+  bed3Obj.receiveShadow = true;
+  bed3Obj.castShadow = true;
+
+  const fireplace = new Fireplace(0.9, 2);
+  const fireplaceObj = fireplace.getObject();
+  fireplaceObj.position.set(-5, 1, 0.5);
+  fireplaceObj.receiveShadow = true;
+  fireplaceObj.castShadow = true;
+
+  const chair = new Chair(0xffcff1);
+  const chair1Obj = chair.getObject();
+  chair1Obj.position.set(0, 0.3, 4.5);
+  chair1Obj.receiveShadow = true;
+  chair1Obj.castShadow = true;
+
+  const chair2Obj = chair1Obj.clone();
+  chair2Obj.position.set(0, 0.3, 5.5);
+  chair2Obj.rotateY(2 * Math.PI / 2);
+  chair2Obj.receiveShadow = true;
+  chair2Obj.castShadow = true;
+
+  const chair3Obj = chair1Obj.clone();
+  chair3Obj.position.set(-0.5, 0.3, 5);
+  chair3Obj.rotateY(Math.PI / 2);
+  chair3Obj.receiveShadow = true;
+  chair3Obj.castShadow = true;
+
+  const chair4Obj = chair1Obj.clone();
+  chair4Obj.position.set(0.5, 0.3, 5);
+  chair4Obj.rotateY(-Math.PI / 2);
+  chair4Obj.receiveShadow = true;
+  chair4Obj.castShadow = true;
+
+  const table1 = new Table(1, 0.8, true, 'crimson');
+  const table1Obj = table1.getObject();
+  table1Obj.position.set(0, 0.6, 5);
+  table1Obj.receiveShadow = true;
+  table1Obj.castShadow = true;
+
+  const painting1 = new Painting(0.4, 0.5, 0.01, "https://images.unsplash.com/photo-1618331833071-ce81bd50d300?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8YWJzdHJhY3QlMjBhcnR8ZW58MHx8MHx8&w=1000&q=80");
+  const painting1Obj = painting1.getObject();
+  painting1Obj.position.set(-2, 1.4, 3.1);
+
+  const painting2 = new Painting(0.5, 0.3, 0.01, "https://cpb-us-e2.wpmucdn.com/newsevents.illinoisstate.edu/dist/c/2/files/2017/09/abstract-art-scholar.jpg");
+  const painting2Obj = painting2.getObject();
+  painting2Obj.position.set(-1.3, 1.4, 3.1);
+
+  const painting3 = new Painting(0.5, 0.5, 0.01, "/materials/gochev1.jpg");
+  const painting3Obj = painting3.getObject();
+  painting3Obj.position.set(-0.5, 1.4, 3.1);
+
+  const painting4 = new Painting(0.6, 0.4, 0.01, "/materials/kandinsky.jpg");
+  const painting4Obj = painting4.getObject();
+  painting4Obj.position.set(0.3, 1.4, 3.1);
+
+  const painting5 = new Painting(0.8, 1, 0.05, "/materials/saturn.jpg");
+  const painting5Obj = painting5.getObject();
+  painting5Obj.position.set(-5, 1.3, -4.8);
+
+  const painting6 = new Painting(0.8, 1, 0.05, "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Visi%C3%B3n_fantasmal_por_Francisco_de_Goya.jpg/800px-Visi%C3%B3n_fantasmal_por_Francisco_de_Goya.jpg");
+  const painting6Obj = painting6.getObject();
+  painting6Obj.position.set(1, 1.3, 0.8);
+  painting6Obj.rotateY(-2 * Math.PI / 2);
+
+  const painting7 = new Painting(0.4, 0.6, 0.02, "https://media.nga.gov/iiif/7f6da94c-914c-48e3-88ff-fbe75e4ed079/full/!740,560/0/default.jpg");
+  const painting7Obj = painting7.getObject();
+  painting7Obj.position.set(-2.9, 1.3, -2);
+  painting7Obj.rotateY(Math.PI / 2);
+
+  const painting8 = new Painting(0.7, 0.4, 0.02, "https://cdn.shopify.com/s/files/1/1016/1455/collections/imagesTZL4D1NH.jpg?v=1624171120");
+  const painting8Obj = painting8.getObject();
+  painting8Obj.position.set(-2.9, 1.3, -3);
+  painting8Obj.rotateY(Math.PI / 2);
+
+  const painting9 = new Painting(2, 0.8, 0.06, "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Claude_Monet_-_Stacks_of_Wheat_%28End_of_Summer%29_-_1985.1103_-_Art_Institute_of_Chicago.jpg/1200px-Claude_Monet_-_Stacks_of_Wheat_%28End_of_Summer%29_-_1985.1103_-_Art_Institute_of_Chicago.jpg");
+  const painting9Obj = painting9.getObject();
+  painting9Obj.position.set(0.4, 1.3, -3);
+  painting9Obj.rotateY(-Math.PI / 2);
+
+  const painting10 = new Painting(0.6, 0.6, 0.02, "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Piet_Mondriaan%2C_1942_-_New_York_City_I.jpg/220px-Piet_Mondriaan%2C_1942_-_New_York_City_I.jpg");
+  const painting10Obj = painting10.getObject();
+  painting10Obj.position.set(3.8, 1.3, -3);
+  painting10Obj.rotateY(-Math.PI / 2);
+
+  const painting11 = new Painting(0.4, 0.4, 0.02, "/materials/mondrian.jpg");
+  const painting11Obj = painting11.getObject();
+  painting11Obj.position.set(3.8, 1.3, -2.2);
+  painting11Obj.rotateY(-Math.PI / 2);
+
+  const painting12 = new Painting(0.6, 0.4, 0.02, "https://upload.wikimedia.org/wikipedia/commons/4/47/Piet_Mondriaan_-_03.jpg");
+  const painting12Obj = painting12.getObject();
+  painting12Obj.position.set(3.8, 1.3, -4);
+  painting12Obj.rotateY(-Math.PI / 2);
+
+  const painting13 = new Painting(0.5, 0.6, 0.02, "https://iiif.micr.io/TZCqF/full/1280,/0/default.jpg");
+  const painting13Obj = painting13.getObject();
+  painting13Obj.position.set(0.6, 1.3, -2);
+  painting13Obj.rotateY(Math.PI / 2);
+
+  const painting14 = new Painting(0.7, 0.4, 0.02, "/materials/van-gogh1.jpg");
+  const painting14Obj = painting14.getObject();
+  painting14Obj.position.set(0.6, 1.3, -3);
+  painting14Obj.rotateY(Math.PI / 2);
+
+  const desk1 = new Desk(2, 0.8, 3);
+  const desk1Obj = desk1.getObject();
+  desk1Obj.position.set(-4.2, 0.6, -3.5);
+  // desk1Obj.position.set(5,5,0);
+
+  const desk2 = new Desk(1.2, 0.4, 4);
+  const desk2Obj = desk2.getObject();
+  desk2Obj.position.set(1.25, 0.6, -1.3);
+  // desk2Obj.position.set(3,5, 0);
+  const desk3Obj = desk2Obj.clone();
+  desk3Obj.position.set(3.7, 0.6, -1.7);
+  desk3Obj.rotateY(Math.PI / 2);
+
+  const chair5 = new Chair(0x000000);
+  const chair5Obj = chair5.getObject();
+  chair5Obj.position.set(-4.5, 0.3, -4);
+
+  const chair6 = new Chair(0x123fa2);
+  const chair6Obj = chair6.getObject();
+  chair6Obj.position.set(1, 0.3, -1.5);
+
+  const chair7 = new Chair(0xfa2bb3);
+  const chair7Obj = chair7.getObject();
+  chair7Obj.position.set(3.5, 0.3, -1.5);
+  chair7Obj.rotateY(Math.PI / 2);
+
+  const kitchenFloor1 = new Flooring(4, 0.01, 3, "https://t4.ftcdn.net/jpg/01/97/71/71/360_F_197717166_UowHyPmYH2g6b2bH3kgXD1Mcbh1UDtLY.jpg").getObject();
+  kitchenFloor1.position.set(-1,0.01,4.5);
+
+  const kitchenFloor2 = new Flooring(3, 0.01, 2.5, "https://t4.ftcdn.net/jpg/01/97/71/71/360_F_197717166_UowHyPmYH2g6b2bH3kgXD1Mcbh1UDtLY.jpg").getObject();
+  kitchenFloor2.position.set(2.5, 0.01, 4.6);
+
+  const frontFloor = new Flooring(4, 0.01, 8, "https://t4.ftcdn.net/jpg/01/97/71/71/360_F_197717166_UowHyPmYH2g6b2bH3kgXD1Mcbh1UDtLY.jpg").getObject();
+  frontFloor.position.set(2,0.01,-0.6);
+
+  const backFloor = new Flooring(7, 0.01, 6, "https://t4.ftcdn.net/jpg/01/97/71/71/360_F_197717166_UowHyPmYH2g6b2bH3kgXD1Mcbh1UDtLY.jpg").getObject();
+  backFloor.position.set(-3.4,0.01,-2);
+
+  const bathRoomFloor = new Flooring(3, 0.01, 2, "https://img.cgaxis.com/2019/02/black_tiles_3_diffuse.jpg").getObject();
+  bathRoomFloor.position.set(-1.5,0.01,2);
+  const leftWallToilet = new Flooring(0.01, 2, 2.7, "https://img.cgaxis.com/2019/02/black_tiles_3_diffuse.jpg").getObject();
+  leftWallToilet.position.set(-1.5,1,2.9);
+  leftWallToilet.rotateY(Math.PI/2);
+
+  const rightWallToilet = leftWallToilet.clone();
+  rightWallToilet.position.set(-1.5,1,1);
+
+  const backWallToilet1 = new Flooring(2, 1.4, 0.01, "https://img.cgaxis.com/2019/02/black_tiles_3_diffuse.jpg").getObject();
+  backWallToilet1.position.set(-2.8,0.51,1.9);
+  backWallToilet1.rotateY(Math.PI/2);
+
+  const backWallToilet2 = new Flooring(0.67, 0.8, 0.01, "https://img.cgaxis.com/2019/02/black_tiles_3_diffuse.jpg").getObject();
+  backWallToilet2.position.set(-2.8,1.6,2.57);
+  backWallToilet2.rotateY(Math.PI/2);
+
+  const backWallToilet3 = new Flooring(1.33, 0.2, 0.01, "https://img.cgaxis.com/2019/02/black_tiles_3_diffuse.jpg").getObject();
+  backWallToilet3.position.set(-2.8,1.9,1.65);
+  backWallToilet3.rotateY(Math.PI/2);
+
+  const backWallToilet4 = new Flooring(0.2, 0.6, 0.01, "https://img.cgaxis.com/2019/02/black_tiles_3_diffuse.jpg").getObject();
+  backWallToilet4.position.set(-2.8,1.5,1.1);
+  backWallToilet4.rotateY(Math.PI/2);
+
+  const cupboard1 = new Cupboard(1.6,1.2,0.3,3,2, 0).getObject();
+  cupboard1.position.set(-3.3,0.62,-1.5);
+  cupboard1.rotateY(Math.PI/2);
+
+  const cupboard2 = new Cupboard(1.6,0.5,0.3,1,3, 0).getObject();
+  cupboard2.position.set(0,0.26,3.25);
+
+  const shoeCupboard = new Cupboard(0.75,0.6,0.25,4,3, 0).getObject();
+  shoeCupboard.position.set(3.4,0.32,0.65);
+
+  const monitor1 = new Monitor(0.8,false, "/materials/windows-desktop.jpg").getObject();
+  monitor1.position.set(-4,0.95,-3.3);
+  monitor1.rotateY(2*Math.PI/2);
+
+  const TV = new Monitor(1.2, true, "https://iatkv.tmgrup.com.tr/d9387f/0/0/0/0/625/417?u=https%3A%2F%2Fitkv.tmgrup.com.tr%2F2021%2F01%2F07%2Fyaprak-dokumu-ali-riza-bey-kim-yaprak-dokumu-ali-riza-bey-kac-yasinda-nereli-1610021741176.jpg&mw=616").getObject();
+  TV.position.set(0,0.85,3.2);
+
+  const kitchenCupboard = new Cupboard(1, 0.8 , 0.5, 3, 2, true).getObject();
+  kitchenCupboard.position.set(-2.5,0.42,5.3);
+  kitchenCupboard.rotateY(-Math.PI/2);
+
+  const kitchenCupboardWall = new Cupboard(2.6, 0.4 , 0.3, 1, 4, true).getObject();
+  kitchenCupboardWall.position.set(-2.6,1.6,4.45);
+  kitchenCupboardWall.rotateY(-Math.PI/2);
+
+  const bedsideTable1 = new Cupboard(0.5, 0.5,0.5, 2, 1, true).getObject();
+  bedsideTable1.position.set(-2.55,0.26,-4.5);
+  bedsideTable1.rotateY(2*Math.PI/2);
+
+  const bedsideTable2 = bedsideTable1.clone();
+  bedsideTable2.position.set(0.05,0.26,-4.5);
+
+  const bedsideTable3 = new Cupboard(1, 0.5, 0.3, 2, 3, true).getObject();
+  bedsideTable3.position.set(2.2,0.26,-4.5);
+  bedsideTable3.rotateY(2*Math.PI/2);
+
+  const furnace = new Furnace(0.8, 0.8, 0.5).getObject();
+  furnace.position.set(-2.5,0.42,4.35);
+  furnace.rotateY(Math.PI/2);
+
+  const sinkKitchen = new Sink(0.8,0.8,0.5).getObject();
+  const sinkToilet = sinkKitchen.clone();
+
+  sinkKitchen.position.set(-2.5,0.42,3.53);
+  sinkKitchen.rotateY(-Math.PI /2);
+
+  sinkToilet.position.set(-1.5, 0.42, 2.7);
+
+  const wardrobe = new Cupboard(1.1, 1.7, 0.4, 1 , 2 , true).getObject();
+  wardrobe.position.set(-0.2, 0.86, -1.3);
+
+  const bedroomChair = new Chair('white').getObject();
+  bedroomChair.position.set(-2.3, 0.5, -1.47);
+  bedroomChair.rotateY(2*Math.PI/2);
+  bedroomChair.rotateX(-Math.PI / 8);
+
+  const luggage1 = new LuggageWithWheels(0.4, 0.5, 0.2, 'red', 2).getObject();
+  luggage1.position.set(0,0.3,0);
+
+  //TODO: Make briefcase, roaches
+  //TODO: Fix floorings
+
+  const toilet = Toilet.getObject();
+  toilet.position.set(-2.5,0.5,2);
+  toilet.rotateY(-Math.PI/2);
+  scene.add(toilet);
+
+  scene.add(bedsideTable2);
+  scene.add(luggage1);
+  scene.add(wardrobe);
+  scene.add(bedroomChair);
+  scene.add(sinkKitchen);
+  scene.add(sinkToilet);
+  scene.add(furnace);
+  scene.add(bedsideTable1);
+  scene.add(bedsideTable3);
+  scene.add(kitchenCupboard);
+  scene.add(kitchenCupboardWall);
+  scene.add(monitor1);
+  scene.add(TV);
+  scene.add(cupboard1);
+  scene.add(cupboard2);
+  scene.add(shoeCupboard);
+  scene.add(kitchenFloor1);
+  scene.add(kitchenFloor2);
+  scene.add(frontFloor);
+  scene.add(backFloor);
+  scene.add(bathRoomFloor);
+  scene.add(leftWallToilet);
+  scene.add(rightWallToilet);
+  scene.add(backWallToilet1);
+  scene.add(backWallToilet2);
+  scene.add(backWallToilet3);
+  scene.add(backWallToilet4);
+
+  scene.add(chair5Obj);
+  scene.add(chair6Obj);
+  scene.add(chair7Obj);
+  scene.add(desk2Obj);
+  scene.add(desk3Obj);
+  scene.add(desk1Obj);
+  scene.add(painting1Obj)
+  scene.add(painting2Obj)
+  scene.add(painting3Obj)
+  scene.add(painting4Obj)
+  scene.add(painting5Obj)
+  scene.add(painting6Obj)
+  scene.add(painting7Obj)
+  scene.add(painting8Obj)
+  scene.add(painting9Obj)
+  scene.add(painting10Obj)
+  scene.add(painting11Obj)
+  scene.add(painting12Obj)
+  scene.add(painting13Obj)
+  scene.add(painting14Obj)
+
+  scene.add(table1Obj);
+
+  scene.add(chair1Obj);
+  scene.add(chair2Obj);
+  scene.add(chair3Obj);
+  scene.add(chair4Obj);
+
+  scene.add(fireplaceObj);
+  scene.add(bed1Obj);
+  scene.add(bed2Obj);
+  scene.add(bed3Obj);
+
+  scene.add(window1Obj);
+  scene.add(window2Obj);
+  scene.add(window3Obj);
+  scene.add(window4Obj);
+  scene.add(window5Obj);
+  scene.add(window6Obj);
+
+  scene.add(westWall11Obj);
+  scene.add(westWall1BottomObj);
+  scene.add(westWall1TopObj);
+  scene.add(westWall12Obj);
+
+  scene.add(westWall2Obj);
+  scene.add(westWall3Obj);
+
+  scene.add(eastWall11Obj);
+  scene.add(eastWall1BottomObj);
+  scene.add(eastWall1TopObj);
+  scene.add(eastWall12Obj);
+
+  scene.add(eastWall21Obj);
+  scene.add(eastWall2BottomObj);
+  scene.add(eastWall2TopObj);
+  scene.add(eastWall22Obj);
+
+  scene.add(southWall1Obj);
+  scene.add(southWall2Obj);
+  scene.add(southWall2BottomObj);
+  scene.add(southWall2TopObj);
+  scene.add(southWall22Obj);
+
+  scene.add(northWall11Obj);
+  scene.add(northWall1BottomObj);
+  scene.add(northWall1TopObj);
+  scene.add(northWall12Obj);
+
+  scene.add(northWall21Obj);
+  scene.add(northWall2BottomObj);
+  scene.add(northWall2TopObj);
+  scene.add(northWall22Obj);
+
+  scene.add(northWall3Obj);
+
+  scene.add(corridorWall11Obj);
+  scene.add(corridorWall12Obj);
+  scene.add(corridorWall13Obj);
+
+  scene.add(corridorWall21Obj);
+  scene.add(corridorWall22Obj);
+  scene.add(corridorWall23Obj);
+  scene.add(corridorWall24Obj);
+  scene.add(corridorWall25Obj);
+
+  scene.add(kitchenWallObj);
+
+  scene.add(officeWallObj1);
+  scene.add(officeWallObj2);
+  scene.add(officeWallObj3);
+
+  scene.add(livingRoomWall1Obj);
+  scene.add(livingRoomWall2Obj);
+
+  scene.add(livingRoomWall31Obj);
+  scene.add(livingRoomWall32Obj);
+  scene.add(livingRoomWall33Obj);
+
+  scene.add(toiletWall1Obj);
+  scene.add(toiletWall2Obj);
+  scene.add(toiletWall3Obj);
+</script>
+
+</body>
+</html>
+
+
