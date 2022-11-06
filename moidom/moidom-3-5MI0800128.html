@@ -50,14 +50,17 @@
     }
 
     getObject() {
-      const foundation = new THREE.BoxBufferGeometry(this.width -0.05 , 0.01, this.depth - 0.05);
-      const frontElement = new THREE.BoxBufferGeometry(this.width - 0.05 , this.height , 0.01);
+      const foundation = new THREE.BoxBufferGeometry(this.width - 0.05, 0.01, this.depth - 0.05);
+      const frontElement = new THREE.BoxBufferGeometry(this.width - 0.05, this.height, 0.01);
       const backElement = new THREE.BoxBufferGeometry(this.width - 0.02, this.height - 0.02, 0.01);
       const sideElement = new THREE.BoxBufferGeometry(0.01, this.height - 0.02, this.depth);
       const handle = new THREE.TorusBufferGeometry(0.01, 0.03, 6, 6, 6);
 
       const textureLoader = new THREE.TextureLoader();
-      const whiteWoodMaterial = new THREE.MeshPhongMaterial({ color: 'white', map: textureLoader.load("https://previews.123rf.com/images/elovich/elovich1702/elovich170200021/71391404-white-wood-texture-background.jpg")});
+      const whiteWoodMaterial = new THREE.MeshPhongMaterial({
+        color: 'white',
+        map: textureLoader.load("https://previews.123rf.com/images/elovich/elovich1702/elovich170200021/71391404-white-wood-texture-background.jpg")
+      });
       const handleMaterial = new THREE.MeshPhongMaterial({
         color: 0x000000,
         map: textureLoader.load("https://t3.ftcdn.net/jpg/01/69/06/26/360_F_169062682_aSDNbOgX9YYOPcZA9XocMOo3hLWE7lkY.jpg")
@@ -70,12 +73,12 @@
       const back = new THREE.Mesh(backElement, whiteWoodMaterial);
       const handleObj = new THREE.Mesh(handle, handleMaterial);
 
-      foundationObj.position.set(0,-this.height/2 + 0.05,0);
-      sideLeft.position.set(-this.width/2 + 0.05, 0, 0);
-      sideRight.position.set(this.width/2 - 0.05, 0, 0);
-      back.position.set(0, 0, this.depth/2 );
-      front.position.set(0, 0, -this.depth/2 );
-      handleObj.position.set(0, 0, -this.depth/2 );
+      foundationObj.position.set(0, -this.height / 2 + 0.05, 0);
+      sideLeft.position.set(-this.width / 2 + 0.05, 0, 0);
+      sideRight.position.set(this.width / 2 - 0.05, 0, 0);
+      back.position.set(0, 0, this.depth / 2);
+      front.position.set(0, 0, -this.depth / 2);
+      handleObj.position.set(0, 0, -this.depth / 2);
 
       sideLeft.castShadow = true;
       sideLeft.receiveShadow = true;
@@ -99,6 +102,7 @@
         .add(handleObj);
     }
   }
+
   //Fireplace class
   class Fireplace {
     width;
@@ -111,20 +115,20 @@
 
     //TODO: Add bars
     getObject() {
-      const foundationHeight = this.height/3;
-      const foundationSide = new THREE.BoxBufferGeometry(this.width/6, foundationHeight, this.width);
-      const foundationBack = new THREE.BoxBufferGeometry(this.width, foundationHeight, this.width/6);
-      const foundationBottom = new THREE.BoxBufferGeometry(this.width - 2* this.width/6, foundationHeight/6, this.width - this.width/6);
+      const foundationHeight = this.height / 3;
+      const foundationSide = new THREE.BoxBufferGeometry(this.width / 6, foundationHeight, this.width);
+      const foundationBack = new THREE.BoxBufferGeometry(this.width, foundationHeight, this.width / 6);
+      const foundationBottom = new THREE.BoxBufferGeometry(this.width - 2 * this.width / 6, foundationHeight / 6, this.width - this.width / 6);
 
-      let connector = new THREE.ConeGeometry(this.width * Math.sqrt(2)/2, this.height/3, 4);
-      const chimney = new THREE.BoxBufferGeometry(this.width/2, this.height/3 + 0.3, 0.4);
+      let connector = new THREE.ConeGeometry(this.width * Math.sqrt(2) / 2, this.height / 3, 4);
+      const chimney = new THREE.BoxBufferGeometry(this.width / 2, this.height / 3 + 0.3, 0.4);
 
       const textureLoader = new THREE.TextureLoader();
       const brickTexture = textureLoader.load("https://images.unsplash.com/photo-1495578942200-c5f5d2137def?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8YnJpY2slMjB0ZXh0dXJlfGVufDB8fDB8fA%3D%3D&w=1000&q=80");
       brickTexture.wrapS = THREE.RepeatWrapping;
       brickTexture.wrapT = THREE.RepeatWrapping;
-      brickTexture.repeat.set(1,2);
-      const material = new THREE.MeshPhongMaterial({ map: brickTexture});
+      brickTexture.repeat.set(1, 2);
+      const material = new THREE.MeshPhongMaterial({map: brickTexture});
 
       const foundationLeft = new THREE.Mesh(foundationSide, material);
       const foundationRight = new THREE.Mesh(foundationSide, material);
@@ -148,12 +152,12 @@
       chimneyObj.castShadow = true;
       chimneyObj.receiveShadow = true;
 
-      foundationLeft.position.set(-this.width/2 + this.width/12,-this.height/3,0);
-      foundationRight.position.set(this.width/2 - this.width/12,-this.height/3,0);
-      foundationBackObj.position.set(0,-this.height/3, this.width/2 - this.width/6);
-      foundationBottomObj.position.set(0,-this.height/2 + foundationHeight/12,0);
-      chimneyObj.position.set(0,this.height/3- 0.3,0);
-      connectorObj.rotateY(Math.PI/4);
+      foundationLeft.position.set(-this.width / 2 + this.width / 12, -this.height / 3, 0);
+      foundationRight.position.set(this.width / 2 - this.width / 12, -this.height / 3, 0);
+      foundationBackObj.position.set(0, -this.height / 3, this.width / 2 - this.width / 6);
+      foundationBottomObj.position.set(0, -this.height / 2 + foundationHeight / 12, 0);
+      chimneyObj.position.set(0, this.height / 3 - 0.3, 0);
+      connectorObj.rotateY(Math.PI / 4);
       return new THREE.Group()
         .add(foundationLeft)
         .add(foundationRight)
@@ -177,6 +181,7 @@
       this.depth = depth;
       this.image = image;
     }
+
     getObject() {
       const flooring = new THREE.BoxBufferGeometry(this.width, this.height, this.depth);
 
@@ -184,7 +189,7 @@
       const flooringTexture = textureLoader.load(this.image);
       flooringTexture.wrapS = THREE.RepeatWrapping;
       flooringTexture.wrapT = THREE.RepeatWrapping;
-      flooringTexture.repeat.set(3,4);
+      flooringTexture.repeat.set(3, 4);
       const flooringMaterial = new THREE.MeshPhongMaterial({map: flooringTexture});
 
       const flooringObj = new THREE.Mesh(flooring, flooringMaterial);
@@ -201,6 +206,7 @@
     height;
     depth;
     levels;
+
     constructor(width, height, depth, levels) {
       this.width = width;
       this.height = height;
@@ -210,11 +216,11 @@
 
     //TODO: kotloni, and a handle
     getObject() {
-      const heightLongSide = this.height - 2*this.height/5;
-      const widthLongSide = this.width/8;
-      const heightShortSide = this.height/5;
+      const heightLongSide = this.height - 2 * this.height / 5;
+      const widthLongSide = this.width / 8;
+      const heightShortSide = this.height / 5;
       const widthShortSide = this.width;
-      const heightInside = this.height - heightShortSide*2;
+      const heightInside = this.height - heightShortSide * 2;
 
       const widthGeometry = new THREE.BoxBufferGeometry(widthShortSide, heightShortSide, this.depth);
       const heightGeometry = new THREE.BoxBufferGeometry(widthLongSide, heightLongSide, this.depth);
@@ -225,7 +231,13 @@
       const textureLoader = new THREE.TextureLoader();
       const furnaceMaterial = new THREE.MeshPhongMaterial({color: 0x333333});
       const sidesMaterial = new THREE.MeshPhongMaterial({color: 0xC0C0C0, shininess: 100, specular: 0xffffff});
-      const glassMaterial = new THREE.MeshPhongMaterial({color: 0xC7E3E1, shininess: 100, specular: 'cyan', transparent: true, opacity: 0.2})
+      const glassMaterial = new THREE.MeshPhongMaterial({
+        color: 0xC7E3E1,
+        shininess: 100,
+        specular: 'cyan',
+        transparent: true,
+        opacity: 0.2
+      })
 
       const topObj = new THREE.Mesh(widthGeometry, furnaceMaterial);
       const bottomObj = topObj.clone();
@@ -233,23 +245,23 @@
       const rightObj = leftObj.clone();
       const glassObj = new THREE.Mesh(visibleGeometry, glassMaterial);
       const backObj = new THREE.Mesh(back, furnaceMaterial);
-      const button1Obj = new THREE.Mesh(buttonGeometry,sidesMaterial);
+      const button1Obj = new THREE.Mesh(buttonGeometry, sidesMaterial);
       const button2Obj = button1Obj.clone();
       const button3Obj = button1Obj.clone();
       const button4Obj = button1Obj.clone();
 
-      button1Obj.position.set(-this.width/2 + 0.1, this.height/2 - 0.1, this.depth/2);
-      button2Obj.position.set(-this.width/2 + 0.2, this.height/2 - 0.1, this.depth/2);
-      button3Obj.position.set(-this.width/2 + 0.3, this.height/2 - 0.1, this.depth/2);
-      button4Obj.position.set(-this.width/2 + 0.4, this.height/2 - 0.1, this.depth/2);
+      button1Obj.position.set(-this.width / 2 + 0.1, this.height / 2 - 0.1, this.depth / 2);
+      button2Obj.position.set(-this.width / 2 + 0.2, this.height / 2 - 0.1, this.depth / 2);
+      button3Obj.position.set(-this.width / 2 + 0.3, this.height / 2 - 0.1, this.depth / 2);
+      button4Obj.position.set(-this.width / 2 + 0.4, this.height / 2 - 0.1, this.depth / 2);
 
 
-      topObj.position.set(0, this.height/2 - heightShortSide/2, 0);
-      bottomObj.position.set(0, -this.height/2 + heightShortSide/2, 0);
-      leftObj.position.set(-this.width/2 + widthLongSide/2,0,0);
-      rightObj.position.set(this.width/2 - widthLongSide/2,0,0);
-      backObj.position.set(0,0.1,-this.depth/2 + 0.05);
-      glassObj.position.set(0,0, this.depth/2);
+      topObj.position.set(0, this.height / 2 - heightShortSide / 2, 0);
+      bottomObj.position.set(0, -this.height / 2 + heightShortSide / 2, 0);
+      leftObj.position.set(-this.width / 2 + widthLongSide / 2, 0, 0);
+      rightObj.position.set(this.width / 2 - widthLongSide / 2, 0, 0);
+      backObj.position.set(0, 0.1, -this.depth / 2 + 0.05);
+      glassObj.position.set(0, 0, this.depth / 2);
 
       topObj.castShadow = true;
       topObj.receiveShadow = true;
@@ -278,8 +290,8 @@
         .add(button4Obj);
 
       for (let i = 0; i < 2; i++) {
-        const sheet = new FurnaceSheet(this.width - 2*widthLongSide, this.depth, 6,6).getObject();
-        sheet.position.set(0, this.height/2 - (heightInside/2) * (i + 1), 0);
+        const sheet = new FurnaceSheet(this.width - 2 * widthLongSide, this.depth, 6, 6).getObject();
+        sheet.position.set(0, this.height / 2 - (heightInside / 2) * (i + 1), 0);
         furnaceGroup.add(sheet);
       }
 
@@ -310,10 +322,10 @@
       const seatObj = new THREE.Mesh(seat, new THREE.MeshPhongMaterial({color: 0x666666, map: toiletTexture}));
       const upperObj = new THREE.Mesh(upper, fayansMaterial);
 
-      foundationObj.position.set(0, -height/2,0);
-      seatFoundationObj.position.set(0, -height/2 + 0.3, 0);
-      seatObj.position.set(0,-height/2 + 0.375, -0.1);
-      upperObj.position.set(0, height/2 - 0.4, depth/2 - 0.1);
+      foundationObj.position.set(0, -height / 2, 0);
+      seatFoundationObj.position.set(0, -height / 2 + 0.3, 0);
+      seatObj.position.set(0, -height / 2 + 0.375, -0.1);
+      upperObj.position.set(0, height / 2 - 0.4, depth / 2 - 0.1);
 
       foundationObj.receiveShadow = true;
       foundationObj.castShadow = true;
@@ -377,7 +389,7 @@
       for (let i = 0; i < this.numberOfPanels - 1; i++) {
         const helperHorizontal = new THREE.BoxBufferGeometry(0.1, this.heightPanel, 0.22);
         const helperHorizontalObj = new THREE.Mesh(helperHorizontal, frameMaterial);
-        helperHorizontalObj.position.set(-this.widthPanel/2 + this.widthPanel/this.numberOfPanels * (i + 1), 0, 0);
+        helperHorizontalObj.position.set(-this.widthPanel / 2 + this.widthPanel / this.numberOfPanels * (i + 1), 0, 0);
         helperHorizontalObj.castShadow = true;
         helperHorizontalObj.receiveShadow = true;
         Group.add(helperHorizontalObj);
@@ -507,13 +519,13 @@
       const cylinderFoundation = new THREE.CylinderBufferGeometry(0.03, 0.03, 0.25);
       const smallerCylinder = new THREE.CylinderBufferGeometry(0.01, 0.01, 0.1);
 
-      const smallerCylinderObj  = new THREE.Mesh(smallerCylinder, tubeMaterial);
+      const smallerCylinderObj = new THREE.Mesh(smallerCylinder, tubeMaterial);
       const foundationObj = new THREE.Mesh(cylinderFoundation, tubeMaterial);
 
-      foundationObj.position.set(-0.2,this.height/2 + 0.125, 0.15);
-      smallerCylinderObj.position.set(-0.15,this.height/2 + 0.2, 0.1);
-      smallerCylinderObj.rotateX(Math.PI /2);
-      smallerCylinderObj.rotateZ(Math.PI /4);
+      foundationObj.position.set(-0.2, this.height / 2 + 0.125, 0.15);
+      smallerCylinderObj.position.set(-0.15, this.height / 2 + 0.2, 0.1);
+      smallerCylinderObj.rotateX(Math.PI / 2);
+      smallerCylinderObj.rotateZ(Math.PI / 4);
 
 
       return new THREE.Group()
@@ -530,6 +542,7 @@
     height;
     image;
     frameWidth;
+
     //image accepts path as string to the image to be displayed
     constructor(width, height, frameWidth, image) {
       this.width = width;
@@ -544,7 +557,10 @@
       const plate = new THREE.BoxBufferGeometry(this.width, this.height, 0.002);
 
       const textureLoader = new THREE.TextureLoader();
-      const woodMaterial = new THREE.MeshPhongMaterial({color: 0x855E42, map: textureLoader.load("https://st3.depositphotos.com/2977159/12959/i/950/depositphotos_129595416-stock-photo-wood-texture-with-natural-wood.jpg") });
+      const woodMaterial = new THREE.MeshPhongMaterial({
+        color: 0x855E42,
+        map: textureLoader.load("https://st3.depositphotos.com/2977159/12959/i/950/depositphotos_129595416-stock-photo-wood-texture-with-natural-wood.jpg")
+      });
       const paintingMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load(this.image)});
 
       const topFrameWidth = new THREE.Mesh(frameWidth, woodMaterial);
@@ -553,10 +569,10 @@
       const rightFrameHeight = new THREE.Mesh(frameHeight, woodMaterial);
       const painting = new THREE.Mesh(plate, paintingMaterial);
 
-      topFrameWidth.position.set(0, this.height/2, 0.001);
-      bottomFrameWidth.position.set(0, -this.height/2, 0.001);
-      leftFrameHeight.position.set(-this.width/2,0, 0.001);
-      rightFrameHeight.position.set(this.width/2,0, 0.001);
+      topFrameWidth.position.set(0, this.height / 2, 0.001);
+      bottomFrameWidth.position.set(0, -this.height / 2, 0.001);
+      leftFrameHeight.position.set(-this.width / 2, 0, 0.001);
+      rightFrameHeight.position.set(this.width / 2, 0, 0.001);
 
       topFrameWidth.castShadow = true;
       topFrameWidth.receiveShadow = true;
@@ -607,7 +623,7 @@
       mouseObj.castShadow = true;
       mouseObj.receiveShadow = true;
 
-      return  new THREE.Group().add(mouseObj).add(leftButton).add(rightButton);
+      return new THREE.Group().add(mouseObj).add(leftButton).add(rightButton);
     }
 
     getKeyboard(frameMaterial) {
@@ -628,10 +644,10 @@
 
       for (let i = 0; i < 5; i++) {
         for (let j = 0; j < 20; j++) {
-          const color = Math.floor(Math.random()*16777215).toString(16);
+          const color = Math.floor(Math.random() * 16777215).toString(16);
           const key = new THREE.BoxBufferGeometry(widthKey, 0.02, depthKey);
-          const keyObj = new THREE.Mesh(key, new THREE.MeshPhongMaterial({color: "#"+color}));
-          keyObj.position.set(-widthKeyboard/2 + (widthKey * (j + 1)), 0.01, -depthKeyboard/2 + (depthKey * (i + 1)));
+          const keyObj = new THREE.Mesh(key, new THREE.MeshPhongMaterial({color: "#" + color}));
+          keyObj.position.set(-widthKeyboard / 2 + (widthKey * (j + 1)), 0.01, -depthKeyboard / 2 + (depthKey * (i + 1)));
           keyObj.castShadow = true;
           keyObj.receiveShadow = true;
           keyboardGroup.add(keyObj);
@@ -711,10 +727,10 @@
         connectorObj.receiveShadow = true;
 
         const mouseGroup = this.getMouse(frameMaterial);
-        mouseGroup.position.set( width/2 + width/3,-height/2 - height/3, width/2);
+        mouseGroup.position.set(width / 2 + width / 3, -height / 2 - height / 3, width / 2);
 
         const keyboardGroup = this.getKeyboard(frameMaterial);
-        keyboardGroup.position.set(-width/2 + width/3, -height/2 - height/3, width/2);
+        keyboardGroup.position.set(-width / 2 + width / 3, -height / 2 - height / 3, width / 2);
 
         monitorGroup
           .add(foundationObj)
@@ -770,7 +786,7 @@
 
       for (let i = 0; i < this.numWidth; i++) {
         const obj = frameFront.clone();
-        obj.position.set(0, 0, this.depth/2 - (this.depth/this.numDepth) * (i + 1) - (this.depth/this.numDepth)/2 + 0.05);
+        obj.position.set(0, 0, this.depth / 2 - (this.depth / this.numDepth) * (i + 1) - (this.depth / this.numDepth) / 2 + 0.05);
         obj.castShadow = true;
         obj.receiveShadow = true;
         sheetsGroup.add(obj);
@@ -778,15 +794,15 @@
 
       for (let i = 0; i < this.numDepth; i++) {
         const obj = frameLeft.clone();
-        obj.position.set(-this.width/2 + (this.width/this.numWidth) * (i + 1) + (this.width/this.numWidth)/2 - 0.05, 0,0 );
+        obj.position.set(-this.width / 2 + (this.width / this.numWidth) * (i + 1) + (this.width / this.numWidth) / 2 - 0.05, 0, 0);
         obj.castShadow = true;
         obj.receiveShadow = true;
         sheetsGroup.add(obj);
       }
-      frameBack.position.set(0,0,-this.depth/2);
-      frameFront.position.set(0,0, this.depth/2);
-      frameLeft.position.set(-this.width/2,0,0);
-      frameRight.position.set(this.width/2,0,0);
+      frameBack.position.set(0, 0, -this.depth / 2);
+      frameFront.position.set(0, 0, this.depth / 2);
+      frameLeft.position.set(-this.width / 2, 0, 0);
+      frameRight.position.set(this.width / 2, 0, 0);
 
       frameLeft.castShadow = true;
       frameLeft.receiveShadow = true;
@@ -831,10 +847,10 @@
       const insideShort = sideShortLeft.clone();
       const sideLongObj = new THREE.Mesh(sideLong, deskMaterial);
 
-      sideShortLeft.position.set(-this.width/2 + 0.03, -0.35,0);
-      sideShortRight.position.set(this.width/2 - 0.03, -0.35,0);
-      sideLongObj.position.set(0, -0.35,this.depth/2 - 0.03);
-      insideShort.position.set((-this.width/2)+(this.width/3 * 2) - 0.1, -0.35,0);
+      sideShortLeft.position.set(-this.width / 2 + 0.03, -0.35, 0);
+      sideShortRight.position.set(this.width / 2 - 0.03, -0.35, 0);
+      sideLongObj.position.set(0, -0.35, this.depth / 2 - 0.03);
+      insideShort.position.set((-this.width / 2) + (this.width / 3 * 2) - 0.1, -0.35, 0);
 
       sideShortLeft.castShadow = true;
       sideShortLeft.receiveShadow = true;
@@ -853,9 +869,9 @@
         .add(sideLongObj);
 
       for (let i = 0; i < this.numberDrawers; i++) {
-        const drawer = new Drawer(this.width/3 + 0.03, 0.8/this.numberDrawers, this.depth);
+        const drawer = new Drawer(this.width / 3 + 0.03, 0.8 / this.numberDrawers, this.depth);
         const drawerObj = drawer.getObject();
-        drawerObj.position.set((this.width/3) - 0.05, (-0.5/this.numberDrawers) * (i + 1), -0.05);
+        drawerObj.position.set((this.width / 3) - 0.05, (-0.5 / this.numberDrawers) * (i + 1), -0.05);
         deskGroup.add(drawerObj);
       }
       return deskGroup;
@@ -889,19 +905,20 @@
       this.colorFoundation = colorFoundation;
       this.colorDrawers = colorDrawers;
     }
+
     getDrawers() {
       const drawerGroup = new THREE.Group();
       for (let i = 0; i < this.heightLevels; i++) {
         for (let j = 0; j < this.widthLevels; j++) {
           const drawer = new Drawer(
-            this.width/this.widthLevels,
-            this.height/ this.heightLevels,
+            this.width / this.widthLevels,
+            this.height / this.heightLevels,
             this.depth - 0.1)
             .getObject();
 
           drawer.position.set(
-            this.width/2 - (this.width/this.widthLevels) * (j + 1) + (this.width/this.widthLevels) / 2,
-            this.height/2 - (this.height/ this.heightLevels) * (i + 1) + (this.height/ this.heightLevels) /2,
+            this.width / 2 - (this.width / this.widthLevels) * (j + 1) + (this.width / this.widthLevels) / 2,
+            this.height / 2 - (this.height / this.heightLevels) * (i + 1) + (this.height / this.heightLevels) / 2,
             0);
           drawerGroup.add(drawer);
         }
@@ -953,7 +970,7 @@
       rightPlate.castShadow = true;
       rightPlate.receiveShadow = true;
 
-      if(this.hasDrawers) {
+      if (this.hasDrawers) {
         cupboardGroup.add(this.getDrawers());
       }
       return cupboardGroup
@@ -967,20 +984,24 @@
   //Chair class
   class Chair {
     colorCushion;
+
     constructor(colorCushion) {
       this.colorCushion = colorCushion;
     }
 
     getObject() {
       const seat = new THREE.BoxBufferGeometry(0.4, 0.1, 0.4);
-      const leg = new THREE.BoxBufferGeometry(0.05, 0.5,0.05);
+      const leg = new THREE.BoxBufferGeometry(0.05, 0.5, 0.05);
       const backLeg = new THREE.BoxBufferGeometry(0.05, 1, 0.05);
       const cushion = new THREE.BoxBufferGeometry(0.36, 0.05, 0.36);
       const bridgeLegs = new THREE.BoxBufferGeometry(0.25, 0.05, 0.05);
 
       const textureLoader = new THREE.TextureLoader();
       const chairMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("https://t3.ftcdn.net/jpg/01/69/06/26/360_F_169062682_aSDNbOgX9YYOPcZA9XocMOo3hLWE7lkY.jpg")});
-      const cushionMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("https://st2.depositphotos.com/1570716/9621/i/950/depositphotos_96210340-stock-photo-vintage-white-padding-cushion-texture.jpg"), color: this.colorCushion});
+      const cushionMaterial = new THREE.MeshPhongMaterial({
+        map: textureLoader.load("https://st2.depositphotos.com/1570716/9621/i/950/depositphotos_96210340-stock-photo-vintage-white-padding-cushion-texture.jpg"),
+        color: this.colorCushion
+      });
 
       const seatObj = new THREE.Mesh(seat, chairMaterial);
       const frontLeftLeg = new THREE.Mesh(leg, chairMaterial);
@@ -1014,7 +1035,7 @@
       cushionObj.castShadow = true;
       cushionObj.receiveShadow = true;
 
-      return  new THREE.Group()
+      return new THREE.Group()
         .add(seatObj)
         .add(frontLeftLeg)
         .add(frontRightLeg)
@@ -1057,7 +1078,7 @@
 
     getBlanket(geometry, material, index) {
       const blanketObj = new THREE.Mesh(geometry, material);
-      blanketObj.position.set(-this.width/2 + 0.3, 0.1, -this.height / 2 + (this.height / this.panels * (index + 1)) - 0.5)
+      blanketObj.position.set(-this.width / 2 + 0.3, 0.1, -this.height / 2 + (this.height / this.panels * (index + 1)) - 0.5)
       return blanketObj;
     }
 
@@ -1089,10 +1110,16 @@
       });
       const legMaterial = new THREE.MeshPhongMaterial({map: texture.load("https://st3.depositphotos.com/2977159/12959/i/950/depositphotos_129595416-stock-photo-wood-texture-with-natural-wood.jpg")});
       const pillowGeometry = new THREE.ExtrudeBufferGeometry(pillow, extrudeSettings);
-      const pillowMaterial = new THREE.MeshPhongMaterial({color: this.pillowColor, map: texture.load("https://media.istockphoto.com/id/1093066022/vector/abstract-background-texture-of-an-old-natural-luxury-leather-upholstery-vector-seamless.jpg?s=612x612&w=0&k=20&c=A-bvrh-9V6kdRoG1kvRSySG3dudNZ6so50LHip_hgw0=")});
+      const pillowMaterial = new THREE.MeshPhongMaterial({
+        color: this.pillowColor,
+        map: texture.load("https://media.istockphoto.com/id/1093066022/vector/abstract-background-texture-of-an-old-natural-luxury-leather-upholstery-vector-seamless.jpg?s=612x612&w=0&k=20&c=A-bvrh-9V6kdRoG1kvRSySG3dudNZ6so50LHip_hgw0=")
+      });
 
       const blanketGeometry = new THREE.BoxBufferGeometry(0.5, 0.05, 0.7);
-      const blanketMaterial = new THREE.MeshPhongMaterial({color: this.blanketColor, map: texture.load("https://t4.ftcdn.net/jpg/01/73/47/07/360_F_173470720_YdpslFqysnVYxwtoyfCxnb2nQhVD71hV.jpg")})
+      const blanketMaterial = new THREE.MeshPhongMaterial({
+        color: this.blanketColor,
+        map: texture.load("https://t4.ftcdn.net/jpg/01/73/47/07/360_F_173470720_YdpslFqysnVYxwtoyfCxnb2nQhVD71hV.jpg")
+      })
 
       const foundationMattressObj = new THREE.Mesh(foundation, foundationMaterial);
       const foundationWood = new THREE.Mesh(new THREE.BoxBufferGeometry(this.width, this.height, 0.05), legMaterial);
@@ -1143,10 +1170,11 @@
       this.depth = depth;
       this.color = color;
 
-      if(this.constructor === Luggage) {
+      if (this.constructor === Luggage) {
         throw new Error("Luggage is an abstract class and cannot be instantiated");
       }
     }
+
     getObject() {
       throw new Error("Method getObject() must be implemented!");
     }
@@ -1156,23 +1184,28 @@
   class LuggageWithWheels extends Luggage {
     handleHeight;
     wheelSets;
-    constructor(width, height, depth, color, wheelSets = 1, handleHeight = height/3) {
+
+    constructor(width, height, depth, color, wheelSets = 1, handleHeight = height / 3) {
       super(width, height, depth, color);
       this.handleHeight = handleHeight;
       this.wheelSets = wheelSets;
     }
+
     getObject() {
       const widthWall = new THREE.BoxBufferGeometry(this.width, this.height, 0.01);
-      const heightWall = new THREE.BoxBufferGeometry(0.01, this.height, this.depth/2 - 0.025);
-      const depthWall = new THREE.BoxBufferGeometry(this.width, 0.01, this.depth/2 -0.025);
+      const heightWall = new THREE.BoxBufferGeometry(0.01, this.height, this.depth / 2 - 0.025);
+      const depthWall = new THREE.BoxBufferGeometry(this.width, 0.01, this.depth / 2 - 0.025);
 
       const zipWidth = new THREE.BoxBufferGeometry(this.width, 0.01, 0.025);
       const zipHeight = new THREE.BoxBufferGeometry(0.01, this.height, 0.025);
 
       const handleSide = new THREE.BoxBufferGeometry(0.02, this.handleHeight, 0.02);
-      const handleMiddle = new THREE.BoxBufferGeometry(this.width/3 + 0.02, 0.02, 0.02);
+      const handleMiddle = new THREE.BoxBufferGeometry(this.width / 3 + 0.02, 0.02, 0.02);
 
-      const wallMaterial = new THREE.MeshPhongMaterial({color: this.color, map: this.textureLoader.load("https://t4.ftcdn.net/jpg/05/09/07/17/360_F_509071705_5QVNULDP19eEx9CICAC1QBeOUFjku5TJ.jpg")});
+      const wallMaterial = new THREE.MeshPhongMaterial({
+        color: this.color,
+        map: this.textureLoader.load("https://t4.ftcdn.net/jpg/05/09/07/17/360_F_509071705_5QVNULDP19eEx9CICAC1QBeOUFjku5TJ.jpg")
+      });
       const zipTexture = this.textureLoader.load("https://textures.forrest.cz/textures/library/bump/Zipper.jpg");
       zipTexture.wrapS = THREE.RepeatWrapping;
       zipTexture.wrapT = THREE.RepeatWrapping;
@@ -1185,44 +1218,44 @@
       const depthWallBottomFront = depthWallTopFront.clone();
       const depthWallBottomBack = depthWallTopFront.clone();
 
-      depthWallTopFront.position.set(0, this.height/2, -this.depth/2 + 0.05);
-      depthWallTopBack.position.set(0, this.height/2, this.depth/2 - 0.05);
-      depthWallBottomFront.position.set(0, -this.height/2, -this.depth/2 + 0.05);
-      depthWallBottomBack.position.set(0, -this.height/2, this.depth/2 - 0.05);
+      depthWallTopFront.position.set(0, this.height / 2, -this.depth / 2 + 0.05);
+      depthWallTopBack.position.set(0, this.height / 2, this.depth / 2 - 0.05);
+      depthWallBottomFront.position.set(0, -this.height / 2, -this.depth / 2 + 0.05);
+      depthWallBottomBack.position.set(0, -this.height / 2, this.depth / 2 - 0.05);
 
       const heightWallLeftFront = new THREE.Mesh(heightWall, wallMaterial);
       const heightWallLeftBack = heightWallLeftFront.clone();
       const heightWallRightFront = heightWallLeftFront.clone();
       const heightWallRightBack = heightWallLeftFront.clone();
 
-      heightWallLeftFront.position.set(-this.width/2, 0, -this.depth/2 +0.05);
-      heightWallLeftBack.position.set(-this.width/2, 0, this.depth/2 - 0.05);
-      heightWallRightFront.position.set(this.width/2, 0, -this.depth/2 + 0.05);
-      heightWallRightBack.position.set(this.width/2, 0, this.depth/2 - 0.05);
+      heightWallLeftFront.position.set(-this.width / 2, 0, -this.depth / 2 + 0.05);
+      heightWallLeftBack.position.set(-this.width / 2, 0, this.depth / 2 - 0.05);
+      heightWallRightFront.position.set(this.width / 2, 0, -this.depth / 2 + 0.05);
+      heightWallRightBack.position.set(this.width / 2, 0, this.depth / 2 - 0.05);
 
       const widthWallFront = new THREE.Mesh(widthWall, wallMaterial);
       const widthWallBack = widthWallFront.clone();
 
-      widthWallBack.position.set(0,0, this.depth/2 - 0.0125);
-      widthWallFront.position.set(0,0, -this.depth/2 + 0.0125);
+      widthWallBack.position.set(0, 0, this.depth / 2 - 0.0125);
+      widthWallFront.position.set(0, 0, -this.depth / 2 + 0.0125);
 
       const zipLeft = new THREE.Mesh(zipHeight, zipMaterial);
       const zipRight = zipLeft.clone();
       const zipTop = new THREE.Mesh(zipWidth, zipMaterial);
       const zipBottom = zipTop.clone();
 
-      zipLeft.position.set(-this.width/2, 0, 0);
-      zipRight.position.set(this.width/2, 0, 0);
-      zipTop.position.set(0, this.height/2, 0);
-      zipBottom.position.set(0, -this.height/2, 0);
+      zipLeft.position.set(-this.width / 2, 0, 0);
+      zipRight.position.set(this.width / 2, 0, 0);
+      zipTop.position.set(0, this.height / 2, 0);
+      zipBottom.position.set(0, -this.height / 2, 0);
 
       const handleLeft = new THREE.Mesh(handleSide, handleMaterial);
       const handleRight = handleLeft.clone();
       const handleMiddleObj = new THREE.Mesh(handleMiddle, handleMaterial);
 
-      handleLeft.position.set(-this.width/5, this.height/2 + this.handleHeight/2, 0);
-      handleRight.position.set(this.width/5, this.height/2 + this.handleHeight/2, 0);
-      handleMiddleObj.position.set(0, this.height/2 + this.handleHeight, 0);
+      handleLeft.position.set(-this.width / 5, this.height / 2 + this.handleHeight / 2, 0);
+      handleRight.position.set(this.width / 5, this.height / 2 + this.handleHeight / 2, 0);
+      handleMiddleObj.position.set(0, this.height / 2 + this.handleHeight, 0);
 
       const LuggageGroup = new THREE.Group()
         .add(depthWallTopFront).add(depthWallTopBack)
@@ -1287,11 +1320,11 @@
           .add(insideObj);
 
         const singleWheelGroup2 = singleWheelGroup1.clone();
-        singleWheelGroup1.position.set(-this.width/2 + this.width/4, -this.height/2 - 0.015, Math.pow(-1, i) * this.depth/2);
-        singleWheelGroup2.position.set(this.width/2 - this.width/4, -this.height/2 - 0.015, Math.pow(-1, i) * this.depth/2);
+        singleWheelGroup1.position.set(-this.width / 2 + this.width / 4, -this.height / 2 - 0.015, Math.pow(-1, i) * this.depth / 2);
+        singleWheelGroup2.position.set(this.width / 2 - this.width / 4, -this.height / 2 - 0.015, Math.pow(-1, i) * this.depth / 2);
 
-        singleWheelGroup2.rotateZ(Math.PI/2);
-        singleWheelGroup1.rotateZ(Math.PI/2);
+        singleWheelGroup2.rotateZ(Math.PI / 2);
+        singleWheelGroup1.rotateZ(Math.PI / 2);
         LuggageGroup
           .add(singleWheelGroup1)
           .add(singleWheelGroup2);
@@ -1299,47 +1332,73 @@
       return LuggageGroup;
     }
   }
+
   class Cockroach {
-    size;
-    color;
-    extrudeSettings = {
-      steps: 1,
-      depth: 0.001,
-      bevelEnabled: true,
-      bevelThickness: 0.025,
-      bevelSize: 0.005,
-      bevelOffset: -0.0001,
-      bevelSegments: 1
-    };
 
-    constructor(size, color) {
-      this.size = size;
-      this.color = color;
-    }
-    getObject() {
-      const length = 0.01;
-      const width = 0.06;
+    static getObject() {
+      const length = 0.015;
+      const height = 0.005;
+      const width = 0.03;
 
-      const body = new THREE.Shape();
-      body.moveTo( 0,0 );
-      body.lineTo( 0, width );
-      body.lineTo( length, width );
-      body.lineTo( length, 0 );
-      body.lineTo( 0, 0 );
-      const geometry = new THREE.ExtrudeGeometry( body, this.extrudeSettings );
-      const material = new THREE.MeshPhongMaterial( { color: 0xff120f } );
+      const body = new THREE.BoxBufferGeometry(width, height, length);
+      const head = new THREE.SphereBufferGeometry(0.005, 32, 64, 0, 32, 0, 32);
+      const wing = new THREE.BoxBufferGeometry(width / 3 * 2, height - 0.001, length / 3);
+      const legMiddle = new THREE.BoxBufferGeometry(0.001, 0.001, 0.01);
+      const legFront = new THREE.BoxBufferGeometry(0.002, 0.001, 0.015);
+      const eye = new THREE.SphereBufferGeometry(0.001, 32, 64, 0, 32, 0, 32);
 
-      const head = new THREE.SphereBufferGeometry(0.01, 32, 64, 0,32,0,32 );
 
-      const bodyMesh =  new THREE.Mesh( geometry, material ) ;
-      const headMesh = new THREE.Mesh(head, material);
-      headMesh.position.set(0, 0.02, 0);
+      const cockRoachBodyMaterial = new THREE.MeshPhongMaterial({color: 0x73391F});
+      const cockRoachWingMaterial = new THREE.MeshPhongMaterial({color: 0x9D7652});
+      const cockRoachLegMaterial = new THREE.MeshPhongMaterial({color: 0x5C4033});
+      const eyeMaterial = new THREE.MeshPhongMaterial({color: 0x000000});
 
-      const cockroachGroup = new THREE.Group()
+      const bodyMesh = new THREE.Mesh(body, cockRoachBodyMaterial);
+      const headMesh = new THREE.Mesh(head, cockRoachBodyMaterial);
+      const wingLeft = new THREE.Mesh(wing, cockRoachWingMaterial);
+      const wingRight = wingLeft.clone();
+      const legMiddleLeft = new THREE.Mesh(legMiddle, cockRoachLegMaterial);
+      const legMiddleRight = legMiddleLeft.clone();
+      const legFrontLeft = new THREE.Mesh(legFront, cockRoachLegMaterial);
+      const legFrontRight = legFrontLeft.clone();
+      const legBackLeft = legFrontLeft.clone();
+      const legBackRight = legFrontLeft.clone();
+      const leftEye = new THREE.Mesh(eye, eyeMaterial);
+      const rightEye = leftEye.clone();
+
+
+      headMesh.position.set(width / 2 + 0.0025, height / 2 - 0.0025, 0);
+      wingLeft.position.set(width / 4 - 0.0025, height / 2, -length / 2 + length / 4);
+      wingRight.position.set(width / 4 - 0.0025, height / 2, length / 2 - length / 4);
+      legMiddleLeft.position.set(0, - height/2, -length/2);
+      legMiddleRight.position.set(0, - height/2, length/2);
+
+      legFrontLeft.position.set(width/4, - height/2, -length/2);
+      legFrontLeft.rotateY(-Math.PI/4);
+      legFrontRight.position.set(width/4, - height/2, length/2);
+      legFrontRight.rotateY(Math.PI/4);
+
+      legBackLeft.position.set(-width/4, - height/2, -length/2);
+      legBackLeft.rotateY(Math.PI/4);
+      legBackRight.position.set(-width/4, - height/2, length/2);
+      legBackRight.rotateY(-Math.PI/4);
+
+      leftEye.position.set(width/2 + 0.005, height / 2 - 0.0025, -0.002);
+      rightEye.position.set(width/2 + 0.005, height / 2 - 0.0025, 0.002);
+
+      return new THREE.Group()
         .add(bodyMesh)
-        .add(headMesh);
-
-      return cockroachGroup;
+        .add(headMesh)
+        .add(wingLeft)
+        .add(wingRight)
+        .add(legMiddleLeft)
+        .add(legMiddleRight)
+        .add(legFrontLeft)
+        .add(legFrontRight)
+        .add(legBackLeft)
+        .add(legBackRight)
+        .add(leftEye)
+        .add(rightEye);
     }
   }
 
@@ -1868,127 +1927,173 @@
   chair7Obj.rotateY(Math.PI / 2);
 
   const kitchenFloor1 = new Flooring(4, 0.01, 3, "https://t4.ftcdn.net/jpg/01/97/71/71/360_F_197717166_UowHyPmYH2g6b2bH3kgXD1Mcbh1UDtLY.jpg").getObject();
-  kitchenFloor1.position.set(-1,0.01,4.5);
+  kitchenFloor1.position.set(-1, 0.01, 4.5);
 
   const kitchenFloor2 = new Flooring(3, 0.01, 2.5, "https://t4.ftcdn.net/jpg/01/97/71/71/360_F_197717166_UowHyPmYH2g6b2bH3kgXD1Mcbh1UDtLY.jpg").getObject();
   kitchenFloor2.position.set(2.5, 0.01, 4.6);
 
   const frontFloor = new Flooring(4, 0.01, 8, "https://t4.ftcdn.net/jpg/01/97/71/71/360_F_197717166_UowHyPmYH2g6b2bH3kgXD1Mcbh1UDtLY.jpg").getObject();
-  frontFloor.position.set(2,0.01,-0.6);
+  frontFloor.position.set(2, 0.01, -0.6);
 
   const backFloor = new Flooring(7, 0.01, 6, "https://t4.ftcdn.net/jpg/01/97/71/71/360_F_197717166_UowHyPmYH2g6b2bH3kgXD1Mcbh1UDtLY.jpg").getObject();
-  backFloor.position.set(-3.4,0.01,-2);
+  backFloor.position.set(-3.4, 0.01, -2);
 
   const bathRoomFloor = new Flooring(3, 0.01, 2, "https://img.cgaxis.com/2019/02/black_tiles_3_diffuse.jpg").getObject();
-  bathRoomFloor.position.set(-1.5,0.01,2);
+  bathRoomFloor.position.set(-1.5, 0.01, 2);
   const leftWallToilet = new Flooring(0.01, 2, 2.7, "https://img.cgaxis.com/2019/02/black_tiles_3_diffuse.jpg").getObject();
-  leftWallToilet.position.set(-1.5,1,2.9);
-  leftWallToilet.rotateY(Math.PI/2);
+  leftWallToilet.position.set(-1.5, 1, 2.9);
+  leftWallToilet.rotateY(Math.PI / 2);
 
   const rightWallToilet = leftWallToilet.clone();
-  rightWallToilet.position.set(-1.5,1,1);
+  rightWallToilet.position.set(-1.5, 1, 1);
 
   const backWallToilet1 = new Flooring(2, 1.4, 0.01, "https://img.cgaxis.com/2019/02/black_tiles_3_diffuse.jpg").getObject();
-  backWallToilet1.position.set(-2.8,0.51,1.9);
-  backWallToilet1.rotateY(Math.PI/2);
+  backWallToilet1.position.set(-2.8, 0.51, 1.9);
+  backWallToilet1.rotateY(Math.PI / 2);
 
   const backWallToilet2 = new Flooring(0.67, 0.8, 0.01, "https://img.cgaxis.com/2019/02/black_tiles_3_diffuse.jpg").getObject();
-  backWallToilet2.position.set(-2.8,1.6,2.57);
-  backWallToilet2.rotateY(Math.PI/2);
+  backWallToilet2.position.set(-2.8, 1.6, 2.57);
+  backWallToilet2.rotateY(Math.PI / 2);
 
   const backWallToilet3 = new Flooring(1.33, 0.2, 0.01, "https://img.cgaxis.com/2019/02/black_tiles_3_diffuse.jpg").getObject();
-  backWallToilet3.position.set(-2.8,1.9,1.65);
-  backWallToilet3.rotateY(Math.PI/2);
+  backWallToilet3.position.set(-2.8, 1.9, 1.65);
+  backWallToilet3.rotateY(Math.PI / 2);
 
   const backWallToilet4 = new Flooring(0.2, 0.6, 0.01, "https://img.cgaxis.com/2019/02/black_tiles_3_diffuse.jpg").getObject();
-  backWallToilet4.position.set(-2.8,1.5,1.1);
-  backWallToilet4.rotateY(Math.PI/2);
+  backWallToilet4.position.set(-2.8, 1.5, 1.1);
+  backWallToilet4.rotateY(Math.PI / 2);
 
-  const cupboard1 = new Cupboard(1.6,1.2,0.3,3,2, 0).getObject();
-  cupboard1.position.set(-3.3,0.62,-1.5);
-  cupboard1.rotateY(Math.PI/2);
+  const cupboard1 = new Cupboard(1.6, 1.2, 0.3, 3, 2, 0).getObject();
+  cupboard1.position.set(-3.3, 0.62, -1.5);
+  cupboard1.rotateY(Math.PI / 2);
 
-  const cupboard2 = new Cupboard(1.6,0.5,0.3,1,3, 0).getObject();
-  cupboard2.position.set(0,0.26,3.25);
+  const cupboard2 = new Cupboard(1.6, 0.5, 0.3, 1, 3, 0).getObject();
+  cupboard2.position.set(0, 0.26, 3.25);
 
-  const shoeCupboard = new Cupboard(0.75,0.6,0.25,4,3, 0).getObject();
-  shoeCupboard.position.set(3.4,0.32,0.65);
+  const shoeCupboard = new Cupboard(0.75, 0.6, 0.25, 4, 3, 0).getObject();
+  shoeCupboard.position.set(3.4, 0.32, 0.65);
 
-  const monitor1 = new Monitor(0.8,false, "https://p4.wallpaperbetter.com/wallpaper/796/638/566/5bd15e310c698-wallpaper-preview.jpg").getObject();
-  monitor1.position.set(-4,0.95,-3.3);
-  monitor1.rotateY(2*Math.PI/2);
+  const monitor1 = new Monitor(0.8, false, "https://p4.wallpaperbetter.com/wallpaper/796/638/566/5bd15e310c698-wallpaper-preview.jpg").getObject();
+  monitor1.position.set(-4, 0.95, -3.3);
+  monitor1.rotateY(2 * Math.PI / 2);
 
   const TV = new Monitor(1.2, true, "https://iatkv.tmgrup.com.tr/d9387f/0/0/0/0/625/417?u=https%3A%2F%2Fitkv.tmgrup.com.tr%2F2021%2F01%2F07%2Fyaprak-dokumu-ali-riza-bey-kim-yaprak-dokumu-ali-riza-bey-kac-yasinda-nereli-1610021741176.jpg&mw=616").getObject();
-  TV.position.set(0,0.85,3.2);
+  TV.position.set(0, 0.85, 3.2);
 
-  const kitchenCupboard = new Cupboard(1, 0.8 , 0.5, 3, 2, true).getObject();
-  kitchenCupboard.position.set(-2.5,0.42,5.3);
-  kitchenCupboard.rotateY(-Math.PI/2);
+  const kitchenCupboard = new Cupboard(1, 0.8, 0.5, 3, 2, true).getObject();
+  kitchenCupboard.position.set(-2.5, 0.42, 5.3);
+  kitchenCupboard.rotateY(-Math.PI / 2);
 
-  const kitchenCupboardWall = new Cupboard(2.6, 0.4 , 0.3, 1, 4, true).getObject();
-  kitchenCupboardWall.position.set(-2.6,1.6,4.45);
-  kitchenCupboardWall.rotateY(-Math.PI/2);
+  const kitchenCupboardWall = new Cupboard(2.6, 0.4, 0.3, 1, 4, true).getObject();
+  kitchenCupboardWall.position.set(-2.6, 1.6, 4.45);
+  kitchenCupboardWall.rotateY(-Math.PI / 2);
 
-  const bedsideTable1 = new Cupboard(0.5, 0.5,0.5, 2, 1, true).getObject();
-  bedsideTable1.position.set(-2.55,0.26,-4.5);
-  bedsideTable1.rotateY(2*Math.PI/2);
+  const bedsideTable1 = new Cupboard(0.5, 0.5, 0.5, 2, 1, true).getObject();
+  bedsideTable1.position.set(-2.55, 0.26, -4.5);
+  bedsideTable1.rotateY(2 * Math.PI / 2);
 
   const bedsideTable2 = bedsideTable1.clone();
-  bedsideTable2.position.set(0.05,0.26,-4.5);
+  bedsideTable2.position.set(0.05, 0.26, -4.5);
 
   const bedsideTable3 = new Cupboard(1, 0.5, 0.3, 2, 3, true).getObject();
-  bedsideTable3.position.set(2.2,0.26,-4.5);
-  bedsideTable3.rotateY(2*Math.PI/2);
+  bedsideTable3.position.set(2.2, 0.26, -4.5);
+  bedsideTable3.rotateY(2 * Math.PI / 2);
 
   const furnace = new Furnace(0.8, 0.8, 0.5).getObject();
-  furnace.position.set(-2.5,0.42,4.35);
-  furnace.rotateY(Math.PI/2);
+  furnace.position.set(-2.5, 0.42, 4.35);
+  furnace.rotateY(Math.PI / 2);
 
-  const sinkKitchen = new Sink(0.8,0.8,0.5).getObject();
+  const sinkKitchen = new Sink(0.8, 0.8, 0.5).getObject();
   const sinkToilet = sinkKitchen.clone();
 
-  sinkKitchen.position.set(-2.5,0.42,3.53);
-  sinkKitchen.rotateY(-Math.PI /2);
+  sinkKitchen.position.set(-2.5, 0.42, 3.53);
+  sinkKitchen.rotateY(-Math.PI / 2);
 
   sinkToilet.position.set(-1.5, 0.42, 2.7);
 
-  const wardrobe = new Cupboard(1.1, 1.7, 0.4, 1 , 2 , true).getObject();
+  const wardrobe = new Cupboard(1.1, 1.7, 0.4, 1, 2, true).getObject();
   wardrobe.position.set(-0.2, 0.86, -1.3);
 
   const bedroomChair = new Chair('white').getObject();
   bedroomChair.position.set(-2.3, 0.5, -1.47);
-  bedroomChair.rotateY(2*Math.PI/2);
+  bedroomChair.rotateY(2 * Math.PI / 2);
   bedroomChair.rotateX(-Math.PI / 8);
 
   const luggage1 = new LuggageWithWheels(0.4, 0.5, 0.2, 'red', 2).getObject();
-  luggage1.position.set(2.1,0.3,3.5);
+  luggage1.position.set(2.1, 0.3, 3.5);
 
   const luggage2 = new LuggageWithWheels(0.4, 0.5, 0.2, 'green', 1, 0.05).getObject();
   luggage2.position.set(3.4, 0.1, 3.3);
-  luggage2.rotateX(Math.PI/2);
-  luggage2.rotateZ(Math.PI/2);
+  luggage2.rotateX(Math.PI / 2);
+  luggage2.rotateZ(Math.PI / 2);
 
   const luggage3 = new LuggageWithWheels(0.4, 0.5, 0.2, 'orange', 1, 0.05).getObject();
   luggage3.position.set(3.4, 0.275, 3.3);
-  luggage3.rotateX(Math.PI/2);
-  luggage3.rotateZ(Math.PI/2);
+  luggage3.rotateX(Math.PI / 2);
+  luggage3.rotateZ(Math.PI / 2);
 
   const luggage4 = new LuggageWithWheels(0.5, 0.6, 0.2, 'magenta', 2, 0.25).getObject();
   luggage4.position.set(3.4, 0.4, 2.5);
-  luggage4.rotateY(Math.PI/2);
-
-  const cockroach = new Cockroach(1,0x000000).getObject();
-  cockroach.position.set(5,5,5);
-
-
-  //TODO: Make briefcase, roaches
-  //TODO: Fix floorings
+  luggage4.rotateY(Math.PI / 2);
 
   const toilet = Toilet.getObject();
-  toilet.position.set(-2.5,0.5,2);
-  toilet.rotateY(-Math.PI/2);
+  toilet.position.set(-2.5, 0.5, 2);
+  toilet.rotateY(-Math.PI / 2);
+
+  const cockroach = Cockroach.getObject();
+  cockroach.position.set(table1Obj.position.x, 0.628, table1Obj.position.z);
+
+  const cockroach1 = cockroach.clone();
+  cockroach1.position.set(table1Obj.position.x- 0.08, 0.628, table1Obj.position.z);
+
+  const cockroach2 = cockroach.clone();
+  cockroach2.position.set(table1Obj.position.x - 0.1, 0.628, table1Obj.position.z - 0.07);
+
+  const cockroach3 = cockroach.clone();
+  cockroach3.position.set(furnace.position.x - 0.1, 0.825, furnace.position.z - 0.07);
+
+  const cockroach4 = cockroach.clone();
+  cockroach4.position.set(toilet.position.x - 0.15, 0.83, toilet.position.z - 0.11);
+
+  const cockroach5 = cockroach.clone();
+  cockroach5.position.set(sinkKitchen.position.x - 0.1, 0.86, sinkKitchen.position.z - 0.07);
+
+  const cockroach6 = cockroach.clone();
+  cockroach6.position.set(sinkKitchen.position.x - 0.1, 0.86, sinkKitchen.position.z );
+
+  const cockroach7 = cockroach.clone();
+  cockroach7.position.set(sinkToilet.position.x - 0.1, 0.86, sinkToilet.position.z - 0.06 );
+
+  const cockroach8 = cockroach.clone();
+  cockroach8.position.set(toiletWall1Obj.position.x - 0.5, 0.04, toiletWall1Obj.position.z);
+
+  const cockroach9 = cockroach.clone();
+  cockroach9.position.set(toiletWall2Obj.position.x - 0.1, 0.04, toiletWall2Obj.position.z);
+  cockroach9.rotateY(Math.PI/2);
+  const cockroach10 = cockroach.clone();
+  cockroach10.position.set(sinkToilet.position.x - 0.1, 0.86, sinkToilet.position.z);
+
+  const cockroach11 = cockroach.clone();
+  cockroach11.position.set(desk1Obj.position.x - 0.1, 0.626, desk1Obj.position.z);
+  const cockroach12= cockroach.clone();
+  cockroach12.position.set(desk1Obj.position.x - 0.4, 0.626, desk1Obj.position.z - 0.05);
+
+  //TODO: Fix floorings
+
   scene.add(toilet);
   scene.add(cockroach);
+  scene.add(cockroach1);
+  scene.add(cockroach2);
+  scene.add(cockroach3);
+  scene.add(cockroach4);
+  scene.add(cockroach5);
+  scene.add(cockroach6);
+  scene.add(cockroach7);
+  scene.add(cockroach8);
+  scene.add(cockroach9);
+  scene.add(cockroach10);
+  scene.add(cockroach11);
+  scene.add(cockroach12);
 
   scene.add(bedsideTable2);
   scene.add(luggage1);
