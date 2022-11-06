@@ -57,10 +57,10 @@
       const handle = new THREE.TorusBufferGeometry(0.01, 0.03, 6, 6, 6);
 
       const textureLoader = new THREE.TextureLoader();
-      const whiteWoodMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("/materials/white-wood.jpg")});
+      const whiteWoodMaterial = new THREE.MeshPhongMaterial({ color: 'white', map: textureLoader.load("https://previews.123rf.com/images/elovich/elovich1702/elovich170200021/71391404-white-wood-texture-background.jpg")});
       const handleMaterial = new THREE.MeshPhongMaterial({
         color: 0x000000,
-        map: textureLoader.load("/materials/dark-wood.jpg")
+        map: textureLoader.load("https://t3.ftcdn.net/jpg/01/69/06/26/360_F_169062682_aSDNbOgX9YYOPcZA9XocMOo3hLWE7lkY.jpg")
       });
 
       const foundationObj = new THREE.Mesh(foundation, whiteWoodMaterial);
@@ -120,7 +120,7 @@
       const chimney = new THREE.BoxBufferGeometry(this.width/2, this.height/3 + 0.3, 0.4);
 
       const textureLoader = new THREE.TextureLoader();
-      const brickTexture = textureLoader.load("/materials/fireplace.jpg");
+      const brickTexture = textureLoader.load("https://images.unsplash.com/photo-1495578942200-c5f5d2137def?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8YnJpY2slMjB0ZXh0dXJlfGVufDB8fDB8fA%3D%3D&w=1000&q=80");
       brickTexture.wrapS = THREE.RepeatWrapping;
       brickTexture.wrapT = THREE.RepeatWrapping;
       brickTexture.repeat.set(1,2);
@@ -358,7 +358,7 @@
       const frameMaterial = new THREE.MeshPhongMaterial({
         color: 0xBA7c45,
         transparent: true,
-        map: woodTexture.load("/materials/wood.jpg")
+        map: woodTexture.load("https://st3.depositphotos.com/2977159/12959/i/950/depositphotos_129595416-stock-photo-wood-texture-with-natural-wood.jpg")
       });
 
       const frameTopObj = new THREE.Mesh(outerFrameTop, frameMaterial);
@@ -409,7 +409,7 @@
       const tableClothSideShort = new THREE.BoxBufferGeometry(0.001, 0.2, this.depth);
 
       const textureLoader = new THREE.TextureLoader();
-      const woodMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("/materials/wood.jpg")});
+      const woodMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("https://t3.ftcdn.net/jpg/01/69/06/26/360_F_169062682_aSDNbOgX9YYOPcZA9XocMOo3hLWE7lkY.jpg")});
 
       const foundationObj = new THREE.Mesh(foundation, woodMaterial);
       const bottomLeftLeg = new THREE.Mesh(leg, woodMaterial);
@@ -422,7 +422,7 @@
       if (this.hasCloth) {
         const clothMaterial = new THREE.MeshStandardMaterial({
           color: 0xff12412,
-          map: textureLoader.load("/materials/blanket.jpg")
+          map: textureLoader.load("https://thumbs.dreamstime.com/b/beige-cotton-woven-fabric-texture-background-sofa-cushion-high-resolution-photography-215630051.jpg")
         });
         const tableClothObj = new THREE.Mesh(tableCloth, clothMaterial);
         const tableClothRightSideLong = new THREE.Mesh(tableClothSideLong, clothMaterial);
@@ -544,7 +544,7 @@
       const plate = new THREE.BoxBufferGeometry(this.width, this.height, 0.002);
 
       const textureLoader = new THREE.TextureLoader();
-      const woodMaterial = new THREE.MeshPhongMaterial({color: 0x855E42, map: textureLoader.load("/materials/wood.jpg") });
+      const woodMaterial = new THREE.MeshPhongMaterial({color: 0x855E42, map: textureLoader.load("https://st3.depositphotos.com/2977159/12959/i/950/depositphotos_129595416-stock-photo-wood-texture-with-natural-wood.jpg") });
       const paintingMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load(this.image)});
 
       const topFrameWidth = new THREE.Mesh(frameWidth, woodMaterial);
@@ -823,7 +823,7 @@
       const sideLong = new THREE.BoxBufferGeometry(this.width, 0.7, 0.03);
 
       const textureLoader = new THREE.TextureLoader();
-      const deskMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("/materials/dark-wood.jpg")});
+      const deskMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("https://t3.ftcdn.net/jpg/01/69/06/26/360_F_169062682_aSDNbOgX9YYOPcZA9XocMOo3hLWE7lkY.jpg")});
 
       const foundationObj = new THREE.Mesh(foundation, deskMaterial);
       const sideShortLeft = new THREE.Mesh(sideShort, deskMaterial);
@@ -853,7 +853,7 @@
         .add(sideLongObj);
 
       for (let i = 0; i < this.numberDrawers; i++) {
-        const drawer = new Drawer(this.width/3, 0.8/this.numberDrawers, this.depth);
+        const drawer = new Drawer(this.width/3 + 0.03, 0.8/this.numberDrawers, this.depth);
         const drawerObj = drawer.getObject();
         drawerObj.position.set((this.width/3) - 0.05, (-0.5/this.numberDrawers) * (i + 1), -0.05);
         deskGroup.add(drawerObj);
@@ -914,7 +914,7 @@
       const heightPlate = new THREE.BoxBufferGeometry(0.03, this.height, this.depth);
 
       const textureLoader = new THREE.TextureLoader();
-      const woodTexture = textureLoader.load("/materials/dark-wood.jpg");
+      const woodTexture = textureLoader.load("https://t3.ftcdn.net/jpg/01/69/06/26/360_F_169062682_aSDNbOgX9YYOPcZA9XocMOo3hLWE7lkY.jpg");
       const frameMaterial = new THREE.MeshPhongMaterial({color: this.colorFoundation, map: woodTexture});
 
       const topPlate = new THREE.Mesh(widthPlate, frameMaterial);
@@ -979,8 +979,8 @@
       const bridgeLegs = new THREE.BoxBufferGeometry(0.25, 0.05, 0.05);
 
       const textureLoader = new THREE.TextureLoader();
-      const chairMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("/materials/wood.jpg")});
-      const cushionMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("/materials/blanket.jpg"), color: this.colorCushion});
+      const chairMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("https://t3.ftcdn.net/jpg/01/69/06/26/360_F_169062682_aSDNbOgX9YYOPcZA9XocMOo3hLWE7lkY.jpg")});
+      const cushionMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("https://st2.depositphotos.com/1570716/9621/i/950/depositphotos_96210340-stock-photo-vintage-white-padding-cushion-texture.jpg"), color: this.colorCushion});
 
       const seatObj = new THREE.Mesh(seat, chairMaterial);
       const frontLeftLeg = new THREE.Mesh(leg, chairMaterial);
@@ -1014,7 +1014,15 @@
       cushionObj.castShadow = true;
       cushionObj.receiveShadow = true;
 
-      return  new THREE.Group().add(seatObj).add(frontLeftLeg).add(frontRightLeg).add(backRightLeg).add(backLeftLeg).add(cushionObj).add(leg1Bridge).add(leg2Bridge);
+      return  new THREE.Group()
+        .add(seatObj)
+        .add(frontLeftLeg)
+        .add(frontRightLeg)
+        .add(backRightLeg)
+        .add(backLeftLeg)
+        .add(cushionObj)
+        .add(leg1Bridge)
+        .add(leg2Bridge);
     }
   }
 
@@ -1077,14 +1085,14 @@
       const texture = new THREE.TextureLoader();
       const foundationMaterial = new THREE.MeshPhongMaterial({
         color: this.color,
-        map: texture.load("/materials/bed.jpg")
+        map: texture.load("https://media.istockphoto.com/id/1093066022/vector/abstract-background-texture-of-an-old-natural-luxury-leather-upholstery-vector-seamless.jpg?s=612x612&w=0&k=20&c=A-bvrh-9V6kdRoG1kvRSySG3dudNZ6so50LHip_hgw0=")
       });
-      const legMaterial = new THREE.MeshPhongMaterial({map: texture.load("/materials/wood.jpg")});
+      const legMaterial = new THREE.MeshPhongMaterial({map: texture.load("https://st3.depositphotos.com/2977159/12959/i/950/depositphotos_129595416-stock-photo-wood-texture-with-natural-wood.jpg")});
       const pillowGeometry = new THREE.ExtrudeBufferGeometry(pillow, extrudeSettings);
-      const pillowMaterial = new THREE.MeshPhongMaterial({color: this.pillowColor, map: texture.load("/materials/pillow.jpg")});
+      const pillowMaterial = new THREE.MeshPhongMaterial({color: this.pillowColor, map: texture.load("https://media.istockphoto.com/id/1093066022/vector/abstract-background-texture-of-an-old-natural-luxury-leather-upholstery-vector-seamless.jpg?s=612x612&w=0&k=20&c=A-bvrh-9V6kdRoG1kvRSySG3dudNZ6so50LHip_hgw0=")});
 
       const blanketGeometry = new THREE.BoxBufferGeometry(0.5, 0.05, 0.7);
-      const blanketMaterial = new THREE.MeshPhongMaterial({color: this.blanketColor, map: texture.load("/materials/blanket.jpg")})
+      const blanketMaterial = new THREE.MeshPhongMaterial({color: this.blanketColor, map: texture.load("https://t4.ftcdn.net/jpg/01/73/47/07/360_F_173470720_YdpslFqysnVYxwtoyfCxnb2nQhVD71hV.jpg")})
 
       const foundationMattressObj = new THREE.Mesh(foundation, foundationMaterial);
       const foundationWood = new THREE.Mesh(new THREE.BoxBufferGeometry(this.width, this.height, 0.05), legMaterial);
@@ -1103,7 +1111,13 @@
       foundationWood.rotateX(Math.PI / 2);
 
       const bedGroup = new THREE.Group();
-      bedGroup.add(foundationMattressObj).add(foundationWood).add(legTopRight).add(legTopLeft).add(legBottomLeft).add(legBottomRight);
+      bedGroup
+        .add(foundationMattressObj)
+        .add(foundationWood)
+        .add(legTopRight)
+        .add(legTopLeft)
+        .add(legBottomLeft)
+        .add(legBottomRight);
 
       for (let i = 0; i < this.panels; i++) {
         const pillowObj = this.getPillow(pillowGeometry, pillowMaterial, i);
@@ -1158,8 +1172,8 @@
       const handleSide = new THREE.BoxBufferGeometry(0.02, this.handleHeight, 0.02);
       const handleMiddle = new THREE.BoxBufferGeometry(this.width/3 + 0.02, 0.02, 0.02);
 
-      const wallMaterial = new THREE.MeshPhongMaterial({color: this.color});
-      const zipTexture = this.textureLoader.load("materials/zip.jpg");
+      const wallMaterial = new THREE.MeshPhongMaterial({color: this.color, map: this.textureLoader.load("https://t4.ftcdn.net/jpg/05/09/07/17/360_F_509071705_5QVNULDP19eEx9CICAC1QBeOUFjku5TJ.jpg")});
+      const zipTexture = this.textureLoader.load("https://textures.forrest.cz/textures/library/bump/Zipper.jpg");
       zipTexture.wrapS = THREE.RepeatWrapping;
       zipTexture.wrapT = THREE.RepeatWrapping;
 
@@ -1221,13 +1235,56 @@
         .add(handleLeft).add(handleRight)
         .add(handleMiddleObj);
 
+      depthWallTopFront.castShadow = true;
+      depthWallTopFront.receiveShadow = true;
+      depthWallTopBack.castShadow = true;
+      depthWallTopBack.receiveShadow = true;
+      depthWallBottomFront.castShadow = true;
+      depthWallBottomFront.receiveShadow = true;
+      depthWallBottomBack.castShadow = true;
+      depthWallBottomBack.receiveShadow = true;
+      heightWallLeftFront.castShadow = true;
+      heightWallLeftFront.receiveShadow = true;
+      heightWallLeftBack.castShadow = true;
+      heightWallLeftBack.receiveShadow = true;
+      heightWallRightFront.castShadow = true;
+      heightWallRightFront.receiveShadow = true;
+      heightWallRightBack.castShadow = true;
+      heightWallRightBack.receiveShadow = true;
+      widthWallFront.castShadow = true;
+      widthWallFront.receiveShadow = true;
+      widthWallBack.castShadow = true;
+      widthWallBack.receiveShadow = true;
+      zipLeft.castShadow = true;
+      zipLeft.receiveShadow = true;
+      zipRight.castShadow = true;
+      zipRight.receiveShadow = true;
+      zipTop.castShadow = true;
+      zipTop.receiveShadow = true;
+      zipBottom.castShadow = true;
+      zipBottom.receiveShadow = true;
+      handleLeft.castShadow = true;
+      handleLeft.receiveShadow = true;
+      handleRight.castShadow = true;
+      handleRight.receiveShadow = true;
+      handleMiddleObj.castShadow = true;
+      handleMiddleObj.receiveShadow = true;
+
       for (let i = 0; i < this.wheelSets; i++) {
         const outsideGeometry = new THREE.CylinderBufferGeometry(0.03, 0.03, 0.02, 32, 16);
         const insideGeometry = new THREE.CylinderBufferGeometry(0.01, 0.01, 0.022, 32, 16);
 
+        const outsideObj = new THREE.Mesh(outsideGeometry, handleMaterial);
+        const insideObj = new THREE.Mesh(insideGeometry, new THREE.MeshPhongMaterial({color: 0xdffffff}));
+
+        outsideObj.castShadow = true;
+        outsideObj.receiveShadow = true;
+        insideObj.castShadow = true;
+        insideObj.receiveShadow = true;
+
         const singleWheelGroup1 = new THREE.Group()
-          .add(new THREE.Mesh(outsideGeometry, handleMaterial))
-          .add(new THREE.Mesh(insideGeometry, new THREE.MeshPhongMaterial({color: 0xdffffff})));
+          .add(outsideObj)
+          .add(insideObj);
 
         const singleWheelGroup2 = singleWheelGroup1.clone();
         singleWheelGroup1.position.set(-this.width/2 + this.width/4, -this.height/2 - 0.015, Math.pow(-1, i) * this.depth/2);
@@ -1242,23 +1299,52 @@
       return LuggageGroup;
     }
   }
+  class Cockroach {
+    size;
+    color;
+    extrudeSettings = {
+      steps: 1,
+      depth: 0.001,
+      bevelEnabled: true,
+      bevelThickness: 0.025,
+      bevelSize: 0.005,
+      bevelOffset: -0.0001,
+      bevelSegments: 1
+    };
 
-  class Briefcase extends Luggage {
-    isOpen;
-    constructor(width, height, depth, color, isOpen) {
-      super(width, height, depth, color);
-      this.isOpen = isOpen;
+    constructor(size, color) {
+      this.size = size;
+      this.color = color;
     }
     getObject() {
+      const length = 0.01;
+      const width = 0.06;
 
+      const body = new THREE.Shape();
+      body.moveTo( 0,0 );
+      body.lineTo( 0, width );
+      body.lineTo( length, width );
+      body.lineTo( length, 0 );
+      body.lineTo( 0, 0 );
+      const geometry = new THREE.ExtrudeGeometry( body, this.extrudeSettings );
+      const material = new THREE.MeshPhongMaterial( { color: 0xff120f } );
+
+      const head = new THREE.SphereBufferGeometry(0.01, 32, 64, 0,32,0,32 );
+
+      const bodyMesh =  new THREE.Mesh( geometry, material ) ;
+      const headMesh = new THREE.Mesh(head, material);
+      headMesh.position.set(0, 0.02, 0);
+
+      const cockroachGroup = new THREE.Group()
+        .add(bodyMesh)
+        .add(headMesh);
+
+      return cockroachGroup;
     }
   }
 
   //wall material
   const wallMaterial = new THREE.MeshPhongMaterial({color: 0xd2dfb4, shininess: 100});
-  //Bed materials
-  const bedFoundationMaterial = new THREE.MeshPhongMaterial({color: 'white', opacity: 0});
-
   //Outside walls
   const westWall11 = new THREE.BoxGeometry(0.2, 2, 3);
   const westWall1Bottom = new THREE.BoxGeometry(0.2, 0.6, 2);
@@ -1828,7 +1914,7 @@
   const shoeCupboard = new Cupboard(0.75,0.6,0.25,4,3, 0).getObject();
   shoeCupboard.position.set(3.4,0.32,0.65);
 
-  const monitor1 = new Monitor(0.8,false, "/materials/windows-desktop.jpg").getObject();
+  const monitor1 = new Monitor(0.8,false, "https://p4.wallpaperbetter.com/wallpaper/796/638/566/5bd15e310c698-wallpaper-preview.jpg").getObject();
   monitor1.position.set(-4,0.95,-3.3);
   monitor1.rotateY(2*Math.PI/2);
 
@@ -1875,7 +1961,25 @@
   bedroomChair.rotateX(-Math.PI / 8);
 
   const luggage1 = new LuggageWithWheels(0.4, 0.5, 0.2, 'red', 2).getObject();
-  luggage1.position.set(0,0.3,0);
+  luggage1.position.set(2.1,0.3,3.5);
+
+  const luggage2 = new LuggageWithWheels(0.4, 0.5, 0.2, 'green', 1, 0.05).getObject();
+  luggage2.position.set(3.4, 0.1, 3.3);
+  luggage2.rotateX(Math.PI/2);
+  luggage2.rotateZ(Math.PI/2);
+
+  const luggage3 = new LuggageWithWheels(0.4, 0.5, 0.2, 'orange', 1, 0.05).getObject();
+  luggage3.position.set(3.4, 0.275, 3.3);
+  luggage3.rotateX(Math.PI/2);
+  luggage3.rotateZ(Math.PI/2);
+
+  const luggage4 = new LuggageWithWheels(0.5, 0.6, 0.2, 'magenta', 2, 0.25).getObject();
+  luggage4.position.set(3.4, 0.4, 2.5);
+  luggage4.rotateY(Math.PI/2);
+
+  const cockroach = new Cockroach(1,0x000000).getObject();
+  cockroach.position.set(5,5,5);
+
 
   //TODO: Make briefcase, roaches
   //TODO: Fix floorings
@@ -1884,9 +1988,13 @@
   toilet.position.set(-2.5,0.5,2);
   toilet.rotateY(-Math.PI/2);
   scene.add(toilet);
+  scene.add(cockroach);
 
   scene.add(bedsideTable2);
   scene.add(luggage1);
+  scene.add(luggage2);
+  scene.add(luggage3);
+  scene.add(luggage4);
   scene.add(wardrobe);
   scene.add(bedroomChair);
   scene.add(sinkKitchen);
