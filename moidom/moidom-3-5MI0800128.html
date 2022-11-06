@@ -113,7 +113,6 @@
       this.height = height;
     }
 
-    //TODO: Add bars
     getObject() {
       const foundationHeight = this.height / 3;
       const foundationSide = new THREE.BoxBufferGeometry(this.width / 6, foundationHeight, this.width);
@@ -214,7 +213,6 @@
       this.levels = levels;
     }
 
-    //TODO: kotloni, and a handle
     getObject() {
       const heightLongSide = this.height - 2 * this.height / 5;
       const widthLongSide = this.width / 8;
@@ -526,6 +524,12 @@
       smallerCylinderObj.position.set(-0.15, this.height / 2 + 0.2, 0.1);
       smallerCylinderObj.rotateX(Math.PI / 2);
       smallerCylinderObj.rotateZ(Math.PI / 4);
+      foundationObj.castShadow = true;
+      foundationObj.receiveShadow = true;
+      smallerCylinderObj.castShadow = true;
+      smallerCylinderObj.receiveShadow = true;
+      sinkObj.castShadow = true;
+      sinkObj.receiveShadow = true;
 
 
       return new THREE.Group()
@@ -1073,12 +1077,16 @@
       pillowObj.position.x = this.width / 2 - 0.1;
       pillowObj.position.z = (-this.height / 2 + (this.height / this.panels * (index + 1))) - 0.6;
 
+      pillowObj.castShadow = true;
+      pillowObj.receiveShadow = true;
       return pillowObj;
     }
 
     getBlanket(geometry, material, index) {
       const blanketObj = new THREE.Mesh(geometry, material);
       blanketObj.position.set(-this.width / 2 + 0.3, 0.1, -this.height / 2 + (this.height / this.panels * (index + 1)) - 0.5)
+      blanketObj.castShadow = true;
+      blanketObj.receiveShadow = true;
       return blanketObj;
     }
 
@@ -1128,6 +1136,19 @@
       const legTopRight = new THREE.Mesh(leg, legMaterial);
       const legBottomLeft = new THREE.Mesh(leg, legMaterial);
       const legBottomRight = new THREE.Mesh(leg, legMaterial);
+
+      foundationMattressObj.castShadow = true;
+      foundationMattressObj.receiveShadow = true;
+      foundationWood.castShadow = true;
+      foundationWood.receiveShadow = true;
+      legTopLeft.castShadow = true;
+      legTopLeft.receiveShadow = true;
+      legTopRight.castShadow = true;
+      legTopRight.receiveShadow = true;
+      legBottomLeft.castShadow = true;
+      legBottomLeft.receiveShadow = true;
+      legBottomRight.castShadow = true;
+      legBottomRight.receiveShadow = true;
 
       legBottomRight.position.set(this.width / 2 - 0.05, -0.2, this.height / 2 - 0.05);
       legBottomLeft.position.set(-this.width / 2 + 0.05, -0.2, this.height / 2 - 0.05);
@@ -1257,17 +1278,6 @@
       handleRight.position.set(this.width / 5, this.height / 2 + this.handleHeight / 2, 0);
       handleMiddleObj.position.set(0, this.height / 2 + this.handleHeight, 0);
 
-      const LuggageGroup = new THREE.Group()
-        .add(depthWallTopFront).add(depthWallTopBack)
-        .add(depthWallBottomFront).add(depthWallBottomBack)
-        .add(heightWallLeftFront).add(heightWallLeftBack)
-        .add(heightWallRightFront).add(heightWallRightBack)
-        .add(widthWallFront).add(widthWallBack)
-        .add(zipLeft).add(zipRight)
-        .add(zipTop).add(zipBottom)
-        .add(handleLeft).add(handleRight)
-        .add(handleMiddleObj);
-
       depthWallTopFront.castShadow = true;
       depthWallTopFront.receiveShadow = true;
       depthWallTopBack.castShadow = true;
@@ -1302,6 +1312,17 @@
       handleRight.receiveShadow = true;
       handleMiddleObj.castShadow = true;
       handleMiddleObj.receiveShadow = true;
+
+      const LuggageGroup = new THREE.Group()
+        .add(depthWallTopFront).add(depthWallTopBack)
+        .add(depthWallBottomFront).add(depthWallBottomBack)
+        .add(heightWallLeftFront).add(heightWallLeftBack)
+        .add(heightWallRightFront).add(heightWallRightBack)
+        .add(widthWallFront).add(widthWallBack)
+        .add(zipLeft).add(zipRight)
+        .add(zipTop).add(zipBottom)
+        .add(handleLeft).add(handleRight)
+        .add(handleMiddleObj);
 
       for (let i = 0; i < this.wheelSets; i++) {
         const outsideGeometry = new THREE.CylinderBufferGeometry(0.03, 0.03, 0.02, 32, 16);
@@ -1366,6 +1387,30 @@
       const leftEye = new THREE.Mesh(eye, eyeMaterial);
       const rightEye = leftEye.clone();
 
+      bodyMesh.castShadow = true;
+      bodyMesh.receiveShadow = true;
+      headMesh.castShadow = true;
+      headMesh.receiveShadow = true;
+      wingLeft.castShadow = true;
+      wingLeft.receiveShadow = true;
+      wingRight.castShadow = true;
+      wingRight.receiveShadow = true;
+      legMiddleLeft.castShadow = true;
+      legMiddleLeft.receiveShadow = true;
+      legMiddleRight.castShadow = true;
+      legMiddleRight.receiveShadow = true;
+      legFrontLeft.castShadow = true;
+      legFrontLeft.receiveShadow = true;
+      legFrontRight.castShadow = true;
+      legFrontRight.receiveShadow = true;
+      legBackLeft.castShadow = true;
+      legBackLeft.receiveShadow = true;
+      legBackRight.castShadow = true;
+      legBackRight.receiveShadow = true;
+      leftEye.castShadow = true;
+      leftEye.receiveShadow = true;
+      rightEye.castShadow = true;
+      rightEye.receiveShadow = true;
 
       headMesh.position.set(width / 2 + 0.0025, height / 2 - 0.0025, 0);
       wingLeft.position.set(width / 4 - 0.0025, height / 2, -length / 2 + length / 4);
@@ -1843,15 +1888,15 @@
   const painting2Obj = painting2.getObject();
   painting2Obj.position.set(-1.3, 1.4, 3.1);
 
-  const painting3 = new Painting(0.5, 0.5, 0.01, "/materials/gochev1.jpg");
+  const painting3 = new Painting(0.5, 0.5, 0.01, "https://nationalgallery.bg/wp-content/uploads/2017/10/22-1002x1024.jpg");
   const painting3Obj = painting3.getObject();
   painting3Obj.position.set(-0.5, 1.4, 3.1);
 
-  const painting4 = new Painting(0.6, 0.4, 0.01, "/materials/kandinsky.jpg");
+  const painting4 = new Painting(0.6, 0.4, 0.01, "https://nationalgallery.bg/wp-content/uploads/2017/10/22-1002x1024.jpg");
   const painting4Obj = painting4.getObject();
   painting4Obj.position.set(0.3, 1.4, 3.1);
 
-  const painting5 = new Painting(0.8, 1, 0.05, "/materials/saturn.jpg");
+  const painting5 = new Painting(0.8, 1, 0.05, "https://www.askart.com/photos/2021/NMP20210610_132826/LG_13_1.jpg");
   const painting5Obj = painting5.getObject();
   painting5Obj.position.set(-5, 1.3, -4.8);
 
@@ -1880,7 +1925,7 @@
   painting10Obj.position.set(3.8, 1.3, -3);
   painting10Obj.rotateY(-Math.PI / 2);
 
-  const painting11 = new Painting(0.4, 0.4, 0.02, "/materials/mondrian.jpg");
+  const painting11 = new Painting(0.4, 0.4, 0.02, "https://www.iamexpat.nl/sites/default/files/styles/ogimage_thumb/public/mondrian-painting.jpg");
   const painting11Obj = painting11.getObject();
   painting11Obj.position.set(3.8, 1.3, -2.2);
   painting11Obj.rotateY(-Math.PI / 2);
@@ -1895,7 +1940,7 @@
   painting13Obj.position.set(0.6, 1.3, -2);
   painting13Obj.rotateY(Math.PI / 2);
 
-  const painting14 = new Painting(0.7, 0.4, 0.02, "/materials/van-gogh1.jpg");
+  const painting14 = new Painting(0.8, 0.5, 0.02, "https://mymodernmet.com/wp/wp-content/uploads/2022/05/van-gogh-famous-last-paintings-fb-thumbnail-1.jpg");
   const painting14Obj = painting14.getObject();
   painting14Obj.position.set(0.6, 1.3, -3);
   painting14Obj.rotateY(Math.PI / 2);
@@ -1932,8 +1977,8 @@
   const kitchenFloor2 = new Flooring(3, 0.01, 2.5, "https://t4.ftcdn.net/jpg/01/97/71/71/360_F_197717166_UowHyPmYH2g6b2bH3kgXD1Mcbh1UDtLY.jpg").getObject();
   kitchenFloor2.position.set(2.5, 0.01, 4.6);
 
-  const frontFloor = new Flooring(4, 0.01, 8, "https://t4.ftcdn.net/jpg/01/97/71/71/360_F_197717166_UowHyPmYH2g6b2bH3kgXD1Mcbh1UDtLY.jpg").getObject();
-  frontFloor.position.set(2, 0.01, -0.6);
+  const frontFloor = new Flooring(4, 0.01, 8.25, "https://t4.ftcdn.net/jpg/01/97/71/71/360_F_197717166_UowHyPmYH2g6b2bH3kgXD1Mcbh1UDtLY.jpg").getObject();
+  frontFloor.position.set(2, 0.01, -0.75);
 
   const backFloor = new Flooring(7, 0.01, 6, "https://t4.ftcdn.net/jpg/01/97/71/71/360_F_197717166_UowHyPmYH2g6b2bH3kgXD1Mcbh1UDtLY.jpg").getObject();
   backFloor.position.set(-3.4, 0.01, -2);
