@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Window Frame (THREE.JS)</title>
+  <style>
+    body {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+<script src="js/three.js"></script>
+<script src="js/CSG.js"></script>
+<script>
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const light = new THREE.AmbientLight(0x444444); // soft white light
+
+  const directionalLight = new THREE.HemisphereLight(0xffffff, 0x080820, 1);
+  scene.add(directionalLight);
+
+  const light1 = new THREE.PointLight();
+  light1.position.set(-6, 10, -6)
+  light1.castShadow = true
+  light1.shadow.mapSize.height = 1024
+  light1.shadow.mapSize.width = 1024
+  scene.add(light1)
+  scene.add(light);
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0xffffff);
+  document.body.appendChild(renderer.domElement);
+
+  const wheelDepth = 0.05;
+  const overallHeight = 1.4;
+  const wheelFoundationWidth = 0.8;
+  const wheelFoundationDepth = 1;
+  const wheelRadius = 0.15;
+  const handleDepth = 0.03;
+  const handleWidth = handleDepth;
+
+  const wheelOutside = new THREE.CylinderBufferGeometry(wheelRadius, wheelRadius, wheelDepth, 64, 64);
+  const wheelInside = new THREE.CylinderBufferGeometry(wheelRadius / 2, wheelRadius / 2, wheelDepth + 0.001, 64, 64);
+
+  const wheelOutsideMaterial = new THREE.MeshPhongMaterial({color: 'black'});
+  const wheelInsideMaterial = new THREE.MeshPhongMaterial({color: 'dimgray'});
+
+  const wheelMeshGroup1 = new THREE.Group()
+    .add(new THREE.Mesh(wheelOutside, wheelOutsideMaterial))
+    .add(new THREE.Mesh(wheelInside, wheelInsideMaterial));
+  wheelMeshGroup1.rotateX(Math.PI / 2);
+  wheelMeshGroup1.rotateZ(Math.PI / 2);
+
+
+  const wheelMeshGroup2 = wheelMeshGroup1.clone();
+  const wheelMeshGroup3 = wheelMeshGroup1.clone();
+  const wheelMeshGroup4 = wheelMeshGroup1.clone();
+
+  const wheelConnectorFoundation = new THREE.BoxBufferGeometry(wheelFoundationWidth, 0.1, wheelFoundationDepth);
+  const wheelFoundationMaterial = new THREE.MeshPhongMaterial({color: 0x023020});
+
+  const wheelConnectorMesh = new THREE.Mesh(wheelConnectorFoundation, wheelFoundationMaterial);
+  wheelConnectorMesh.position.set(0, -overallHeight / 2 + 2 * wheelDepth, 0);
+
+  wheelMeshGroup1.position.set(-wheelFoundationWidth / 2 - wheelDepth / 2, -overallHeight / 2 + 2 * wheelDepth, wheelFoundationDepth / 2 - wheelRadius);
+  wheelMeshGroup2.position.set(wheelFoundationWidth / 2 + wheelDepth / 2, -overallHeight / 2 + 2 * wheelDepth, wheelFoundationDepth / 2 - wheelRadius);
+  wheelMeshGroup3.position.set(wheelFoundationWidth / 2 + wheelDepth / 2, -overallHeight / 2 + 2 * wheelDepth, -wheelFoundationDepth / 2 + wheelRadius);
+  wheelMeshGroup4.position.set(-wheelFoundationWidth / 2 - wheelDepth / 2, -overallHeight / 2 + 2 * wheelDepth, -wheelFoundationDepth / 2 + wheelRadius);
+
+  const handleHeightGeometry = new THREE.BoxBufferGeometry(handleWidth, overallHeight - 2 * wheelDepth, handleDepth);
+  const handleWidthGeometry = new THREE.BoxBufferGeometry(wheelFoundationWidth + handleWidth , handleDepth, handleDepth);
+
+  const leftHandleObj = new THREE.Mesh(handleHeightGeometry, wheelOutsideMaterial);
+  const rightHandleObj = leftHandleObj.clone();
+  const topHandleObj = new THREE.Mesh(handleWidthGeometry, wheelOutsideMaterial);
+  const middleHandleObj = topHandleObj.clone();
+
+  leftHandleObj.position.set(-wheelFoundationWidth/2, 0, -wheelFoundationDepth/2);
+  rightHandleObj.position.set(wheelFoundationWidth/2, 0, -wheelFoundationDepth/2);
+  topHandleObj.position.set(0, overallHeight/2 - 0.05, -wheelFoundationDepth/2);
+  middleHandleObj.position.set(0, overallHeight/2.5 - 0.05, -wheelFoundationDepth/2);
+
+  const handleGroup = new THREE.Group()
+    .add(leftHandleObj)
+    .add(rightHandleObj)
+    .add(topHandleObj)
+    .add(middleHandleObj);
+  handleGroup.rotateX(-Math.PI/6);
+  handleGroup.position.y = overallHeight/6;
+  handleGroup.position.z = -wheelFoundationDepth/2 + 0.15;
+
+  const motorCylinder = new THREE.CylinderBufferGeometry(0.25, 0.25, 0.3, 64, 64);
+  const foundationCylinder = new THREE.CylinderBufferGeometry(0.35, 0.35, 0.1, 64, 64);
+  const motorRoof = new THREE.BoxBufferGeometry(0.5, 0.1, 0.5);
+
+  const foundationCylinderMaterial = new THREE.MeshPhongMaterial({color : 'dimgray'});
+  const motorCylinderMesh = new THREE.Mesh(motorCylinder, wheelOutsideMaterial);
+  const foundationCylinderMesh = new THREE.Mesh(foundationCylinder, foundationCylinderMaterial);
+  const motorRoofMesh = new THREE.Mesh(motorRoof, wheelFoundationMaterial);
+
+
+  const csg1 = new CSG();
+  csg1.subtract([foundationCylinderMesh, motorCylinderMesh]);
+
+  const motorMesh = csg1.toMesh();
+
+  motorMesh.position.set(0, -overallHeight/2 + 4 * wheelDepth, 0);
+  motorCylinderMesh.position.set(0, -overallHeight/2 + 6 * wheelDepth, 0);
+  motorRoofMesh.position.set(0, -overallHeight/2 + 9 * wheelDepth, 0);
+  const motorGroup = new THREE.Group()
+    .add(motorMesh)
+    .add(motorCylinderMesh)
+    .add(motorRoofMesh);
+
+  const container = new THREE.BoxBufferGeometry(wheelFoundationWidth, overallHeight/5, wheelFoundationDepth/2);
+  const containerMesh = new THREE.Mesh(container, wheelOutsideMaterial);
+  const containerHoleMesh = containerMesh.clone();
+
+  containerMesh.position.set(0, -overallHeight/3, -wheelFoundationDepth/2 - wheelFoundationDepth/4);
+  containerHoleMesh.position.set(0, -overallHeight/4.5, -wheelFoundationDepth/2 - wheelFoundationDepth/6);
+  containerHoleMesh.rotateX(Math.PI/6);
+  const csg2 = new CSG();
+  csg2.subtract([containerMesh, containerHoleMesh]);
+
+  const containerCsg = csg2.toMesh();
+
+  scene.add(wheelConnectorMesh);
+  scene.add(wheelMeshGroup1);
+  scene.add(wheelMeshGroup2);
+  scene.add(wheelMeshGroup3);
+  scene.add(wheelMeshGroup4);
+  scene.add(handleGroup);
+  scene.add(motorGroup);
+  scene.add(containerCsg);
+  camera.position.z = 4.5;
+  camera.position.y = 1;
+
+  scene.rotateY(Math.PI / 2);
+
+  //Animation
+  function animate() {
+    requestAnimationFrame(animate);
+    scene.rotation.y += 0.01;
+    // rightLegObj.rotation.x += 0.001;
+    renderer.render(scene, camera);
+  }
+
+  animate();
+</script>
+</body>
+</html>
