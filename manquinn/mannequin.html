@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+
+<html>
+	<head>
+		<script src="three.min.js"></script>
+		<script src="mannequin.js"></script>
+		<style>
+			body {color: black; text-shadow: 0 0 4px gray; font-family: Calibri;}
+			h1   {position: fixed; z-index: 10; top: 0; left: 0; text-align: center; width: 100%;}
+			div  {position: fixed; z-index: 10; bottom: 1em; left: 1em; font-size: 1.5em; font-style: italic;}
+		</style>
+	</head>
+
+	<body>
+
+		<!-- Сложете реално заглавие -->
+		<h1>Концерт на рападжии</h1>
+
+		<!-- Сложете описание на сцената (опитайте с рима) -->
+		<div>
+			Сложете тук един куплет,<br>
+			кажете в него де що става,<br>
+			a изборът ви на сюжет &ndash;<br>
+			без милост да ни грабва.
+		</div>
+
+		<script>
+
+			createScene(); // инициализиране на сцената
+			// тук си направете човечетата и статичните елементи по позите
+			// ...
+			// ...
+      const mannequinArtist1 = new Mannequin(false, 1);
+      const mannequinArtist2 = new Mannequin(false, 0.9);
+      mannequinArtist2.position.set(-25,1,0);
+      mannequinArtist1.position.set(25,4,0);
+      mannequinArtist1.torso.bend = 30;
+      mannequinArtist1.l_arm.raise = 40;
+      mannequinArtist1.l_elbow.bend = 130;
+      mannequinArtist1.l_wrist.bend = 50;
+      mannequinArtist1.l_leg.raise = 10;
+      mannequinArtist1.r_arm.raise = 180;
+      mannequinArtist1.r_elbow.bend = -50;
+
+      function repeatAnimation(value, direction) {
+        if (direction === -1) {
+          return value - 1;
+        } else {
+          return value + 1;
+        }
+      }
+      let directionHandArtist1 = 1;
+			function animate(t)
+			{
+				// в тази функция направете движението на
+				// човечетата (параметърът t е времето)
+				// ...
+				// ...
+        //TODO: Create a rap scene with a move from the hand up and down and head bending
+        // TODO: The second artist must jump
+        //TODO: Make an audience that makes the same move like both rapers
+        // TODO: Put a beatmaker in the background that slides vinyls
+
+        mannequinArtist1.r_arm.raise = repeatAnimation(mannequinArtist1.r_arm.raise, directionHandArtist1);
+        if (mannequinArtist1.r_arm.raise === 200) {
+          directionHandArtist1 = -1;
+          console.log("here");
+        }
+        if (mannequinArtist1.r_arm.raise === 150) {
+          directionHandArtist1 = 1;
+        }
+
+        scene.rotation.y += 0.001;
+			}
+		</script>
+	</body>
+</html>
