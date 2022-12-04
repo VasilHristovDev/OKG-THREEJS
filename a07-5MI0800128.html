@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Window Frame (THREE.JS)</title>
+  <style>
+    body {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+<script src="js/three.js"></script>
+<script src="js/CSG.js"></script>
+<script>
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const light = new THREE.AmbientLight(0x444444); // soft white light
+
+  const directionalLight = new THREE.HemisphereLight(0xffffff, 0x080820, 1);
+  scene.add(directionalLight);
+
+  const light1 = new THREE.PointLight();
+  light1.position.set(-6, 10, -6)
+  light1.castShadow = true
+  light1.shadow.mapSize.height = 1024
+  light1.shadow.mapSize.width = 1024
+  scene.add(light1)
+  scene.add(light);
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0xffffff);
+  renderer.setAnimationLoop(drawFrame);
+  document.body.appendChild(renderer.domElement);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+
+  scene.background = new THREE.Color( 'skyblue' );
+
+  camera.position.set( 0, 60, 300 );
+  camera.lookAt( new THREE.Vector3( 0, -10, 0 ) );
+
+  class Racket {
+    color;
+
+    constructor(color) {
+      this.color = color;
+    }
+
+    getObject() {
+      const racketHandle = new THREE.CylinderBufferGeometry(0.025, 0.025, 0.2);
+      const racketTube = new THREE.CylinderBufferGeometry(0.010, 0.010, 0.5);
+
+      const racketHandleMaterial = new THREE.MeshPhongMaterial({color: 'black'});
+      const racketTubeMaterial = new THREE.MeshPhongMaterial({color: this.color});
+      const racketLineMaterial = new THREE.MeshPhongMaterial({color: 'gray'});
+
+
+      const racket1Mesh = new THREE.Mesh(racketHandle, racketHandleMaterial);
+      const racket2Mesh = new THREE.Mesh(racketTube, racketTubeMaterial);
+
+
+      const ring = new THREE.TorusBufferGeometry(0.2, 0.01, 4, 30);
+
+      const ringMesh = new THREE.Mesh(ring, racketTubeMaterial);
+      const racketGroup = new THREE.Group().add(racket1Mesh).add(racket2Mesh).add(ringMesh);
+
+      const partsPerSegment = 6;
+      const radius = 0.2;
+      const diameter = radius * 2;
+
+      const arrayDifferences = [
+        0.005,
+        0.01,
+        0.025,
+        0.04,
+        0.055,
+        0.09
+      ];
+
+      let previous = diameter;
+      for (let i = 0; i < 6; i++) {
+        const lineHorizontal = new THREE.BoxBufferGeometry(previous - arrayDifferences[i], 0.005, 0.005);
+        const lineMesh = new THREE.Mesh(lineHorizontal, racketLineMaterial);
+
+        lineMesh.position.set(0, 0.45 + i * (0.2 / 6), 0);
+        racketGroup.add(lineMesh);
+        previous = previous - arrayDifferences[i];
+      }
+      previous = diameter;
+      for (let i = 0; i < 6; i++) {
+        const lineHorizontal = new THREE.BoxBufferGeometry(previous - arrayDifferences[i], 0.005, 0.005);
+        const lineMesh = new THREE.Mesh(lineHorizontal, racketLineMaterial);
+
+        lineMesh.position.set(0, 0.45 - i * (0.2 / 6), 0);
+        racketGroup.add(lineMesh);
+        previous = previous - arrayDifferences[i];
+      }
+      previous = diameter;
+      for (let i = 0; i < 6; i++) {
+        const lineVertical = new THREE.BoxBufferGeometry(previous - arrayDifferences[i], 0.005, 0.005);
+        const lineMesh = new THREE.Mesh(lineVertical, racketLineMaterial);
+
+        lineMesh.position.set(i * (0.2 / 6), 0.45, 0);
+        lineMesh.rotateZ(Math.PI / 2);
+        racketGroup.add(lineMesh);
+        previous = previous - arrayDifferences[i];
+      }
+      previous = diameter;
+      for (let i = 0; i < 6; i++) {
+        const lineVertical = new THREE.BoxBufferGeometry(previous - arrayDifferences[i], 0.005, 0.005);
+        const lineMesh = new THREE.Mesh(lineVertical, racketLineMaterial);
+
+        lineMesh.position.set(-i * (0.2 / 6), 0.45, 0);
+        lineMesh.rotateZ(Math.PI / 2);
+        racketGroup.add(lineMesh);
+        previous = previous - arrayDifferences[i];
+      }
+      racket1Mesh.position.set(0, -0.25, 0);
+      ringMesh.position.set(0, 0.45, 0);
+
+
+      return racketGroup;
+    }
+  }
+
+  class Feather {
+    color;
+
+    constructor(color) {
+      this.color = color;
+    }
+
+    getObject() {
+      const ball = new THREE.SphereBufferGeometry(0.02);
+      const cone = new THREE.ConeBufferGeometry(0.05, 0.07, 8, 1, true);
+
+      const ballMaterial = new THREE.MeshPhongMaterial({color: this.color});
+      const coneMaterial = new THREE.MeshPhongMaterial({color: 'grey'});
+
+      const ballMesh = new THREE.Mesh(ball, ballMaterial);
+      const coneMesh = new THREE.Mesh(cone, coneMaterial);
+
+      ballMesh.position.set(0, 0.03, 0);
+
+      return new THREE.Group()
+        .add(ballMesh)
+        .add(coneMesh);
+    }
+  }
+
+  const racket1 = new Racket('red').getObject();
+  const racket2 = new Racket('green').getObject();
+  const feather = new Feather('red').getObject();
+
+
+  racket2.position.set(1, -0.45, 0);
+  racket2.rotateY(Math.PI / 6);
+  racket1.position.set(-1, -0.45, 0);
+  racket1.rotateY(-Math.PI / 6);
+
+  scene.add(racket1);
+  scene.add(racket2);
+  scene.add(feather);
+
+  camera.position.z = 3;
+  camera.position.y = 0.5;
+
+  const clock = new THREE.Clock();
+  const R = Math.abs(racket2.position.x - racket1.position.x);
+  console.log("R: "+R);
+
+  let x = 1;
+  function calculateX(x, direction) {
+    if (direction === 1) {
+      x += 0.01;
+      return x;
+    } else {
+      x-= 0.01;
+      return x;
+    }
+
+  }
+  let direction = -1;
+  feather.rotateZ(Math.PI/4);
+  function drawFrame() {
+    let y = -Math.pow(x,2) + 1;
+    x = calculateX(x, direction);
+    if (x <= -1) {
+      direction = 1;
+      feather.rotateZ(-direction*Math.PI);
+    }
+    if (x >= 1) {
+      direction = -1;
+      feather.rotateZ(direction*Math.PI);
+    }
+    if (y === 1) {
+      feather.rotateZ(-direction*Math.PI/2);
+    }
+    console.log("X: "+x);
+    console.log("Y: " +y);
+
+    feather.position.setX(x);
+    feather.position.setY(y);
+    renderer.render(scene,camera);
+  }
+
+</script>
+</body>
+</html>
+
