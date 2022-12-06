@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Window Frame (THREE.JS)</title>
+  <style>
+    body {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+<script src="js/three.js"></script>
+<script src="js/CSG.js"></script>
+<script>
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const light = new THREE.AmbientLight(0x444444); // soft white light
+
+  const directionalLight = new THREE.HemisphereLight(0xffffff, 0x080820, 1);
+  scene.add(directionalLight);
+
+  const light1 = new THREE.PointLight();
+  light1.position.set(-6, 10, -6)
+  light1.castShadow = true
+  light1.shadow.mapSize.height = 1024
+  light1.shadow.mapSize.width = 1024
+  scene.add(light1)
+  scene.add(light);
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0xffffff);
+  document.body.appendChild(renderer.domElement);
+
+  const sidesFoundation = new THREE.BoxBufferGeometry(0.5, 1, 0.5);
+  const middleFoundation = new THREE.BoxBufferGeometry(1, 0.2, 0.2);
+  const curve = new THREE.EllipseCurve(
+    0.35,  0.4,            // ax, aY
+    0.5, 1,           // xRadius, yRadius
+    0,  Math.PI/2,  // aStartAngle, aEndAngle
+    false,            // aClockwise
+    0                 // aRotation
+  );
+  const topCurve = new THREE.EllipseCurve(
+    0, 1.375,
+    0.475, 0.1,
+    0, Math.PI,
+    false,
+    0
+  );
+
+  const points1 = curve.getPoints( 12 );
+  const points2 = topCurve.getPoints( 50 );
+  const arcShapeSides = new THREE.Shape().setFromPoints(points1);
+  const arcShapeTop = new THREE.Shape().setFromPoints(points2);
+
+  const material = new THREE.MeshPhongMaterial( { color: 'dimgray' } );
+
+  // Create the final object to add to the scene
+  const ellipse = new THREE.ExtrudeBufferGeometry( arcShapeSides, {depth:0.125} );
+  const ellipse2 = new THREE.ExtrudeBufferGeometry( arcShapeTop, {depth:0.125} );
+  const ellipseMesh1 = new THREE.Mesh(ellipse, material);
+  const ellipseMesh2 = ellipseMesh1.clone();
+  const ellipseMesh3 = new THREE.Mesh(ellipse2, material);
+  ellipseMesh2.rotateY(Math.PI);
+  ellipseMesh2.position.z = 0.1;
+  scene.add(ellipseMesh1)
+  scene.add(ellipseMesh2)
+  scene.add(ellipseMesh3)
+
+  const iconGeometry = new THREE.BoxBufferGeometry(1,2,0.1);
+
+  const sidesMaterial = new THREE.MeshPhongMaterial({color: 'dimgray'});
+  const textureLoader = new THREE.TextureLoader();
+  const iconMaterial = new THREE.MeshPhongMaterial({
+    color: 0xffffff,
+    map:
+      textureLoader.load("https://cdn.vmacedonia.com/wp-content/uploads/2018/05/stclementicon.jpg")});
+
+  const leftFoundation = new THREE.Mesh(sidesFoundation, sidesMaterial);
+  const rightFoundation = leftFoundation.clone();
+
+
+  leftFoundation.position.set(-0.75,0,0);
+  rightFoundation.position.set(0.75,0,0);
+  const middleFoundationObj = new THREE.Mesh(middleFoundation, sidesMaterial);
+
+  middleFoundationObj.position.set(0,-0.4,0.15)
+  const iconObj = new THREE.Mesh(iconGeometry, iconMaterial);
+
+  const backGeometry = new THREE.BoxBufferGeometry(1.2, 1.8, 0.1);
+  const backObj = new THREE.Mesh(backGeometry, sidesMaterial);
+
+  const crossWidth = new THREE.BoxBufferGeometry(0.2, 0.05, 0.05);
+  const crossHeight = new THREE.BoxBufferGeometry(0.05, 0.3, 0.05);
+
+  const crossMaterial = new THREE.MeshPhongMaterial({color: 0x000000});
+
+  const crossHeightObj = new THREE.Mesh(crossHeight, crossMaterial);
+  const crossWidthObj = new THREE.Mesh(crossWidth, crossMaterial);
+
+  crossWidthObj.position.set(0,0.05,0);
+  const crossGroup = new THREE.Group().add(crossHeightObj).add(crossWidthObj);
+
+  crossGroup.position.set(0,1.7,0);
+
+  scene.add(crossGroup);
+
+  backObj.position.set(0, 0.4, -0.2);
+  scene.add(backObj);
+
+  iconObj.position.set(0,0.5,0);
+  scene.add(leftFoundation);
+  scene.add(rightFoundation);
+  scene.add(middleFoundationObj);
+  scene.add(iconObj);
+  // scene.add(leftArchObj);
+  // scene.add(rightArchObj);
+  camera.position.z = 4.5;
+  camera.position.y = 1;
+
+  scene.rotateY(Math.PI / 2);
+
+  //Animation
+  function animate() {
+    requestAnimationFrame(animate);
+    scene.rotation.y += 0.01;
+    // rightLegObj.rotation.x += 0.001;
+    renderer.render(scene, camera);
+  }
+
+  animate();
+</script>
+</body>
+</html>
