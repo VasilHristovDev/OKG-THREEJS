@@ -61,8 +61,7 @@
       const tableClothSideLong = new THREE.BoxBufferGeometry(this.width, 0.2, 0.001);
       const tableClothSideShort = new THREE.BoxBufferGeometry(0.001, 0.2, this.depth);
 
-      const textureLoader = new THREE.TextureLoader();
-      const woodMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("/materials/wood.jpg")});
+      const woodMaterial = new THREE.MeshPhongMaterial({color: 0x966f33});
 
       const foundationObj = new THREE.Mesh(foundation, woodMaterial);
       const bottomLeftLeg = new THREE.Mesh(leg, woodMaterial);
@@ -88,7 +87,7 @@
         tableClothTopShort.position.set(this.width / 2, -0.075, 0);
         tableClothBottomShort.position.set(-this.width / 2, -0.075, 0);
 
-        foundationObj.castShadow =true;
+        foundationObj.castShadow = true;
         foundationObj.receiveShadow
         tableClothObj.castShadow = true;
         tableClothObj.receiveShadow = true;
@@ -200,19 +199,82 @@
   floorMesh.position.set(0, -0.9, 0);
 
   const bottle = new Bottle().getObject();
-  bottle.position.set(0, 0.2, 0);
+  bottle.position.set(0.5, -0.55, -0.5);
+  bottle.rotateX(-Math.PI / 2);
+  bottle.rotateZ(Math.PI / 2);
   scene.add(bottle);
   scene.add(floorMesh);
   scene.add(table);
 
   camera.position.z = 2;
-  camera.position.y = 0.53;
+  camera.position.y = 0.2;
 
   const clock = new THREE.Clock();
 
   let direction = -1;
 
+  let startX = 0.5;
+  let startZ = -0.5;
+
+  function floorTremble(direction) {
+    if (direction) {
+      floorMesh.rotateX(Math.PI/100);
+      return false;
+    } else {
+      floorMesh.rotateX(-Math.PI/ 100);
+      return  true;
+    }
+  }
+
+
+  function moveBottleCoords(x, directionX) {
+    if (directionX === -1) {
+      return x - 0.005;
+    } else if (directionX === 1) {
+      return x + 0.005;
+    } else {
+      return x;
+    }
+  }
+
+
+  let directionX = 0;
+  let directionZ = 1;
+  let x = startX;
+  let z = startZ;
+
+  let cameraX = 0;
+  let cameraY = 2;
   function drawFrame() {
+    x = moveBottleCoords(x, directionX);
+    z = moveBottleCoords(z, directionZ);
+
+    cameraX += 0.000001;
+    cameraY = Math.sin(20 * x / 3);
+    camera.rotateX(cameraX / 100);
+    camera.rotateY(cameraY / 100);
+    if (x >= 0.5 && z >= 0.6) {
+      directionX = -1;
+      directionZ = 0;
+      bottle.rotateZ(-Math.PI / 2);
+    }
+    if (x <= -0.5 && z >= 0.6) {
+      directionX = 0;
+      directionZ = -1;
+      bottle.rotateZ(-Math.PI / 2);
+    }
+    if (x <= -0.5 && z <= -0.5) {
+      directionX = 1;
+      directionZ = 0;
+      bottle.rotateZ(-Math.PI / 2);
+    }
+    if (x >= 0.5 && z <= -0.5) {
+      directionX = 0;
+      directionZ = 1;
+      bottle.rotateZ(-Math.PI / 2);
+    }
+    bottle.position.setX(x);
+    bottle.position.setZ(z);
 
     renderer.render(scene, camera);
   }

@@ -25,7 +25,48 @@
 		</div>
 
 		<script>
+      class Microphone {
+        static getObject() {
+          const cylinderBufferGeometry = new THREE.CylinderBufferGeometry(0.75, 0.75, 4, 20, 20);
+          const sphereBufferGeometry = new THREE.SphereBufferGeometry(1,36, 36);
 
+          const cylinderMaterial = new THREE.MeshPhongMaterial({color: 'dimgray'});
+          const headMaterial = new THREE.MeshPhongMaterial({color: 'black'});
+
+          const cylinderMesh = new THREE.Mesh(cylinderBufferGeometry, cylinderMaterial);
+          const headMesh = new THREE.Mesh(sphereBufferGeometry, headMaterial);
+
+          headMesh.position.set(0,2.75,0);
+
+          return new THREE.Group()
+            .add(headMesh)
+            .add(cylinderMesh)
+        }
+      }
+      class Hat {
+        color;
+
+        constructor(color) {
+          this.color = color;
+        }
+
+        getObject() {
+          const foundation = new THREE.SphereBufferGeometry(3.3, 64, 32, 0, 6.28, 1.64619455048105, 1.80327418316054);
+
+          const foundationMaterial = new THREE.MeshPhongMaterial({color : this.color});
+
+          const capFront = new THREE.BoxBufferGeometry(4,0.5,3);
+
+          const capFoundationMesh = new THREE.Mesh(foundation, foundationMaterial);
+          capFoundationMesh.rotateZ(-Math.PI);
+          const capFrontMesh = new THREE.Mesh(capFront, foundationMaterial);
+
+          capFrontMesh.position.set(0,0.5, 3);
+          return new THREE.Group()
+            .add(capFrontMesh)
+            .add(capFoundationMesh);
+        }
+      }
 			createScene(); // инициализиране на сцената
 			// тук си направете човечетата и статичните елементи по позите
 			// ...
@@ -37,19 +78,46 @@
       mannequinArtist1.torso.bend = 30;
       mannequinArtist1.l_arm.raise = 40;
       mannequinArtist1.l_elbow.bend = 130;
-      mannequinArtist1.l_wrist.bend = 50;
+      mannequinArtist1.l_wrist.bend = 20;
+      mannequinArtist1.r_wrist.bend = 50;
       mannequinArtist1.l_leg.raise = 10;
       mannequinArtist1.r_arm.raise = 180;
       mannequinArtist1.r_elbow.bend = -50;
+      mannequinArtist1.torso.recolor("black");
+      mannequinArtist1.l_leg.recolor("#6F8FAF");
+      mannequinArtist1.r_leg.recolor("#6F8FAF");
+      mannequinArtist1.pelvis.recolor("black");
+      mannequinArtist1.r_knee.recolor("#6F8FAF");
+      mannequinArtist1.l_knee.recolor("#6F8FAF");
+
+      const djMannequin = new Mannequin(false, 0.9);
+      djMannequin.position.setY(1);
+      const mic1 =  Microphone.getObject();
+      mic1.position.set(28,20,14);
+      mic1.rotateX(-Math.PI/4)
+      scene.add(mic1);
+
+      const hat1 = new Hat('red').getObject();
+      hat1.position.set(0,25.8,-2);
+      scene.add(hat1);
+
+      //TODO: add music!
+      const listener = new THREE.AudioListener();
+      const sound = new THREE.Audio(listener);
+
+      const audioLoader = new THREE.AudioLoader();
 
       function repeatAnimation(value, direction) {
         if (direction === -1) {
-          return value - 1;
+          return value - 0.75;
+        } else if (direction === 1){
+          return value + 0.75;
         } else {
-          return value + 1;
+          return value;
         }
       }
       let directionHandArtist1 = 1;
+      let tempRArmHelper = 140;
 			function animate(t)
 			{
 				// в тази функция направете движението на
@@ -61,14 +129,14 @@
         //TODO: Make an audience that makes the same move like both rapers
         // TODO: Put a beatmaker in the background that slides vinyls
 
-        mannequinArtist1.r_arm.raise = repeatAnimation(mannequinArtist1.r_arm.raise, directionHandArtist1);
-        if (mannequinArtist1.r_arm.raise === 200) {
+        tempRArmHelper = repeatAnimation(tempRArmHelper, directionHandArtist1);
+        if (tempRArmHelper >= 200) {
           directionHandArtist1 = -1;
-          console.log("here");
         }
-        if (mannequinArtist1.r_arm.raise === 150) {
+        if (tempRArmHelper <= 150) {
           directionHandArtist1 = 1;
         }
+        mannequinArtist1.r_arm.raise = tempRArmHelper;
 
         scene.rotation.y += 0.001;
 			}
