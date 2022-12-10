@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Window Frame (THREE.JS)</title>
+  <style>
+    body {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+<script src="js/three.js"></script>
+<script src="js/CSG.js"></script>
+<script>
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const light = new THREE.AmbientLight(0x444444); // soft white light
+
+  const directionalLight = new THREE.HemisphereLight(0xffffff, 0x080820, 1);
+  scene.add(directionalLight);
+
+  const light1 = new THREE.PointLight();
+  light1.position.set(-6, 10, -6)
+  light1.castShadow = true
+  light1.shadow.mapSize.height = 1024
+  light1.shadow.mapSize.width = 1024
+  scene.add(light1)
+  scene.add(light);
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0xffffff);
+  renderer.setAnimationLoop(drawFrame);
+  document.body.appendChild(renderer.domElement);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+
+  scene.background = new THREE.Color('skyblue');
+
+  camera.position.set(0, 60, 300);
+  camera.lookAt(new THREE.Vector3(0, -10, 0));
+
+  class Table {
+    width;
+    color;
+    depth;
+    hasCloth;
+
+    constructor(width, depth, hasCloth = true, color = 0xffffff) {
+      this.width = width;
+      this.depth = depth;
+      this.color = color;
+      this.hasCloth = hasCloth;
+    }
+
+    getObject() {
+      const foundation = new THREE.BoxBufferGeometry(this.width, 0.05, this.depth);
+      const leg = new THREE.BoxBufferGeometry(0.05, 0.7, 0.05);
+      const tableCloth = new THREE.BoxBufferGeometry(this.width, 0.001, this.depth);
+      const tableClothSideLong = new THREE.BoxBufferGeometry(this.width, 0.2, 0.001);
+      const tableClothSideShort = new THREE.BoxBufferGeometry(0.001, 0.2, this.depth);
+
+      const textureLoader = new THREE.TextureLoader();
+      const woodMaterial = new THREE.MeshPhongMaterial({map: textureLoader.load("/materials/wood.jpg")});
+
+      const foundationObj = new THREE.Mesh(foundation, woodMaterial);
+      const bottomLeftLeg = new THREE.Mesh(leg, woodMaterial);
+      const bottomRightLeg = new THREE.Mesh(leg, woodMaterial);
+      const topLeftLeg = new THREE.Mesh(leg, woodMaterial);
+      const topRightLeg = new THREE.Mesh(leg, woodMaterial);
+
+      const tableGroup = new THREE.Group();
+
+      if (this.hasCloth) {
+        const clothMaterial = new THREE.MeshStandardMaterial({
+          color: this.color,
+        });
+        const tableClothObj = new THREE.Mesh(tableCloth, clothMaterial);
+        const tableClothRightSideLong = new THREE.Mesh(tableClothSideLong, clothMaterial);
+        const tableClothLeftSideLong = new THREE.Mesh(tableClothSideLong, clothMaterial);
+        const tableClothTopShort = new THREE.Mesh(tableClothSideShort, clothMaterial);
+        const tableClothBottomShort = new THREE.Mesh(tableClothSideShort, clothMaterial);
+
+        tableClothObj.position.set(0, 0.0251, 0);
+        tableClothRightSideLong.position.set(0, -0.075, -this.depth / 2);
+        tableClothLeftSideLong.position.set(0, -0.075, this.depth / 2);
+        tableClothTopShort.position.set(this.width / 2, -0.075, 0);
+        tableClothBottomShort.position.set(-this.width / 2, -0.075, 0);
+
+        foundationObj.castShadow =true;
+        foundationObj.receiveShadow
+        tableClothObj.castShadow = true;
+        tableClothObj.receiveShadow = true;
+        tableClothRightSideLong.castShadow = true;
+        tableClothRightSideLong.receiveShadow = true;
+        tableClothLeftSideLong.castShadow = true;
+        tableClothLeftSideLong.receiveShadow = true;
+        tableClothTopShort.castShadow = true;
+        tableClothTopShort.receiveShadow = true;
+        tableClothBottomShort.castShadow = true;
+        tableClothBottomShort.receiveShadow = true;
+
+        tableGroup
+          .add(tableClothObj)
+          .add(tableClothRightSideLong)
+          .add(tableClothLeftSideLong)
+          .add(tableClothTopShort)
+          .add(tableClothBottomShort);
+      }
+
+      bottomLeftLeg.position.set(this.width / 2 - 0.05, -0.35, this.depth / 2 - 0.05);
+      bottomRightLeg.position.set(this.width / 2 - 0.05, -0.35, -this.depth / 2 + 0.05);
+      topLeftLeg.position.set(-this.width / 2 + 0.05, -0.35, this.depth / 2 - 0.05);
+      topRightLeg.position.set(-this.width / 2 + 0.05, -0.35, -this.depth / 2 + 0.05);
+
+      bottomLeftLeg.castShadow = true;
+      bottomLeftLeg.receiveShadow = true;
+      bottomRightLeg.castShadow = true;
+      bottomRightLeg.receiveShadow = true;
+      topLeftLeg.castShadow = true;
+      topLeftLeg.receiveShadow = true;
+      topRightLeg.castShadow = true;
+      topRightLeg.receiveShadow = true;
+
+      return tableGroup
+        .add(foundationObj)
+        .add(bottomLeftLeg)
+        .add(bottomRightLeg)
+        .add(topLeftLeg)
+        .add(topRightLeg);
+    }
+  }
+
+  class Bottle {
+    getObject() {
+      const biggerBody = new THREE.CylinderBufferGeometry(0.05, 0.05, 0.2, 20, 20);
+      const smallerBodySubtractor = new THREE.CylinderBufferGeometry(0.04, 0.04, 0.2, 20, 20);
+
+      const bottleMaterial = new THREE.MeshPhongMaterial({color: 0x006a4e, transparent: true, opacity: 0.9});
+      const biggerBodyMesh = new THREE.Mesh(biggerBody, bottleMaterial);
+      const smallerBodySubtractorMesh = new THREE.Mesh(smallerBodySubtractor, bottleMaterial);
+      biggerBodyMesh.castShadow = true;
+      biggerBodyMesh.receiveShadow = true;
+      const connectorBig = new THREE.CylinderBufferGeometry(0.02, 0.05, 0.05, 20, 20);
+      const connectorSmall = new THREE.CylinderBufferGeometry(0.015, 0.04, 0.05, 20, 20);
+
+      const connectorBigMesh = new THREE.Mesh(connectorBig, bottleMaterial);
+      const connectorSmallMesh = new THREE.Mesh(connectorSmall, bottleMaterial);
+
+      const bottleNeckBig = new THREE.CylinderBufferGeometry(0.02, 0.02, 0.09, 20, 20);
+      const bottleNeckSmall = new THREE.CylinderBufferGeometry(0.015, 0.015, 0.09, 20, 20);
+
+      const bottleNeckBigMesh = new THREE.Mesh(bottleNeckBig, bottleMaterial);
+      const bottleNeckSmallMesh = new THREE.Mesh(bottleNeckSmall, bottleMaterial);
+
+      const bottleCap = new THREE.CylinderBufferGeometry(0.015, 0.015, 0.04, 20, 20);
+      const capMaterial = new THREE.MeshPhongMaterial({color: 0x9c6f3e});
+
+      const capMesh = new THREE.Mesh(bottleCap, capMaterial);
+      capMesh.position.set(0, 0.21, 0);
+
+      const bottleBottom = new THREE.CylinderBufferGeometry(0.05, 0.05, 0.01, 20, 20);
+      const bottleBottomMesh = new THREE.Mesh(bottleBottom, bottleMaterial);
+
+      bottleBottomMesh.position.set(0, -0.1, 0);
+
+      const worker = new CSG();
+      worker.subtract([biggerBodyMesh, smallerBodySubtractorMesh]);
+
+      const worker1 = new CSG();
+      worker1.subtract([connectorBigMesh, connectorSmallMesh]);
+
+      const worker2 = new CSG();
+      worker2.subtract([bottleNeckBigMesh, bottleNeckSmallMesh]);
+
+      const connectorMesh = worker1.toMesh();
+      connectorMesh.position.set(0, 0.125, 0);
+
+      const bottleNeckMesh = worker2.toMesh();
+      bottleNeckMesh.position.set(0, 0.17, 0);
+
+      return new THREE.Group()
+        .add(worker.toMesh())
+        .add(connectorMesh)
+        .add(bottleNeckMesh)
+        .add(capMesh)
+        .add(bottleBottomMesh);
+    }
+  }
+
+  const table = new Table(1, 1.5, true, 'grey').getObject();
+  table.castShadow = true;
+  table.receiveShadow = true;
+  const floorGeometry = new THREE.BoxBufferGeometry(10, 0.5, 10);
+
+  const floorMesh = new THREE.Mesh(floorGeometry, new THREE.MeshPhongMaterial({color: 'grey'}));
+  floorMesh.receiveShadow = true;
+  floorMesh.castShadow = true;
+  floorMesh.position.set(0, -0.9, 0);
+
+  const bottle = new Bottle().getObject();
+  bottle.position.set(0, 0.2, 0);
+  scene.add(bottle);
+  scene.add(floorMesh);
+  scene.add(table);
+
+  camera.position.z = 2;
+  camera.position.y = 0.53;
+
+  const clock = new THREE.Clock();
+
+  let direction = -1;
+
+  function drawFrame() {
+
+    renderer.render(scene, camera);
+  }
+
+</script>
+</body>
+</html>
+
