@@ -1,263 +1,337 @@
 ﻿<!DOCTYPE html>
 
 <html>
-	<head>
-		<script src="three.min.js"></script>
-		<script src="../js/CSG.js"></script>
-		<script src="mannequin.js"></script>
-		<style>
-			body {color: black; text-shadow: 0 0 4px gray; font-family: Calibri;}
-			h1   {position: fixed; z-index: 10; top: 0; left: 0; text-align: center; width: 100%;}
-			div  {position: fixed; z-index: 10; bottom: 1em; left: 1em; font-size: 1.5em; font-style: italic;}
-		</style>
-	</head>
+<head>
+  <script src="three.min.js"></script>
+  <script src="../js/CSG.js"></script>
+  <script src="mannequin.js"></script>
+  <style>
+    body {
+      color: black;
+      text-shadow: 0 0 4px gray;
+      font-family: Calibri;
+    }
 
-	<body>
+    h1 {
+      position: fixed;
+      z-index: 10;
+      top: 0;
+      left: 0;
+      text-align: center;
+      width: 100%;
+    }
 
-		<!-- Сложете реално заглавие -->
-		<h1>Концерт на рападжии</h1>
+    div {
+      position: fixed;
+      z-index: 10;
+      bottom: 1em;
+      left: 1em;
+      font-size: 1.5em;
+      font-style: italic;
+    }
 
-		<!-- Сложете описание на сцената (опитайте с рима) -->
-		<div>
-			Сложете тук един куплет,<br>
-			кажете в него де що става,<br>
-			a изборът ви на сюжет &ndash;<br>
-			без милост да ни грабва.
-		</div>
+    button {
+      position: fixed;
+      z-index: 10;
+      top: 1em;
+      left: 0;
+      font-size: 1.5em;
+      font-style: italic;
+    }
+  </style>
+</head>
 
-		<script>
-      class BeatMixer {
-        static getObject() {
-          const tableFoundation = new THREE.BoxBufferGeometry(40,30,20);
-          const tableFoundationMaterial = new THREE.MeshPhongMaterial({color: 'black'});
+<body>
 
-          const tableMesh = new THREE.Mesh(tableFoundation, tableFoundationMaterial);
+<!-- Сложете реално заглавие -->
+<h1>Концерт на рападжии</h1>
 
-          const electronicsFoundation = new THREE.BoxBufferGeometry(30, 2, 20);
+<!-- Сложете описание на сцената (опитайте с рима) -->
+<div>
+  Даже не е и до кинти,<br>
+  Честно казано бих живял и в корема на син кит.<br>
+  Все ми е тая за остарелите ви принципи <br>
+  И за ваш'те далавери за по пет стотинки
+</div>
+<button id="player">Play music</button>
 
-          const electronicsMaterial = new THREE.MeshPhongMaterial({color: 'dimgray'});
+<script>
+  class BeatMixer {
+    static getObject() {
+      const tableFoundation = new THREE.BoxBufferGeometry(40, 30, 20);
+      const tableFoundationMaterial = new THREE.MeshPhongMaterial({color: 'black'});
 
-          const electronicsMesh = new THREE.Mesh(electronicsFoundation, electronicsMaterial);
+      const tableMesh = new THREE.Mesh(tableFoundation, tableFoundationMaterial);
 
-          electronicsMesh.position.set(0, 16, 0);
-          const vinyl = new THREE.CylinderBufferGeometry(5,5, 1, 36, 36);
-          const vinylMaterial = new THREE.MeshPhongMaterial({color: "black"});
+      const electronicsFoundation = new THREE.BoxBufferGeometry(30, 2, 20);
 
-          const vinylMesh = new THREE.Mesh(vinyl, vinylMaterial);
+      const electronicsMaterial = new THREE.MeshPhongMaterial({color: 'dimgray'});
 
-          const smallVinyl = new THREE.CylinderBufferGeometry(2,2,1,36,36);
-          const smallVinylMesh = new THREE.Mesh(smallVinyl,  vinylMaterial);
+      const electronicsMesh = new THREE.Mesh(electronicsFoundation, electronicsMaterial);
 
-          const csg = new CSG();
-          csg.subtract([vinylMesh, smallVinylMesh]);
+      electronicsMesh.position.set(0, 16, 0);
+      const vinyl = new THREE.CylinderBufferGeometry(5, 5, 1, 36, 36);
+      const vinylMaterial = new THREE.MeshPhongMaterial({color: "black"});
 
-          const vinylMesh1 = csg.toMesh();
-          const vinylMesh2 = vinylMesh1.clone();
+      const vinylMesh = new THREE.Mesh(vinyl, vinylMaterial);
 
+      const smallVinyl = new THREE.CylinderBufferGeometry(2, 2, 1, 36, 36);
+      const smallVinylMesh = new THREE.Mesh(smallVinyl, vinylMaterial);
 
-          vinylMesh1.position.set(5, 17, 0);
-          vinylMesh2.position.set(-7.5, 17, 0);
+      const csg = new CSG();
+      csg.subtract([vinylMesh, smallVinylMesh]);
 
-
-          return new THREE.Group()
-            .add(tableMesh)
-            .add(electronicsMesh)
-            .add(vinylMesh1)
-            .add(vinylMesh2)
-        }
-      }
-      class Microphone {
-        static getObject() {
-          const cylinderBufferGeometry = new THREE.CylinderBufferGeometry(0.75, 0.75, 4, 20, 20);
-          const sphereBufferGeometry = new THREE.SphereBufferGeometry(1,36, 36);
-
-          const cylinderMaterial = new THREE.MeshPhongMaterial({color: 'dimgray'});
-          const headMaterial = new THREE.MeshPhongMaterial({color: 'black'});
-
-          const cylinderMesh = new THREE.Mesh(cylinderBufferGeometry, cylinderMaterial);
-          const headMesh = new THREE.Mesh(sphereBufferGeometry, headMaterial);
-
-          headMesh.position.set(0,2.75,0);
-
-          return new THREE.Group()
-            .add(headMesh)
-            .add(cylinderMesh)
-        }
-      }
-      class Hat {
-        color;
-
-        constructor(color) {
-          this.color = color;
-        }
-
-        getObject() {
-          const foundation = new THREE.SphereBufferGeometry(3.3, 64, 32, 0, 6.28, 1.64619455048105, 1.80327418316054);
-
-          const foundationMaterial = new THREE.MeshPhongMaterial({color : this.color});
-
-          const capFront = new THREE.BoxBufferGeometry(4,0.5,3);
-
-          const capFoundationMesh = new THREE.Mesh(foundation, foundationMaterial);
-          capFoundationMesh.rotateZ(-Math.PI);
-          const capFrontMesh = new THREE.Mesh(capFront, foundationMaterial);
-
-          capFrontMesh.position.set(0,0.5, 3);
-          return new THREE.Group()
-            .add(capFrontMesh)
-            .add(capFoundationMesh);
-        }
-      }
-			createScene(); // инициализиране на сцената
-			// тук си направете човечетата и статичните елементи по позите
-			// ...
-			// ...
-      const mannequinArtist1 = new Mannequin(false, 1);
-      const mannequinArtist2 = new Mannequin(false, 0.9);
-      mannequinArtist2.position.set(-25,1,0);
-      mannequinArtist1.position.set(25,4,0);
-      mannequinArtist1.torso.bend = 30;
-      mannequinArtist1.l_arm.raise = 40;
-      mannequinArtist1.l_elbow.bend = 130;
-      mannequinArtist1.l_wrist.bend = 20;
-      mannequinArtist1.r_wrist.bend = 50;
-      mannequinArtist1.l_leg.raise = 10;
-      mannequinArtist1.r_arm.raise = 180;
-      mannequinArtist1.r_elbow.bend = -50;
-      mannequinArtist1.torso.recolor("black");
-      mannequinArtist1.l_leg.recolor("#6F8FAF");
-      mannequinArtist1.r_leg.recolor("#6F8FAF");
-      mannequinArtist1.pelvis.recolor("black");
-      mannequinArtist1.r_knee.recolor("#6F8FAF");
-      mannequinArtist1.l_knee.recolor("#6F8FAF");
+      const vinylMesh1 = csg.toMesh();
+      const vinylMesh2 = vinylMesh1.clone();
 
 
-      mannequinArtist2.torso.recolor("red");
-      mannequinArtist2.l_leg.recolor("black");
-      mannequinArtist2.r_leg.recolor("black");
-      mannequinArtist2.pelvis.recolor("black");
-      mannequinArtist2.r_knee.recolor("black");
-      mannequinArtist2.l_knee.recolor("black");
-      mannequinArtist2.l_knee.bend = 100;
-      mannequinArtist2.l_leg.raise = 100;
-      mannequinArtist2.torso.bend = 0;
-      mannequinArtist2.r_knee.bend = 100;
-      mannequinArtist2.r_leg.raise = 60;
-      mannequinArtist2.r_arm.raise = 120;
-      mannequinArtist2.r_elbow.bend = 110;
-      mannequinArtist2.r_arm.turn = -100;
-      mannequinArtist2.pelvis.z = 50;
-      mannequinArtist2.position.setY(-19);
-      mannequinArtist2.l_arm.raise = - 50;
-      mannequinArtist2.l_wrist.bend =  -100;
+      vinylMesh1.position.set(5, 17, 0);
+      vinylMesh2.position.set(-7.5, 17, 0);
+
+      const littleButtonGeometry = new THREE.BoxBufferGeometry(1.5, 1.5, 1.5);
+      const greenButtonMesh = new THREE.Mesh(littleButtonGeometry, new THREE.MeshPhongMaterial({color: 'green'}));
+      const redButtonMesh = new THREE.Mesh(littleButtonGeometry, new THREE.MeshPhongMaterial({color: 'red'}));
+      const green1 = greenButtonMesh.clone();
+      const green2 = greenButtonMesh.clone();
+      const red1 = redButtonMesh.clone();
+      const red2 = redButtonMesh.clone();
 
 
-      const djMannequin = new Mannequin(false, 0.9);
-      djMannequin.torso.recolor("purple");
-      djMannequin.l_leg.recolor("white");
-      djMannequin.r_leg.recolor("white");
-      djMannequin.l_knee.recolor("white");
-      djMannequin.r_knee.recolor("white");
-      djMannequin.pelvis.recolor("white");
-      djMannequin.r_arm.recolor("purple");
-      djMannequin.l_arm.recolor("purple");
-      djMannequin.r_arm.raise = 90;
-      djMannequin.r_arm.turn = -25;
-      djMannequin.r_elbow.bend = 150;
-      djMannequin.torso.bend = 30;
-      djMannequin.l_arm.raise = 55;
-      djMannequin.l_wrist.bend = -40;
+      greenButtonMesh.position.set(-5, 17, 7);
+      redButtonMesh.position.set(5, 17, 7);
+      green1.position.set(-7, 17, 7);
+      green2.position.set(-9, 17, 7);
+      red1.position.set(7, 17, 7);
+      red2.position.set(9, 17, 7);
 
-      djMannequin.position.set(0,1, -45);
-      const mic1 =  Microphone.getObject();
-      mic1.position.set(28,20,14);
-      mic1.rotateX(-Math.PI/4)
-      scene.add(mic1);
+      return new THREE.Group()
+        .add(tableMesh)
+        .add(electronicsMesh)
+        .add(vinylMesh1)
+        .add(vinylMesh2)
+        .add(greenButtonMesh)
+        .add(redButtonMesh)
+        .add(green1)
+        .add(green2)
+        .add(red2)
+        .add(red1)
+    }
+  }
 
-      const hat1 = new Hat('red').getObject();
-      hat1.position.set(0,25.8,-47);
-      camera.position.set(0,15, 185);
-      scene.add(hat1);
+  class Microphone {
+    static getObject() {
+      const cylinderBufferGeometry = new THREE.CylinderBufferGeometry(0.75, 0.75, 4, 20, 20);
+      const sphereBufferGeometry = new THREE.SphereBufferGeometry(1, 36, 36);
 
-      const beatMixer = BeatMixer.getObject();
-      beatMixer.position.set(0, -20, -30);
-      scene.add(beatMixer);
-      //TODO: add music!
-      const listener = new THREE.AudioListener();
-      const sound = new THREE.Audio(listener);
+      const cylinderMaterial = new THREE.MeshPhongMaterial({color: 'dimgray'});
+      const headMaterial = new THREE.MeshPhongMaterial({color: 'black'});
 
-      const audioLoader = new THREE.AudioLoader();
+      const cylinderMesh = new THREE.Mesh(cylinderBufferGeometry, cylinderMaterial);
+      const headMesh = new THREE.Mesh(sphereBufferGeometry, headMaterial);
 
-      function repeatAnimation(value, direction, amount) {
-        if (direction === -1) {
-          return value - amount;
-        } else if (direction === 1){
-          return value + amount;
-        } else {
-          return value;
-        }
-      }
-      let directionHandArtist1 = 1;
-      let tempRArmHelper = 140;
-      let tempHead1Helper = 0;
-      let directionHeadArtist1 = 1;
-      let tempKneeHelper1 = mannequinArtist2.l_knee.bend;
-      let directionKnee1 = -1;
-      let djSlidingVinyl = 0;
-      let directionSlidingVinyl = 1;
+      headMesh.position.set(0, 2.75, 0);
+
+      return new THREE.Group()
+        .add(headMesh)
+        .add(cylinderMesh)
+    }
+  }
+
+  createScene(); // инициализиране на сцената
+  // тук си направете човечетата и статичните елементи по позите
+  // ...
+  // ...
+  const mannequinArtist1 = new Mannequin(false, 1);
+  const mannequinArtist2 = new Mannequin(false, 0.9);
+  mannequinArtist2.position.set(-25, 1, 0);
+  mannequinArtist1.position.set(25, 4, 0);
+  mannequinArtist1.torso.bend = 30;
+  mannequinArtist1.l_arm.raise = 40;
+  mannequinArtist1.l_elbow.bend = 130;
+  mannequinArtist1.l_wrist.bend = 20;
+  mannequinArtist1.r_wrist.bend = 50;
+  mannequinArtist1.l_leg.raise = 10;
+  mannequinArtist1.r_arm.raise = 180;
+  mannequinArtist1.r_elbow.bend = -50;
+  mannequinArtist1.torso.recolor("black");
+  mannequinArtist1.l_leg.recolor("#6F8FAF");
+  mannequinArtist1.r_leg.recolor("#6F8FAF");
+  mannequinArtist1.pelvis.recolor("black");
+  mannequinArtist1.r_knee.recolor("#6F8FAF");
+  mannequinArtist1.l_knee.recolor("#6F8FAF");
 
 
-			function animate(t)
-			{
-				// в тази функция направете движението на
-				// човечетата (параметърът t е времето)
-				// ...
-				// ...
-        //TODO: Create a rap scene with a move from the hand up and down and head bending
-        // TODO: The second artist must jump
-        //TODO: Make an audience that makes the same move like both rapers
-        // TODO: Put a beatmaker in the background that slides vinyls
+  mannequinArtist2.torso.recolor("red");
+  mannequinArtist2.l_leg.recolor("black");
+  mannequinArtist2.r_leg.recolor("black");
+  mannequinArtist2.pelvis.recolor("black");
+  mannequinArtist2.r_knee.recolor("black");
+  mannequinArtist2.l_knee.recolor("black");
+  mannequinArtist2.l_knee.bend = 100;
+  mannequinArtist2.l_leg.raise = 100;
+  mannequinArtist2.torso.bend = 0;
+  mannequinArtist2.r_knee.bend = 100;
+  mannequinArtist2.r_leg.raise = 60;
+  mannequinArtist2.r_arm.raise = 120;
+  mannequinArtist2.r_elbow.bend = 110;
+  mannequinArtist2.r_arm.turn = -100;
+  mannequinArtist2.pelvis.z = 50;
+  mannequinArtist2.position.setY(-19);
+  mannequinArtist2.l_arm.raise = -50;
+  mannequinArtist2.l_wrist.bend = -100;
 
-        tempRArmHelper = repeatAnimation(tempRArmHelper, directionHandArtist1, 0.6);
-        tempHead1Helper = repeatAnimation(tempHead1Helper, directionHeadArtist1, 0.4);
-        tempKneeHelper1 = repeatAnimation(tempKneeHelper1, directionKnee1, 0.5);
-        djSlidingVinyl = repeatAnimation(djSlidingVinyl, directionSlidingVinyl, 0.4);
 
-        if(djSlidingVinyl >= 10) {
-          directionSlidingVinyl = -1;
-        }
-        if(djSlidingVinyl <= -30) {
-          directionSlidingVinyl = 1;
-        }
+  const djMannequin = new Mannequin(false, 0.9);
+  djMannequin.torso.recolor("purple");
+  djMannequin.l_leg.recolor("white");
+  djMannequin.r_leg.recolor("white");
+  djMannequin.l_knee.recolor("white");
+  djMannequin.r_knee.recolor("white");
+  djMannequin.pelvis.recolor("white");
+  djMannequin.r_arm.recolor("purple");
+  djMannequin.l_arm.recolor("purple");
+  djMannequin.r_arm.raise = 90;
+  djMannequin.r_arm.turn = -25;
+  djMannequin.r_elbow.bend = 150;
+  djMannequin.torso.bend = 30;
+  djMannequin.l_arm.raise = 55;
+  djMannequin.l_wrist.bend = -40;
 
-        if (tempKneeHelper1 >= 100) {
-          directionKnee1 = -1;
-        }
-        if( tempKneeHelper1 <= 0) {
-          directionKnee1 = 1;
-        }
-        if(tempHead1Helper >= 30) {
-          directionHeadArtist1 = -1;
-        }
-        if(tempHead1Helper <= 0) {
-          directionHeadArtist1 = 1;
-        }
-        if (tempRArmHelper >= 200) {
-          directionHandArtist1 = -1;
-        }
-        if (tempRArmHelper <= 150) {
-          directionHandArtist1 = 1;
-        }
-        mannequinArtist1.r_arm.raise = tempRArmHelper;
-        mannequinArtist1.head.nod = tempHead1Helper;
-        mannequinArtist1.head.nod = tempHead1Helper;
-        djMannequin.head.turn = tempHead1Helper;
-        djMannequin.head.nod = tempHead1Helper;
-        mannequinArtist2.l_knee.bend = tempKneeHelper1;
-        djMannequin.l_wrist.tilt = djSlidingVinyl;
+  djMannequin.position.set(0, 1, -45);
 
-        scene.rotation.y += 0.01;
-			}
-		</script>
-	</body>
+  const mannequinJumping = new Mannequin(true, 0.9);
+  mannequinJumping.l_arm.raise = 90;
+  mannequinJumping.l_elbow.bend = 30;
+  mannequinJumping.l_arm.straddle = -200;
+  mannequinJumping.r_arm.raise = 90;
+  mannequinJumping.r_elbow.bend = 30;
+  mannequinJumping.r_arm.straddle = -200;
+  mannequinJumping.torso.recolor("#0ff2ac");
+  mannequinJumping.torso.recolor("#0ff2ac");
+  mannequinJumping.l_leg.recolor("#0ff2ac");
+  mannequinJumping.r_leg.recolor("#0ff2ac");
+  mannequinJumping.pelvis.recolor("black");
+  mannequinJumping.position.set(0, 1, 40);
+
+
+  const mic1 = Microphone.getObject();
+  mic1.position.set(28, 20, 14);
+  mic1.rotateX(-Math.PI / 4)
+  scene.add(mic1);
+
+  const mic2 = Microphone.getObject();
+  mic2.position.set(-19, -2, -13);
+  mic2.rotateX(-Math.PI)
+  scene.add(mic2);
+
+  camera.position.set(0, 15, 185);
+
+  const beatMixer = BeatMixer.getObject();
+  beatMixer.position.set(0, -20, -30);
+  scene.add(beatMixer);
+  const listener = new THREE.AudioListener();
+  const sound = new THREE.Audio(listener);
+  const player = document.getElementById("player");
+  let isPlaying = false;
+  player.onclick = function () {
+    if(!isPlaying) {
+      sound.play();
+    } else {
+      sound.stop();
+    }
+    isPlaying = !isPlaying;
+
+  }
+
+  const audioLoader = new THREE.AudioLoader();
+  audioLoader.load("pesenta.webm", function (buffer) {
+    sound.setBuffer(buffer);
+    sound.setLoop(true);
+    sound.setVolume(0.5);
+  });
+
+  function repeatAnimation(value, direction, amount) {
+    if (direction === -1) {
+      return value - amount;
+    } else if (direction === 1) {
+      return value + amount;
+    } else {
+      return value;
+    }
+  }
+
+  let directionHandArtist1 = 1;
+  let tempRArmHelper = 140;
+  let tempHead1Helper = 0;
+  let directionHeadArtist1 = 1;
+  let tempKneeHelper1 = mannequinArtist2.l_knee.bend;
+  let directionKnee1 = -1;
+  let djSlidingVinyl = 0;
+  let directionSlidingVinyl = 1;
+  let jumpingHand = mannequinJumping.l_arm.raise;
+  let directionJumpingArm = 1;
+
+
+  function animate(t) {
+    // в тази функция направете движението на
+    // човечетата (параметърът t е времето)
+    // ...
+    // ...
+    //TODO: Create a rap scene with a move from the hand up and down and head bending
+    // TODO: The second artist must jump
+    //TODO: Make an audience that makes the same move like both rapers
+    // TODO: Put a beatmaker in the background that slides vinyls
+
+    tempRArmHelper = repeatAnimation(tempRArmHelper, directionHandArtist1, 0.6);
+    tempHead1Helper = repeatAnimation(tempHead1Helper, directionHeadArtist1, 0.4);
+    tempKneeHelper1 = repeatAnimation(tempKneeHelper1, directionKnee1, 0.9);
+    djSlidingVinyl = repeatAnimation(djSlidingVinyl, directionSlidingVinyl, 1);
+    jumpingHand = repeatAnimation(jumpingHand, directionJumpingArm, 0.8);
+
+    if (jumpingHand >= 160) {
+      directionJumpingArm = -1;
+    }
+    if (jumpingHand <= 90) {
+      directionJumpingArm = 1;
+    }
+    if (djSlidingVinyl >= 10) {
+      directionSlidingVinyl = -1;
+    }
+    if (djSlidingVinyl <= -30) {
+      directionSlidingVinyl = 1;
+    }
+
+    if (tempKneeHelper1 >= 100) {
+      directionKnee1 = -1;
+    }
+    if (tempKneeHelper1 <= 0) {
+      directionKnee1 = 1;
+    }
+    if (tempHead1Helper >= 30) {
+      directionHeadArtist1 = -1;
+    }
+    if (tempHead1Helper <= 0) {
+      directionHeadArtist1 = 1;
+    }
+    if (tempRArmHelper >= 200) {
+      directionHandArtist1 = -1;
+    }
+    if (tempRArmHelper <= 150) {
+      directionHandArtist1 = 1;
+    }
+    mannequinArtist1.r_arm.raise = tempRArmHelper;
+    mannequinArtist1.head.nod = tempHead1Helper;
+    mannequinArtist1.head.nod = tempHead1Helper;
+    djMannequin.head.turn = tempHead1Helper;
+    djMannequin.head.nod = tempHead1Helper;
+    mannequinArtist2.l_knee.bend = tempKneeHelper1;
+    djMannequin.l_wrist.tilt = djSlidingVinyl;
+    mannequinArtist2.head.turn = tempHead1Helper;
+    mannequinJumping.r_arm.raise = jumpingHand;
+    mannequinJumping.l_arm.raise = jumpingHand;
+
+    scene.rotation.y += 0.01;
+  }
+</script>
+</body>
 </html>
