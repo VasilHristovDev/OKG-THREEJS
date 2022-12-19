@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Window Frame (THREE.JS)</title>
+  <style>
+    body {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+<script src="js/three.js"></script>
+<script src="js/CSG.js"></script>
+<script>
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const light = new THREE.AmbientLight(0x444444); // soft white light
+
+  const directionalLight = new THREE.HemisphereLight(0xffffff, 0x080820, 1);
+  scene.add(directionalLight);
+
+  const light1 = new THREE.PointLight();
+  light1.position.set(-6, 10, -6)
+  light1.castShadow = true
+  light1.shadow.mapSize.height = 1024
+  light1.shadow.mapSize.width = 1024
+  scene.add(light1)
+  scene.add(light);
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0xffffff);
+  renderer.setAnimationLoop(drawFrame);
+  document.body.appendChild(renderer.domElement);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+
+  scene.background = new THREE.Color('skyblue');
+
+  camera.position.set(0, 60, 300);
+  camera.lookAt(new THREE.Vector3(0, 0, 0));
+  // camera.rotateY(Math.PI/2)
+
+  const platform = new THREE.CylinderBufferGeometry(300, 300, 20, 64, 64, false, 0, 8);
+  const platformMaterial = new THREE.MeshPhongMaterial({color: 'dimgray'});
+
+  const platformMesh = new THREE.Mesh(platform, platformMaterial);
+  platformMesh.position.set(0, 0, 500)
+
+  const americanUniversityColumn = new THREE.BoxBufferGeometry(10, 20, 10);
+  const columnAUBGMaterial = new THREE.MeshPhongMaterial({color: 0x746C70});
+
+  const leftFrontColumn = new THREE.Mesh(americanUniversityColumn, columnAUBGMaterial);
+  const rightFrontColumn = leftFrontColumn.clone();
+  const rightBackColumn = leftFrontColumn.clone();
+  const leftBackColumn = leftFrontColumn.clone();
+
+  leftFrontColumn.position.set(-20, 0, 20);
+  leftBackColumn.position.set(-20, 0, -20);
+  rightFrontColumn.position.set(20, 0, 20);
+  rightBackColumn.position.set(20, 0, -20);
+
+  const foundationAUBG = new THREE.BoxBufferGeometry(40, 15, 40);
+  const foundationMaterial = new THREE.MeshPhongMaterial({color: 0xE2DED0});
+
+  const foundationMesh = new THREE.Mesh(foundationAUBG, foundationMaterial);
+
+  const AUBGgroup = new THREE.Group()
+    .add(foundationMesh)
+    .add(leftFrontColumn)
+    .add(rightBackColumn)
+    .add(rightFrontColumn)
+    .add(leftBackColumn);
+
+  AUBGgroup.position.set(-150, 20, 700);
+
+  scene.add(AUBGgroup);
+
+
+  const zooGardenFoundation = new THREE.BoxBufferGeometry(10, 10, 10);
+  const zooGardenRoof = new THREE.BoxBufferGeometry(15, 1, 10);
+  const basin1 = new THREE.CylinderBufferGeometry(10, 10, 5, 64, 64, false, 0, 8);
+
+  const facadeMaterial = new THREE.MeshPhongMaterial({color: 0x738580});
+  const topMaterial = new THREE.MeshPhongMaterial({color: 0xE2DED0});
+
+  const zooGardenFoundationMesh = new THREE.Mesh(zooGardenFoundation, facadeMaterial);
+  const zooGardenRoofMesh = new THREE.Mesh(zooGardenRoof, topMaterial);
+
+  const basinMesh = new THREE.Mesh(basin1, facadeMaterial);
+  const basinMesh1 = basinMesh.clone();
+  const basinMesh2 = basinMesh.clone();
+
+  basinMesh.position.set(20, 0, 10);
+  basinMesh1.position.set(10, 0, 30);
+  basinMesh2.position.set(-20, 0, 20);
+  zooGardenRoofMesh.position.set(0, 5, 0);
+
+  const zooGroup = new THREE.Group()
+    .add(zooGardenFoundationMesh)
+    .add(zooGardenRoofMesh)
+    .add(basinMesh)
+    .add(basinMesh1)
+    .add(basinMesh2)
+
+  zooGroup.position.set(150, 20, 650);
+
+  const communityPlaceFoundation = new THREE.BoxBufferGeometry(30, 20, 30);
+  const communityPlaceRoof = new THREE.CylinderBufferGeometry(20, 30, 5, 4, 64, false, 0, 8);
+
+  const communityPlaceFoundationMaterial = new THREE.MeshPhongMaterial({color: 0xC6B79B});
+  const communityPlaceRoofMaterial = new THREE.MeshPhongMaterial({color: 0x738580});
+
+  const communityPlaceFoundationMesh = new THREE.Mesh(communityPlaceFoundation, communityPlaceRoofMaterial);
+  const communityPlaceRoofMesh = new THREE.Mesh(communityPlaceRoof, communityPlaceFoundationMaterial);
+
+  communityPlaceRoofMesh.rotateY(Math.PI);
+  communityPlaceRoofMesh.position.set(0, 15, 0);
+
+
+  const communityPlaceGroup = new THREE.Group()
+    .add(communityPlaceRoofMesh)
+    .add(communityPlaceFoundationMesh);
+
+  communityPlaceGroup.position.set(100, 20, 300);
+
+
+  const monumentOfMacedoniaFoundation = new THREE.BoxBufferGeometry(8, 12, 8);
+  const monumentFace = new THREE.BoxBufferGeometry(4, 10, 4);
+
+  const monumentFoundationMaterial = new THREE.MeshPhongMaterial({color: 0xBFCAD0});
+  const monumentFaceMaterial = new THREE.MeshPhongMaterial({color: 0x474440});
+
+  const monumentFoundationMesh = new THREE.Mesh(monumentOfMacedoniaFoundation, monumentFoundationMaterial);
+  const monumentFaceMesh = new THREE.Mesh(monumentFace, monumentFaceMaterial);
+
+  monumentFaceMesh.position.set(0, 7, 0);
+
+  const monumentGroup = new THREE.Group()
+    .add(monumentFoundationMesh)
+    .add(monumentFaceMesh);
+
+  monumentGroup.position.set(-100, 10, 450);
+
+  scene.add(monumentGroup);
+  scene.add(communityPlaceGroup);
+  scene.add(zooGroup);
+  scene.add(platformMesh);
+
+  camera.position.z = 1000;
+  camera.position.y = 50;
+
+
+  let startX = camera.position.x;
+  let startY = camera.position.y;
+  let startZ = camera.position.z;
+
+  const AUBGX = AUBGgroup.position.x;
+  const AUBGY = AUBGgroup.position.y;
+  const AUBGZ = AUBGgroup.position.z;
+
+
+
+  console.log("AUBG Z " + AUBGZ);
+
+  const ZooX = zooGroup.position.x;
+  const ZooZ = zooGroup.position.z;
+
+  const communityX = communityPlaceGroup.position.x;
+  const communityZ = communityPlaceGroup.position.z;
+
+  const monumentX = monumentGroup.position.x;
+  const monumentZ = monumentGroup.position.z;
+
+  let currentX = startX;
+  let currentY = startY;
+  let currentZ = startZ;
+
+  const directionAUBG = {
+    z: -1,
+    y: 0,
+    x: -1,
+  };
+
+  const directionZoo = {
+    z: -1,
+    y: 0,
+    x: 1,
+  }
+
+  const directionCommunityCenter = {
+    z: -1,
+    x: -1,
+    y: 0,
+  }
+
+  const directionMonument = {
+    z: 1,
+    y: 0,
+    x: -1,
+  }
+  const directionStart = {
+    z: 1,
+    y: 0,
+    x: 1
+  }
+
+  function moveSingleDirection(direction, value, step, object) {
+    if (value === object) {
+      return value;
+    }
+
+    if (direction === 1) {
+      return value + step;
+    } else if (direction === -1) {
+      return value - step;
+    } else {
+      return value;
+    }
+  }
+
+  let currentDirection = directionAUBG;
+  let currentObj = {
+    x : AUBGX,
+    z : AUBGZ,
+  }
+  //TODO: Make the camera go to AUBG -> Zoo -> CommunityPlace -> Monument -> Back to Start
+  function drawFrame() {
+    currentX = moveSingleDirection(currentDirection.x, currentX, 0.5, currentObj.x);
+    currentZ = moveSingleDirection(currentDirection.z, currentZ, 0.5, currentObj.z);
+
+    console.log ("current X : " + currentX);
+    console.log ("current Z : " + currentZ);
+    if (currentX === AUBGX && currentZ === AUBGZ) {
+      camera.rotateY(-Math.PI/2);
+      currentDirection = directionZoo;
+      currentObj = {
+        x: ZooX,
+        z: ZooZ
+      }
+    }
+
+    if (currentX === ZooX && currentZ === ZooZ) {
+      camera.rotateY(Math.PI/2);
+      currentDirection = directionCommunityCenter;
+      currentObj = {
+        x: communityX,
+        z: communityZ,
+      }
+    }
+
+    if (currentX === communityX && currentZ === communityZ) {
+      camera.rotateY(Math.PI/2);
+      currentDirection = directionMonument;
+      currentObj = {
+        x: monumentX,
+        z: monumentZ
+      }
+    }
+
+    if (currentX === monumentX && currentZ === monumentZ) {
+      camera.rotateY(Math.PI/2);
+      currentDirection = directionStart;
+      currentObj = {
+        x: startX,
+        z: startZ
+      }
+    }
+
+    if (currentX === startX && currentZ === startZ) {
+      console.log("I AM STARTING")
+      camera.rotateY(Math.PI);
+      currentDirection = directionAUBG;
+      currentObj = {
+        x: AUBGX,
+        z: AUBGZ
+      }
+    }
+    camera.position.set(currentX, currentY, currentZ);
+    renderer.render(scene, camera);
+  }
+
+</script>
+</body>
+</html>
+
